@@ -5,7 +5,7 @@ function BottomNavigationItem({route,children,label}) {
   return (
    
     <Link href={route}>
-      <button type="button" className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 group">
+      <button type="button" className="mt-3 inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 group">
            {children}
         </button>
 
