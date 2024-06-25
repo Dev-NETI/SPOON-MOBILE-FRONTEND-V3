@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
+import SpoonLoading from '@/app/(app)/SpoonLoading'
 
 const Login = () => {
     const router = useRouter()
@@ -47,8 +48,17 @@ const Login = () => {
     return (
         <>
             <AuthSessionStatus className="mb-4" status={status} />
+
             <form onSubmit={submitForm}>
                 {/* Email Address */}
+                <div className="mb-4 w-full">
+                    <p className="text-xl text-blue-800 font-bold antialiased">
+                        Welcome back!
+                    </p>
+                    <p className="text-sm text-gray-600">
+                        Sign in to continue to your account
+                    </p>
+                </div>
                 <div>
                     <Label htmlFor="email">Email</Label>
 
@@ -79,10 +89,7 @@ const Login = () => {
                         autoComplete="current-password"
                     />
 
-                    <InputError
-                        messages={errors.password}
-                        className="mt-2"
-                    />
+                    <InputError messages={errors.password} className="mt-2" />
                 </div>
 
                 {/* Remember Me */}
