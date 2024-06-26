@@ -9,7 +9,6 @@ import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
-import SpoonLoading from '@/app/(app)/SpoonLoading'
 
 const Login = () => {
     const router = useRouter()
@@ -94,33 +93,17 @@ const Login = () => {
 
                 {/* Remember Me */}
                 <div className="block mt-4">
-                    <label
-                        htmlFor="remember_me"
-                        className="inline-flex items-center">
-                        <input
-                            id="remember_me"
-                            type="checkbox"
-                            name="remember"
-                            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            onChange={event =>
-                                setShouldRemember(event.target.checked)
-                            }
-                        />
-
-                        <span className="ml-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
-                    </label>
+                    <div className="flex flex-row justify-end items-center">
+                        <Link
+                            href="/forgot-password"
+                            className="text-sm font-semibold text-blue-600 hover:text-blue-800">
+                            Forgot your password?
+                        </Link>
+                    </div>
                 </div>
 
-                <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href="/forgot-password"
-                        className="underline text-sm text-gray-600 hover:text-gray-900">
-                        Forgot your password?
-                    </Link>
-
-                    <Button className="ml-3">Login</Button>
+                <div className="flex items-center justify-center mt-4">
+                    <Button className="w-full justify-center">Login</Button>
                 </div>
             </form>
         </>
