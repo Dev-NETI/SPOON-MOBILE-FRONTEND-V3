@@ -6,6 +6,8 @@ import BottomNavigation from '@/components/app/BottomNavigation'
 import logo from '../../../public/images/spoon_logo.png'
 import Image from 'next/image'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
 const AppLayout = ({ children }) => {
     const { user } = useAuth({ middleware: 'auth' })
 
@@ -25,11 +27,22 @@ const AppLayout = ({ children }) => {
                     />
                 </div>
                 <div className="basis-3/12">
-                    <p className="text-slate-900 font-semibold text-lg ml-4 py-4">
-                        John Doe
-                    </p>
+                    <div className="flex flex-row items-center justify-right px-4 py-4">
+                        <Avatar>
+                            <AvatarImage
+                                src="https://github.com/shadcn.png"
+                                alt="@shadcn"
+                            />
+                            <AvatarFallback>
+                                {user.f_name} {user.l_name}
+                            </AvatarFallback>
+                        </Avatar>
+                        <p className="ml-2">
+                            {user.f_name} {user.l_name}
+                        </p>
+                    </div>
                 </div>
-                <div className="basis-full">{children}</div>
+                <div className="basis-full mb-96">{children}</div>
                 <BottomNavigation />
             </div>
         </div>
