@@ -1,13 +1,10 @@
 const Header = ({ title }) => {
     return (
-        <header className="bg-white shadow">
-            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    {title}
-                </h2>
-            </div>
-        </header>
+        <div className="basis-3/12">
+            <p className="text-slate-900 font-semibold text-lg ml-4 py-4 drop-shadow-sm">
+                {title}
+            </p>
+        </div>
     )
 }
 

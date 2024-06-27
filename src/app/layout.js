@@ -9,12 +9,7 @@ const nunitoFont = Nunito({
 const RootLayout = ({ children }) => {
     return (
         <html lang="en" className={nunitoFont.className}>
-            <body className="antialiased">
-                {
-                children
-                }
-            
-            </body>
+            <body className="antialiased">{children}</body>
         </html>
     )
 }
