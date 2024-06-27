@@ -16,7 +16,7 @@ function layout({ children }) {
                     src={icon}
                     width={300}
                     height={300}
-                    className="mt-4 animate-spin-slow shadow-sm animate-once"
+                    className="mt-4 animate-spin-slow shadow-sm animate-once "
                     alt="Spoon Logo"
                 />
             </div>

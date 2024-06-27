@@ -12,7 +12,7 @@ const Dashboard = () => {
         <>
             <div className="flex flex-row z-50">
                 <div className="basis-6/12">
-                    <p className="text-xl font-semibold">World Cousine</p>
+                    <p className="text-xl font-semibold ">World Cousine</p>
                 </div>
                 <div className="basis-6/12 text-end justify-between">
                     <a
