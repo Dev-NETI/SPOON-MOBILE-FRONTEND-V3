@@ -1,16 +1,16 @@
 'use client'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
-import flag from '../../../../public/assets/app/icons/armeniaflag.png'
-import food1 from '../../../../public/assets/app/recipes/01 BANH MI.jpg'
-import food2 from '../../../../public/assets/app/recipes/TOSHIKOSHI SOBA (NEW YEAR_S EVE NOODLES).jpg'
+// import flag from '../../../../public/assets/app/icons/armeniaflag.png'
+// import food1 from '../../../../public/assets/app/recipes/01 BANH MI.jpg'
+// import food2 from '../../../../public/assets/app/recipes/TOSHIKOSHI SOBA (NEW YEAR_S EVE NOODLES).jpg'
 
 import Image from 'next/image'
 
 const Dashboard = () => {
     return (
         <>
-            <div className="flex flex-row z-50">
+            {/* <div className="flex flex-row z-50">
                 <div className="basis-6/12">
                     <p className="text-xl font-semibold ">World Cousine</p>
                 </div>
@@ -183,7 +183,7 @@ const Dashboard = () => {
                         </Card>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </>
     )
 }
