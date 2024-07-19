@@ -38,9 +38,7 @@ function LoginOtp() {
     const { user, logout } = useAuth({
         middleware: 'auth',
     })
-    const [tempt_otp, setTempt_otp] = useState(
-        Math.floor(100000 + Math.random() * 900000),
-    )
+    const tempt_otp = useState(Math.floor(100000 + Math.random() * 900000))
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -52,20 +50,15 @@ function LoginOtp() {
     const onSubmit = async data => {
         axios
             .post('/api/verify-otp', { otp: data.pin, temp_otp: tempt_otp })
-            .then(response => {
+            .then(() => {
                 toast({
                     title: 'Successfully Verified',
                     description:
                         'You have successfully verified your account. You can now log in.',
                 })
-                console.log(response.data.status)
                 router.push('/dashboard')
             })
             .catch(error => {
-                console.error(
-                    'Error authenticating:',
-                    error.response.data.status,
-                )
                 toast({
                     title: 'Authentication failed',
                     variant: 'destructive',
@@ -75,22 +68,13 @@ function LoginOtp() {
     }
 
     async function generateOtp() {
-        console.log(user)
-        await axios
-            .post('/api/authenticating', { temp_otp: tempt_otp })
-            .then(response => {
-                console.log(response.data.status)
-            })
-            .catch(error => {
-                console.error('Error authenticating:', error)
-            })
+        await axios.post('/api/authenticating', { temp_otp: tempt_otp })
     }
 
     useEffect(() => {
         axios.get('/api/checking-status-otp').then(response => {
             if (response.data.status === true) {
                 router.push('/dashboard')
-                console.log('Verified')
             } else {
                 generateOtp()
             }

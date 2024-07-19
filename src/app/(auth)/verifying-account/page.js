@@ -2,17 +2,14 @@
 
 import Button from '@/components/Button'
 import Input from '@/components/Input'
-import InputError from '@/components/InputError'
 import Label from '@/components/Label'
 import { toast } from '@/components/ui/use-toast'
-import { useAuth } from '@/hooks/auth'
 import axios from '@/lib/axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 const Page = () => {
     const [email, setEmail] = useState('')
-    const [errors, setErrors] = useState([])
     const router = useRouter()
 
     const submitForm = async event => {
@@ -36,10 +33,6 @@ const Page = () => {
         return axios
             .post('/api/check-register-email', { email })
             .then(response => response.data.isEmailValid)
-            .catch(error => {
-                if (error.response.status !== 422) throw error
-                setErrors(error.response.data.errors)
-            })
     }
 
     return (
