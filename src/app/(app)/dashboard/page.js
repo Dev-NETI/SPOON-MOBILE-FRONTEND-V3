@@ -1,10 +1,5 @@
 'use client'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-
-import flag from '../../../../public/assets/app/icons/armeniaflag.png'
-import food1 from '../../../../public/assets/app/recipes/01 BANH MI.jpg'
-import food2 from '../../../../public/assets/app/recipes/TOSHIKOSHI SOBA (NEW YEAR_S EVE NOODLES).jpg'
-
 import Image from 'next/image'
 
 const Dashboard = () => {
@@ -28,7 +23,7 @@ const Dashboard = () => {
                         <Card>
                             <CardContent className="flex flex-col items-center justify-center">
                                 <Image
-                                    src={flag}
+                                    src="/assets/app/icons/armeniaflag.png"
                                     alt="flag"
                                     width={100}
                                     height={100}
@@ -46,7 +41,7 @@ const Dashboard = () => {
                         <Card>
                             <CardContent className="flex flex-col items-center justify-center">
                                 <Image
-                                    src={flag}
+                                    src="/assets/app/icons/armeniaflag.png"
                                     alt="flag"
                                     width={100}
                                     height={100}
@@ -64,7 +59,7 @@ const Dashboard = () => {
                         <Card>
                             <CardContent className="flex flex-col items-center justify-center">
                                 <Image
-                                    src={flag}
+                                    src="/assets/app/icons/armeniaflag.png"
                                     alt="flag"
                                     width={100}
                                     height={100}
@@ -82,7 +77,7 @@ const Dashboard = () => {
                         <Card>
                             <CardContent className="flex flex-col items-center justify-center">
                                 <Image
-                                    src={flag}
+                                    src="/assets/app/icons/armeniaflag.png"
                                     alt="flag"
                                     width={100}
                                     height={100}
@@ -115,9 +110,10 @@ const Dashboard = () => {
                     <div className="w-full max-w-xs px-1">
                         <Card>
                             <Image
-                                src={food1}
+                                src="/assets/app/recipes/01 BANH MI.jpg"
                                 alt="flag"
                                 height={100}
+                                width={100}
                                 className="h-full w-full object-cover rounded-md"
                             />
                             <CardFooter>
@@ -132,7 +128,7 @@ const Dashboard = () => {
                                     </div>
                                     <div className="flex flex-row items-center mt-2">
                                         <Image
-                                            src={flag}
+                                            src="/assets/app/icons/armeniaflag.png"
                                             alt="flag"
                                             height={20}
                                             width={20}
@@ -151,9 +147,10 @@ const Dashboard = () => {
                     <div className="w-full max-w-xs px-1">
                         <Card>
                             <Image
-                                src={food2}
+                                src="/assets/app/recipes/TOSHIKOSHI SOBA (NEW YEAR_S EVE NOODLES).jpg"
                                 alt="flag"
                                 height={100}
+                                width={100}
                                 className="h-full w-full object-cover rounded-md"
                             />
                             <CardFooter>
@@ -168,7 +165,7 @@ const Dashboard = () => {
                                     </div>
                                     <div className="flex flex-row items-center mt-2">
                                         <Image
-                                            src={flag}
+                                            src="/assets/app/icons/armeniaflag.png"
                                             alt="flag"
                                             height={20}
                                             width={20}
