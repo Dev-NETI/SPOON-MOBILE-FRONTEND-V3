@@ -49,7 +49,12 @@ function Calorie() {
                 className="basis-full border-0 rounded-lg bg-gray-50 shadow-lg
                            grid grid-cols-2 gap-4 p-5">
                 <div className="col-span-2 flex justify-end ">
-                    <Button type="button" onClick={() => setIsEdit(!isEdit)}>
+                    <Button
+                        type="button"
+                        onClick={() => {
+                            setIsEdit(!isEdit)
+                            setError({})
+                        }}>
                         {isEdit ? 'Cancel' : 'Edit'}
                     </Button>
                 </div>
