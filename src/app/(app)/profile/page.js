@@ -1,5 +1,5 @@
 'use client'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useAuth } from '@/hooks/auth'
 
 const Profile = () => {

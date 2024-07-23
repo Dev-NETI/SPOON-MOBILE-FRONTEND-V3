@@ -1,9 +1,13 @@
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-    appId: 'ph.spoon',
-    appName: 'oex-mobile',
-    webDir: 'public',
+    appId: 'com.example.app',
+    appName: 'SPOON PH',
+    webDir: 'out',
+    server: {
+        url: 'http://localhost:3000',
+        cleartext: true,
+    },
 }
 
 export default config

@@ -15,7 +15,7 @@ const RootLayout = ({ children }) => {
 }
 
 export const metadata = {
-    title: 'Laravel',
+    title: 'SPOON.PH',
 }
 
 export default RootLayout
