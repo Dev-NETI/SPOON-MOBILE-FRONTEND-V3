@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import icon from '../../../../public/assets/app/icons/plate.png'
 
 function layout({ children }) {
     return (
@@ -13,7 +12,7 @@ function layout({ children }) {
                     Tasty Recipes for a Healthy Onboard Life
                 </p>
                 <Image
-                    src={icon}
+                    src="/assets/app/icons/plate.png"
                     width={300}
                     height={300}
                     className="mt-4 animate-spin-slow shadow-sm animate-once "
