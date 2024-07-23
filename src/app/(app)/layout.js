@@ -20,6 +20,7 @@ const AppLayout = ({ children }) => {
             <div className="flex flex-col">
                 <div className="basis-3/12 bg-blue-800 flex items-center justify-center px-2 py-2">
                     <Image
+                        className="mt-12"
                         src={logo}
                         alt="Spoon Logo"
                         width={150}
