@@ -6,20 +6,21 @@ import InputError from '@/components/InputError'
 import Label from '@/components/Label'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from '@/lib/axios'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
     const { register } = useAuth({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
     })
-
+    const router = useRouter()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState([])
-
     const submitForm = event => {
         event.preventDefault()
 
@@ -31,6 +32,16 @@ const Page = () => {
             setErrors,
         })
     }
+
+    useEffect(() => {
+        axios.get('/api/check-status-email').then(response => {
+            if (response.data.isEmailValid) {
+                setEmail(response.data.authEmail)
+            } else {
+                router.push('/login')
+            }
+        })
+    }, [])
 
     return (
         <form onSubmit={submitForm}>
@@ -61,6 +72,7 @@ const Page = () => {
                     value={email}
                     className="block mt-1 w-full"
                     onChange={event => setEmail(event.target.value)}
+                    disabled
                     required
                 />
 
@@ -86,9 +98,7 @@ const Page = () => {
 
             {/* Confirm Password */}
             <div className="mt-4">
-                <Label htmlFor="passwordConfirmation">
-                    Confirm Password
-                </Label>
+                <Label htmlFor="passwordConfirmation">Confirm Password</Label>
 
                 <Input
                     id="passwordConfirmation"

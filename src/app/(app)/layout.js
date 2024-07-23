@@ -19,12 +19,13 @@ const AppLayout = ({ children }) => {
         <div className="min-h-screen bg-gray-100">
             <div className="flex flex-col">
                 <div className="basis-3/12 bg-blue-800 flex items-center justify-center px-2 py-2">
-                    {/* <Image
+      
+                    <Image
+                        className="mt-12"
                         src={logo}
                         alt="Spoon Logo"
                         width={150}
-                        height={150}
-                    /> */}
+                        height={150} /> 
                 </div>
                 <div className="basis-3/12">
                     <div className="flex flex-row items-center justify-right px-4 py-4">

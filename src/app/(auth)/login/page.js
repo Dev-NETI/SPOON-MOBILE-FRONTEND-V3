@@ -15,12 +15,12 @@ const Login = () => {
 
     const { login } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
+        redirectIfAuthenticated: '/login-otp',
     })
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [shouldRemember, setShouldRemember] = useState(false)
+    const [shouldRemember] = useState(false)
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
 
@@ -104,6 +104,17 @@ const Login = () => {
 
                 <div className="flex items-center justify-center mt-4">
                     <Button className="w-full justify-center">Login</Button>
+                </div>
+
+                <div className="flex items-right justify-right mt-4">
+                    <p className="text-sm font-semibold text-gray-500">
+                        Dont have an account?{' '}
+                        <a
+                            href="/verifying-account"
+                            className=" text-blue-600 hover:text-blue-800">
+                            Sign up
+                        </a>
+                    </p>
                 </div>
             </form>
         </>

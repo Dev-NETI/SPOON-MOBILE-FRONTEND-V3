@@ -27,7 +27,7 @@ const Dashboard = () => {
                                     alt="flag"
                                     width={100}
                                     height={100}
-                                    className="rounded-full mt-5 "
+                                    className="rounded-full  mt-5"
                                 />
                                 <p className="text-center text-sm font-light mt-2">
                                     Armenia

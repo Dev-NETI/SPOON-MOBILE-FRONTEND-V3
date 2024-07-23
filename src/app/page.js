@@ -40,9 +40,9 @@ const Home = () => {
 
                                     <div className="ml-4 text-lg leading-7 font-semibold">
                                         <a
-                                            href="https://laravel.com/docs"
+                                            href="/login"
                                             className="underline text-gray-900 dark:text-white">
-                                            Documentation
+                                            Login
                                         </a>
                                     </div>
                                 </div>
