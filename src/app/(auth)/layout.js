@@ -35,11 +35,10 @@ const Layout = ({ children }) => {
                     <div className="absolute z-50 top-5 left-2 flex flex-row gap-2">
                         <Link href="/login" className="flex items-center group">
                             <svg
-                                className={`w-6 h-6 text-white dark:text-white hover:text-stone-200 ${
-                                    pathName != '/login'
+                                className={`w-6 h-6 text-white dark:text-white hover:text-stone-200 ${pathName != '/login'
                                         ? 'group-hover:text-slate-600'
                                         : ''
-                                }`}
+                                    }`}
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="100"
@@ -55,11 +54,10 @@ const Layout = ({ children }) => {
                                 />
                             </svg>
                             <span
-                                className={`text-md font-bold text-white  hover:text-stone-200 ${
-                                    pathName != '/login'
+                                className={`text-md font-bold text-white  hover:text-stone-200 ${pathName != '/login'
                                         ? 'group-hover:text-slate-600'
                                         : ''
-                                }`}>
+                                    }`}>
                                 Back
                             </span>
                         </Link>

@@ -15,7 +15,7 @@
         "jsx": "preserve",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["./src/*"]
         },
         "incremental": true,
         "plugins": [
@@ -29,6 +29,8 @@
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
+        "**/*.js",
+        "**/*.jsx",
         ".next/types/**/*.ts",
         "./dist/types/**/*.ts"
     ],

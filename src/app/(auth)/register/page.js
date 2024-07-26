@@ -1,28 +1,34 @@
-'use client'
+'use client';
 
-import Button from '@/components/Button'
-import Input from '@/components/Input'
-import InputError from '@/components/InputError'
-import Label from '@/components/Label'
-import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
-import { useEffect, useState } from 'react'
-import axios from '@/lib/axios'
-import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks/auth';
+import { useEffect, useState } from 'react';
+import axios from '@/lib/axios';
+import { useRouter } from 'next/navigation';
+import { RegisterContext } from '@/stores/RegisterContext';
+import PersonalInfoForm from '@/components/auth/register/PersonalInfoForm';
+import RegisterLink from '@/components/auth/RegisterLink';
+import BodyMetricsForm from '@/components/auth/register/BodyMetricsForm';
+import EmploymentDetailForm from '@/components/auth/register/EmploymentDetailForm';
+import * as Yup from 'yup';
 
 const Page = () => {
     const { register } = useAuth({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
-    })
-    const router = useRouter()
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    const [errors, setErrors] = useState([])
+    });
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [registrationState, setRegistrationState] = useState({
+        activeForm: 1,
+        progressBarValue: 25,
+        formIndicator: 1,
+    });
+    const [userData, setUserData] = useState(null);
+
+    userData && console.log(userData);
+
     const submitForm = event => {
-        event.preventDefault()
+        event.preventDefault();
 
         register({
             name,
@@ -30,104 +36,66 @@ const Page = () => {
             password,
             password_confirmation: passwordConfirmation,
             setErrors,
-        })
-    }
+        });
+    };
 
     useEffect(() => {
         axios.get('/api/check-status-email').then(response => {
             if (response.data.isEmailValid) {
-                setEmail(response.data.authEmail)
+                setEmail(response.data.authEmail);
             } else {
-                router.push('/login')
+                router.push('/login');
             }
-        })
-    }, [])
+        });
+    }, []);
+
+    const nextForm = () => {
+        setRegistrationState(prevState => ({
+            ...prevState,
+            activeForm: registrationState.activeForm + 1,
+            progressBarValue: registrationState.progressBarValue + 25,
+            formIndicator: registrationState.formIndicator + 1,
+        }));
+    };
+
+    let activeUi;
+    switch (registrationState.activeForm) {
+        case 1:
+            // activeUi = <PersonalInfoForm />;
+            activeUi = <EmploymentDetailForm />;
+            break;
+        case 2:
+            activeUi = <BodyMetricsForm />;
+            break;
+        case 3:
+            activeUi = <EmploymentDetailForm />;
+            break;
+        default:
+            activeUi = <PersonalInfoForm />;
+            break;
+    }
 
     return (
-        <form onSubmit={submitForm}>
-            {/* Name */}
-            <div>
-                <Label htmlFor="name">Name</Label>
-
-                <Input
-                    id="name"
-                    type="text"
-                    value={name}
-                    className="block mt-1 w-full"
-                    onChange={event => setName(event.target.value)}
-                    required
-                    autoFocus
-                />
-
-                <InputError messages={errors.name} className="mt-2" />
+        <RegisterContext.Provider
+            value={{ nextForm, Yup, userData, setUserData }}
+        >
+            <div className='w-full bg-gray-200 rounded-full dark:bg-gray-700 mb-2'>
+                <div
+                    className='bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full'
+                    style={{ width: `${registrationState.progressBarValue}%` }}
+                >
+                    {' '}
+                    {registrationState.formIndicator}/4{' '}
+                </div>
             </div>
 
-            {/* Email Address */}
-            <div className="mt-4">
-                <Label htmlFor="email">Email</Label>
+            {activeUi}
 
-                <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    className="block mt-1 w-full"
-                    onChange={event => setEmail(event.target.value)}
-                    disabled
-                    required
-                />
-
-                <InputError messages={errors.email} className="mt-2" />
+            <div className='flex items-center justify-end mt-4'>
+                <RegisterLink />
             </div>
+        </RegisterContext.Provider>
+    );
+};
 
-            {/* Password */}
-            <div className="mt-4">
-                <Label htmlFor="password">Password</Label>
-
-                <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    className="block mt-1 w-full"
-                    onChange={event => setPassword(event.target.value)}
-                    required
-                    autoComplete="new-password"
-                />
-
-                <InputError messages={errors.password} className="mt-2" />
-            </div>
-
-            {/* Confirm Password */}
-            <div className="mt-4">
-                <Label htmlFor="passwordConfirmation">Confirm Password</Label>
-
-                <Input
-                    id="passwordConfirmation"
-                    type="password"
-                    value={passwordConfirmation}
-                    className="block mt-1 w-full"
-                    onChange={event =>
-                        setPasswordConfirmation(event.target.value)
-                    }
-                    required
-                />
-
-                <InputError
-                    messages={errors.password_confirmation}
-                    className="mt-2"
-                />
-            </div>
-
-            <div className="flex items-center justify-end mt-4">
-                <Link
-                    href="/login"
-                    className="underline text-sm text-gray-600 hover:text-gray-900">
-                    Already registered?
-                </Link>
-
-                <Button className="ml-4">Register</Button>
-            </div>
-        </form>
-    )
-}
-
-export default Page
+export default Page;
