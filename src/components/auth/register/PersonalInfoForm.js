@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
-import InputGroupV2 from '@/components/InputGroupV2'
-import Button from '@/components/Button'
-import { useContext } from 'react'
-import { RegisterContext } from '@/stores/RegisterContext'
-import * as Yup from 'yup'
-import { computeAge } from '@/lib/utils'
+import React, { useState } from 'react';
+import InputGroupV2 from '@/components/InputGroupV2';
+import Button from '@/components/Button';
+import { useContext } from 'react';
+import { RegisterContext } from '@/stores/RegisterContext';
+import { computeAge } from '@/lib/utils';
 
 function PersonalInfoForm() {
-    const { nextForm } = useContext(RegisterContext)
-    const [error, setError] = useState({})
+    const { nextForm, Yup, setUserData } = useContext(RegisterContext);
+    const [error, setError] = useState({});
     const [age, setAge] = useState(0);
 
     const rules = Yup.object().shape({
@@ -19,59 +18,101 @@ function PersonalInfoForm() {
         nationality: Yup.string().required('Nationality is required!'),
     });
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async event => {
         event.preventDefault();
 
-        const formData = new FormData(event.target)
-        const object = Object.fromEntries(formData.entries())
+        const formData = new FormData(event.target);
+        const object = Object.fromEntries(formData.entries());
 
         try {
-            await rules.validate(object, { abortEarly: false })
+            await rules.validate(object, { abortEarly: false });
 
-            nextForm()
+            setUserData(prevState => ({ ...prevState, ...object }));
+            nextForm();
         } catch (error) {
             const errors = error.inner.reduce((acc, curr) => {
                 acc[curr.path] = curr.message;
                 return acc;
             }, {});
-            setError(errors)
+            setError(errors);
         }
+    };
 
-    }
-
-    const calculateAge = (dateOfBirth) => {
-        setAge(computeAge(dateOfBirth))
-    }
+    const calculateAge = dateOfBirth => {
+        setAge(computeAge(dateOfBirth));
+    };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <InputGroupV2 label="Firstname" id="firstname" name="firstname" type="text" errorMessage={error.firstname} />
+                <InputGroupV2
+                    label='Firstname'
+                    id='firstname'
+                    name='firstname'
+                    type='text'
+                    errorMessage={error.firstname}
+                />
             </div>
             <div>
-                <InputGroupV2 label="Middlename" id="middlename" name="middlename" type="text" />
+                <InputGroupV2
+                    label='Middlename'
+                    id='middlename'
+                    name='middlename'
+                    type='text'
+                />
             </div>
             <div>
-                <InputGroupV2 label="Lastname" id="lastname" name="lastname" type="text" errorMessage={error.lastname} />
+                <InputGroupV2
+                    label='Lastname'
+                    id='lastname'
+                    name='lastname'
+                    type='text'
+                    errorMessage={error.lastname}
+                />
             </div>
             <div>
-                <InputGroupV2 label="Suffix" id="suffix" name="suffix" type="text" />
+                <InputGroupV2
+                    label='Suffix'
+                    id='suffix'
+                    name='suffix'
+                    type='text'
+                />
             </div>
             <div>
-                <InputGroupV2 label="Date of Birth" id="dateOfBirth" name="dateOfBirth" type="date" errorMessage={error.dateOfBirth}
-                    onChange={(event) => calculateAge(event.target.value)} />
+                <InputGroupV2
+                    label='Date of Birth'
+                    id='dateOfBirth'
+                    name='dateOfBirth'
+                    type='date'
+                    errorMessage={error.dateOfBirth}
+                    onChange={event => calculateAge(event.target.value)}
+                />
             </div>
             <div>
-                <InputGroupV2 label="Age" id="age" name="age" type="text" errorMessage={error.age} value={age} readOnly />
+                <InputGroupV2
+                    label='Age'
+                    id='age'
+                    name='age'
+                    type='text'
+                    errorMessage={error.age}
+                    value={age}
+                    readOnly
+                />
             </div>
             <div>
-                <InputGroupV2 label="Nationality" id="nationality" name="nationality" type="text" errorMessage={error.nationality} />
+                <InputGroupV2
+                    label='Nationality'
+                    id='nationality'
+                    name='nationality'
+                    type='text'
+                    errorMessage={error.nationality}
+                />
             </div>
             <div className='flex justify-end py-4'>
-                <Button type="submit">Next</Button>
+                <Button type='submit'>Next</Button>
             </div>
         </form>
-    )
+    );
 }
 
-export default PersonalInfoForm
+export default PersonalInfoForm;
