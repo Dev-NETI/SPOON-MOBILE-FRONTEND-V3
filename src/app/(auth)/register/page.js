@@ -1,14 +1,12 @@
 'use client'
 
-import Button from '@/components/Button'
-import Input from '@/components/Input'
-import InputError from '@/components/InputError'
-import Label from '@/components/Label'
-import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import axios from '@/lib/axios'
 import { useRouter } from 'next/navigation'
+import { RegisterContext } from '@/stores/RegisterContext'
+import PersonalInfoForm from '@/components/auth/register/PersonalInfoForm'
+import RegisterLink from '@/components/auth/RegisterLink'
 
 const Page = () => {
     const { register } = useAuth({
@@ -16,11 +14,13 @@ const Page = () => {
         redirectIfAuthenticated: '/dashboard',
     })
     const router = useRouter()
-    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    const [errors, setErrors] = useState([])
+    const [registrationState, setRegistrationState] = useState({
+        activeForm: 1,
+        progressBarValue: 33.333,
+        formIndicator: 1,
+    });
+
     const submitForm = event => {
         event.preventDefault()
 
@@ -43,90 +43,39 @@ const Page = () => {
         })
     }, [])
 
+    const nextForm = () => {
+        setRegistrationState(prevState => ({
+            ...prevState, activeForm: registrationState.activeForm + 1,
+            progressBarValue: registrationState.progressBarValue + 33.333, formIndicator: registrationState.formIndicator + 1
+        }))
+    }
+
+    let activeUi;
+    switch (registrationState.activeForm) {
+        case 1:
+            activeUi = <PersonalInfoForm />;
+            break;
+
+        default:
+            activeUi = <PersonalInfoForm />;
+            break;
+    }
+
     return (
-        <form onSubmit={submitForm}>
-            {/* Name */}
-            <div>
-                <Label htmlFor="name">Name</Label>
+        <RegisterContext.Provider value={{ nextForm }} >
 
-                <Input
-                    id="name"
-                    type="text"
-                    value={name}
-                    className="block mt-1 w-full"
-                    onChange={event => setName(event.target.value)}
-                    required
-                    autoFocus
-                />
+            <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mb-2">
+                <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                    style={{ width: `${registrationState.progressBarValue}%` }} > {registrationState.formIndicator}/3 </div>
+            </div >
 
-                <InputError messages={errors.name} className="mt-2" />
-            </div>
-
-            {/* Email Address */}
-            <div className="mt-4">
-                <Label htmlFor="email">Email</Label>
-
-                <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    className="block mt-1 w-full"
-                    onChange={event => setEmail(event.target.value)}
-                    disabled
-                    required
-                />
-
-                <InputError messages={errors.email} className="mt-2" />
-            </div>
-
-            {/* Password */}
-            <div className="mt-4">
-                <Label htmlFor="password">Password</Label>
-
-                <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    className="block mt-1 w-full"
-                    onChange={event => setPassword(event.target.value)}
-                    required
-                    autoComplete="new-password"
-                />
-
-                <InputError messages={errors.password} className="mt-2" />
-            </div>
-
-            {/* Confirm Password */}
-            <div className="mt-4">
-                <Label htmlFor="passwordConfirmation">Confirm Password</Label>
-
-                <Input
-                    id="passwordConfirmation"
-                    type="password"
-                    value={passwordConfirmation}
-                    className="block mt-1 w-full"
-                    onChange={event =>
-                        setPasswordConfirmation(event.target.value)
-                    }
-                    required
-                />
-
-                <InputError
-                    messages={errors.password_confirmation}
-                    className="mt-2"
-                />
-            </div>
+            {activeUi}
 
             <div className="flex items-center justify-end mt-4">
-                <Link
-                    href="/login"
-                    className="underline text-sm text-gray-600 hover:text-gray-900">
-                    Already registered?
-                </Link>
-
-                <Button className="ml-4">Register</Button>
+                <RegisterLink />
             </div>
-        </form>
+
+        </RegisterContext.Provider >
     )
 }
 
