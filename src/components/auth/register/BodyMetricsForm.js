@@ -14,10 +14,10 @@ function BodyMetricsForm() {
     const { nextForm, Yup, setUserData } = useContext(RegisterContext);
     const [error, setError] = useState({});
     const [bodyMetricFormValue, setBodyMetricFormValue] = useState({
-        heightImperial: null,
-        heightMetric: null,
-        weightImperial: null,
-        weightMetric: null,
+        heightImperial: '',
+        heightMetric: '',
+        weightImperial: '',
+        weightMetric: '',
     });
     const rules = Yup.object().shape({
         heightImperial: Yup.string()
@@ -67,6 +67,7 @@ function BodyMetricsForm() {
                         onChange={event =>
                             setBodyMetricFormValue(prevState => ({
                                 ...prevState,
+                                heightImperial: event.target.value,
                                 heightMetric: convertToCm(event.target.value),
                             }))
                         }
@@ -83,6 +84,7 @@ function BodyMetricsForm() {
                         onChange={event =>
                             setBodyMetricFormValue(prevState => ({
                                 ...prevState,
+                                heightMetric: event.target.value,
                                 heightImperial: convertToFeet(
                                     event.target.value
                                 ),
@@ -101,6 +103,7 @@ function BodyMetricsForm() {
                         onChange={event =>
                             setBodyMetricFormValue(prevState => ({
                                 ...prevState,
+                                weightImperial: event.target.value,
                                 weightMetric: convertToKg(event.target.value),
                             }))
                         }
@@ -117,6 +120,7 @@ function BodyMetricsForm() {
                         onChange={event =>
                             setBodyMetricFormValue(prevState => ({
                                 ...prevState,
+                                weightMetric: event.target.value,
                                 weightImperial: convertToLbs(
                                     event.target.value
                                 ),

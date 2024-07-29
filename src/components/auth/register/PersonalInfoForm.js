@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputGroupV2 from '@/components/InputGroupV2';
 import Button from '@/components/Button';
 import { useContext } from 'react';
 import { RegisterContext } from '@/stores/RegisterContext';
 import { computeAge } from '@/lib/utils';
+import { useNationality } from '@/hooks/api/nationality';
+import DropdownGroup from '@/components/DropdownGroup';
 
 function PersonalInfoForm() {
     const { nextForm, Yup, setUserData } = useContext(RegisterContext);
     const [error, setError] = useState({});
     const [age, setAge] = useState(0);
+    const [dropdownData, setDropdownData] = useState({});
+    const { index: getAllNationality } = useNationality();
 
     const rules = Yup.object().shape({
         lastname: Yup.string().required('Lastname is required!'),
@@ -17,6 +21,18 @@ function PersonalInfoForm() {
         age: Yup.string().required('Age is required!'),
         nationality: Yup.string().required('Nationality is required!'),
     });
+
+    useEffect(() => {
+        fetchData('nationalityData', getAllNationality);
+    }, []);
+
+    const fetchData = async (key, hook) => {
+        const { data } = await hook();
+        setDropdownData(prevState => ({
+            ...prevState,
+            [key]: data,
+        }));
+    };
 
     const handleSubmit = async event => {
         event.preventDefault();
@@ -100,11 +116,11 @@ function PersonalInfoForm() {
                 />
             </div>
             <div>
-                <InputGroupV2
+                <DropdownGroup
                     label='Nationality'
                     id='nationality'
                     name='nationality'
-                    type='text'
+                    data={dropdownData.nationalityData}
                     errorMessage={error.nationality}
                 />
             </div>
