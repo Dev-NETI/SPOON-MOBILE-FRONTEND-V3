@@ -25,6 +25,7 @@ function Calculator() {
                     <CardListItem
                         title='Blood Pressure Tracker'
                         className='col-span-2'
+                        href='/calculator/blood-pressure-tracker'
                     />
                     <CardListItem
                         title='Nutrient Calculator'
