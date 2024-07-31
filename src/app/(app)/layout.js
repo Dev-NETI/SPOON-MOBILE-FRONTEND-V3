@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/auth';
 import Loading from '@/app/(app)/Loading';
 import BottomNavigation from '@/components/app/BottomNavigation';
 import Image from 'next/image';
-
+import { Toaster } from '@/components/ui/toaster';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const AppLayout = ({ children }) => {
@@ -41,6 +41,7 @@ const AppLayout = ({ children }) => {
                     </div>
                 </header>
                 <div className='basis-full '>{children}</div>
+                <Toaster />
                 <BottomNavigation />
             </div>
         </div>

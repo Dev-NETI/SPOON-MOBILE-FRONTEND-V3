@@ -2,13 +2,13 @@
 
 import { useResource } from '../resource';
 
-const useUserHook = (customRoute = null) => {
+const useBmiLog = () => {
     const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
-    const route = customRoute ? `/api/user/${customRoute}` : '/api/user';
+    const route = '/api/bmi-log';
 
     return {
         ...useResource({ baseURL, route }),
     };
 };
 
-export { useUserHook };
+export { useBmiLog };
