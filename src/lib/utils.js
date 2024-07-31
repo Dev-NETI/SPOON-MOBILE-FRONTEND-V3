@@ -67,6 +67,19 @@ const convertToLbs = kg => {
 const passwordRules =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
+const calculateBMI = (heightFt, heightCm, weightKg, weightLbs) => {
+    // Convert height to meters
+    const heightInMeters = heightFt ? heightFt * 0.3048 : heightCm / 100;
+
+    // Convert weight to kilograms
+    const weightInKg = weightLbs ? weightLbs * 0.453592 : weightKg;
+
+    // Calculate BMI
+    const bmi = weightInKg / (heightInMeters * heightInMeters);
+
+    return bmi.toFixed(2);
+};
+
 export {
     cn,
     computeAge,
@@ -75,4 +88,5 @@ export {
     convertToKg,
     convertToLbs,
     passwordRules,
+    calculateBMI,
 };
