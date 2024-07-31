@@ -78,7 +78,7 @@ const Dashboard = () => {
                         <Card>
                             <CardContent className='flex flex-col items-center justify-center'>
                                 <Image
-                                    src={flag}
+                                    src='/assets/app/icons/armeniaflag.png'
                                     alt='flag'
                                     width={100}
                                     height={100}
