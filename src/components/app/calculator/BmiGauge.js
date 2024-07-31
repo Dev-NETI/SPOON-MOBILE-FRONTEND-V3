@@ -2,8 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const BmiGauge = ({ value }) => {
-    let needleX = 0,
-        needleY = 0;
+    let needleX = 10,
+        needleY = 10;
     if (value < 18.5) {
         needleX = 40;
         needleY = 190;
@@ -50,6 +50,8 @@ const BmiGauge = ({ value }) => {
             <motion.line
                 x1='110'
                 y1='110'
+                x2={110}
+                y2={110}
                 animate={{ x2: needleX, y2: needleY }}
                 stroke='black'
                 strokeWidth='3'

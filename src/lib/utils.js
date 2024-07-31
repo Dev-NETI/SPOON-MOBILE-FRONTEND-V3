@@ -80,6 +80,21 @@ const calculateBMI = (heightFt, heightCm, weightKg, weightLbs) => {
     return bmi.toFixed(2);
 };
 
+const computeBloodPressure = (sys, dia) => {
+    if (sys > 180 || dia > 120) {
+        return 'Hypertensive Crisis';
+    } else if (sys >= 140 || dia >= 90) {
+        return 'Hypertension Stage 2';
+    } else if (sys >= 130 || dia >= 80) {
+        return 'Hypertension Stage 1';
+    } else if (sys >= 120 && dia < 80) {
+        return 'Elevated';
+    } else if (sys < 120 && dia < 80) {
+        return 'Normal';
+    }
+    return 'Unknown';
+};
+
 export {
     cn,
     computeAge,
@@ -89,4 +104,5 @@ export {
     convertToLbs,
     passwordRules,
     calculateBMI,
+    computeBloodPressure,
 };
