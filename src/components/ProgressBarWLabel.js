@@ -15,13 +15,11 @@ function ProgressBarWLabel({
             <div className={`${labelClassName} mb-1 text-base font-medium`}>
                 {label}
             </div>
-            <div className='w-full bg-gray-200 rounded-full h-4 mb-4 '>
+            <div className='w-full bg-gray-200 rounded-full h-2.5 mb-4 '>
                 <div
-                    className={`${progressClassName} h-4 rounded-full text-center text-xs items-center text-slate-100`}
-                    style={{ width: `${width}%` }}
-                >
-                    {width !== 0 && progressText}
-                </div>
+                    className={`${progressClassName} h-2.5 rounded-full`}
+                    style={{ width: width }}
+                ></div>
             </div>
         </>
     );
