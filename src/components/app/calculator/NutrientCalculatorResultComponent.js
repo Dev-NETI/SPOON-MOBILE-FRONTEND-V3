@@ -1,88 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ProgressBarWLabel from '@/components/ProgressBarWLabel';
-import { useDietaryReferenceValue } from '@/hooks/api/dietary-reference-value';
-import { counter } from '@/lib/utils';
 
-function NutrientCalculatorResultComponent({ data }) {
-    const { index } = useDietaryReferenceValue();
-    const [driData, setDriData] = useState();
-    const [counterState, setCounterState] = useState({
-        totalCalorie: 0,
-        totalCarbs: 0,
-        totalProtein: 0,
-        totalFat: 0,
-        totalSodium: 0,
-        totalFiber: 0,
-    });
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const { data } = await index();
-            setDriData(data);
-        };
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const totalCalorieCounter = counter(
-            setCounterState,
-            'totalCalorie',
-            data.totalCalories,
-            0.000001
-        );
-        const totalCarbsCounter = counter(
-            setCounterState,
-            'totalCarbs',
-            data.totalCarbs,
-            0.000001
-        );
-        const totalProteinCounter = counter(
-            setCounterState,
-            'totalProtein',
-            data.totalProtein,
-            0.000001
-        );
-        const totalFatCounter = counter(
-            setCounterState,
-            'totalFat',
-            data.totalFat,
-            0.000001
-        );
-        const totalSodiumCounter = counter(
-            setCounterState,
-            'totalSodium',
-            data.totalSodium,
-            0.000001
-        );
-        const totalFiberCounter = counter(
-            setCounterState,
-            'totalFiber',
-            data.totalFiber,
-            0.000001
-        );
-
-        return () => {
-            clearInterval(totalCalorieCounter),
-                clearInterval(totalCarbsCounter),
-                clearInterval(totalProteinCounter),
-                clearInterval(totalFatCounter),
-                clearInterval(totalSodiumCounter),
-                clearInterval(totalFiberCounter);
-        };
-    }, [data]);
-
+function NutrientCalculatorResultComponent() {
     return (
         <div
             className='basis-full md:basis-6/12 lg:basis-6/12 
             border-0 rounded-lg bg-blue-700 shadow-lg
             flex flex-row gap-4 '
         >
-            <div className='basis-6/12 flex flex-col justify-center items-center p-5 '>
-                <p className='text-slate-100 font-bold text-3xl'>
-                    {data.totalCalories > 0
-                        ? counterState.totalCalorie
-                        : data.totalCalories}
-                </p>
+            <div className='basis-6/12 flex flex-col justify-center items-center p-5 text'>
+                <p className='text-slate-100 font-bold text-3xl'>1,750</p>
                 <p className='text-slate-100 font-semibold text-base italic'>
                     Total Calories
                 </p>
@@ -90,64 +17,33 @@ function NutrientCalculatorResultComponent({ data }) {
             <div className='basis-6/12 flex flex-col justify-center py-2 px-4'>
                 <ProgressBarWLabel
                     label='Carbs'
+                    width='30%'
                     labelClassName='text-green-500'
                     progressClassName='bg-green-500'
-                    value={
-                        data.totalCarbs > 0
-                            ? counterState.totalCarbs
-                            : data.totalCarbs
-                    }
-                    appropriateValue={
-                        data.totalCarbs !== 0 ? driData.carbohydrate : 0
-                    }
                 />
                 <ProgressBarWLabel
                     label='Protein'
+                    width='50%'
                     labelClassName='text-orange-500'
                     progressClassName='bg-orange-500'
-                    value={
-                        data.totalProtein > 0
-                            ? counterState.totalProtein
-                            : data.totalProtein
-                    }
-                    appropriateValue={
-                        data.totalProtein !== 0 ? driData.protein : 0
-                    }
                 />
                 <ProgressBarWLabel
                     label='Fat'
+                    width='10%'
                     labelClassName='text-cyan-500'
                     progressClassName='bg-cyan-500'
-                    value={
-                        data.totalFat > 0
-                            ? counterState.totalFat
-                            : data.totalFat
-                    }
-                    appropriateValue={data.totalFat !== 0 ? driData.fat : 0}
                 />
                 <ProgressBarWLabel
                     label='Sodium'
+                    width='5%'
                     labelClassName='text-violet-500'
                     progressClassName='bg-violet-500'
-                    value={
-                        data.totalSodium > 0
-                            ? counterState.totalSodium
-                            : data.totalSodium
-                    }
-                    appropriateValue={
-                        data.totalSodium !== 0 ? driData.sodium : 0
-                    }
                 />
                 <ProgressBarWLabel
                     label='Fiber'
+                    width='5%'
                     labelClassName='text-fuchsia-700'
                     progressClassName='bg-fuchsia-600'
-                    value={
-                        data.totalFiber > 0
-                            ? counterState.totalFiber
-                            : data.totalFiber
-                    }
-                    appropriateValue={data.totalFiber !== 0 ? driData.fiber : 0}
                 />
             </div>
         </div>
