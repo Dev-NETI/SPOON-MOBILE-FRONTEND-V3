@@ -1,17 +1,24 @@
-import Image from 'next/image'
-import logo from '../../../public/images/spoon_logo.png'
+import Image from 'next/image';
+
 const Loading = () => {
     return (
-        <div className="flex min-h-screen w-full items-center justify-center bg-blue-800 ">
+        <div className='flex min-h-screen w-full items-center justify-center bg-blue-800'>
             <Image
-                src={logo}
-                alt="Spoon Logo"
+                src='/images/spoon_logo.png'
+                alt='Spoon Logo'
+                className='animate-pulse animate-infinite'
+                priority
                 width={200}
                 height={200}
-                className="animate-pulse animate-infinite"
+                style={{
+                    width: 'auto',
+                    height: 'auto',
+                    maxWidth: '200px',
+                    maxHeight: '200px',
+                }}
             />
         </div>
-    )
-}
+    );
+};
 
-export default Loading
+export default Loading;
