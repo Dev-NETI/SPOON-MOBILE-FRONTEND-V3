@@ -64,8 +64,7 @@ function Navigation() {
                     value='dashboard'
                     icon={<HomeRoundedIcon />}
                 />
-                <BottomNavigationItem
-                    route='/recipe'
+                <BottomNavigationAction
                     label='Recipe'
                     value='recipe'
                     icon={<LocalDiningRoundedIcon />}
