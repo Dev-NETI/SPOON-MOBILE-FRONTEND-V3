@@ -5,6 +5,7 @@ import Loading from '@/app/(app)/Loading';
 import BottomNavigation from '@/components/app/BottomNavigation';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Toaster } from '@/components/ui/toaster';
 
 const AppLayout = ({ children }) => {
     const { user } = useAuth({ middleware: 'auth' });
@@ -42,6 +43,7 @@ const AppLayout = ({ children }) => {
                 </header>
                 <div className='basis-full'>{children}</div>
                 <BottomNavigation />
+                <Toaster />
             </div>
         </div>
     );
