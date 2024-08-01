@@ -1,14 +1,14 @@
 import React from 'react';
 import CardListItemComponent from './CardListItemComponent';
 
-function BmiHistoryListItem({ data }) {
+function BloodPressureHistoryListItem({ data }) {
     return (
         <CardListItemComponent
-            title={data.bmi}
-            name={data.bmi_category?.name}
+            title={data.bpCategory}
+            name={`${data.systolic} / ${data.diastolic}`}
             created_at={data.created_at}
         />
     );
 }
 
-export default BmiHistoryListItem;
+export default BloodPressureHistoryListItem;
