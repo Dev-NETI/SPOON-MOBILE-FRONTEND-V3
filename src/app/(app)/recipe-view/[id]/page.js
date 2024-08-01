@@ -9,9 +9,100 @@ import icon2 from '../../../../../public/images/spoon.png';
 import icon3 from '../../../../../public/images/group.png';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
+import {
+    Chip,
+    Grid,
+    Icon,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import { green } from '@mui/material/colors';
+
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role='tabpanel'
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
+    );
+}
+
+CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
+const howToCookCurry = {
+    title: 'How to cook curry',
+    ingredients: [
+        '2 onions',
+        '3 cloves of garlic',
+        '2 tbsp curry paste',
+        '400ml coconut milk',
+        '500g chicken',
+        '200ml water',
+    ],
+    instructions: [
+        'Slice the onions and garlic and sauté them in a pan with a little oil until they are soft.',
+        'Add the curry paste and cook for a few minutes until fragrant.',
+        'Add the coconut milk and bring to the boil.',
+        'Add the chicken and cook until it is cooked through.',
+        'Add the water and bring to the boil again.',
+        'Reduce the heat and let it simmer for about 30 minutes or until the curry is nice and thick.',
+    ],
+};
+
+function generateIngredients() {
+    return howToCookCurry.ingredients.map((instruction, index) => (
+        <ListItem key={index}>
+            <ListItemIcon>
+                <CheckRoundedIcon sx={{ color: green[500] }} />
+            </ListItemIcon>
+            <ListItemText primary={instruction} sx={{ textAlign: 'justify' }} />
+        </ListItem>
+    ));
+}
+
+function generateInstructions() {
+    return howToCookCurry.instructions.map((instruction, index) => (
+        <ListItem key={index}>
+            <ListItemText
+                primary={`${index + 1}. ${instruction}`}
+                sx={{ textAlign: 'justify' }}
+            />
+        </ListItem>
+    ));
+}
 
 function page() {
     const [value, setValue] = React.useState(2);
+    const [tab, setTab] = React.useState(0);
+    const handleChange = (event, newTab) => {
+        setTab(newTab);
+    };
+
     return (
         <div className='flex flex-col p-2 sm:p-3 md:p-8'>
             <div className='grid'>
@@ -76,6 +167,58 @@ function page() {
                             </Card>
                         ))}
                     </div>
+                    <h1 className='text-3xl font-semibold text-gray-600 text-left'>
+                        Best served
+                    </h1>
+                    <div className='grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-2 mt-1'>
+                        {[
+                            { label: 'Pork' },
+                            { label: 'Heavy Labor' },
+                            { label: 'Hot Weather' },
+                        ].map((item, index) => (
+                            <Chip label={item.label} />
+                        ))}
+                    </div>
+                </div>
+                <div className='grid grid-cols-1 gap-2 mt-1'>
+                    <Box sx={{ width: '100%' }}>
+                        <Box
+                            sx={{
+                                borderBottom: 1,
+                                pt: 1,
+                                borderColor: 'divider',
+                            }}
+                        >
+                            <Tabs
+                                value={tab}
+                                onChange={handleChange}
+                                variant='scrollable'
+                                scrollButtons
+                                allowScrollButtonsMobile
+                                centered
+                                aria-label='scrollable force tabs example'
+                            >
+                                <Tab label='Ingredients' {...a11yProps(0)} />
+                                <Tab label='Instructions' {...a11yProps(1)} />
+                                <Tab label='Nutrition' {...a11yProps(2)} />
+                            </Tabs>
+                        </Box>
+                        <CustomTabPanel value={tab} index={0}>
+                            <Grid container>
+                                <Grid item xs={12} md={12}>
+                                    <List>{generateIngredients()}</List>
+                                </Grid>
+                            </Grid>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={tab} index={1}>
+                            <Grid item xs={12} md={12}>
+                                <List>{generateInstructions()}</List>
+                            </Grid>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={tab} index={2}>
+                            Item Three
+                        </CustomTabPanel>
+                    </Box>
                 </div>
             </div>
         </div>
