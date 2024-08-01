@@ -20,7 +20,7 @@ const Profile = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4'>
                 <Card>
                     <a href='/recipe-view/1'>
-                        <div className='relative h-48 w-full'>
+                        <div className='relative h-48 w-full '>
                             <Image
                                 src={food1}
                                 alt='flag'
