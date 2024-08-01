@@ -64,13 +64,13 @@ function Navigation() {
                     value='dashboard'
                     icon={<HomeRoundedIcon />}
                 />
-                <BottomNavigationAction
+                <BottomNavigationItem
+                    route='/recipe'
                     label='Recipe'
                     value='recipe'
                     icon={<LocalDiningRoundedIcon />}
                 />
-                <BottomNavigationItem
-                    route='/calculator'
+                <BottomNavigationAction
                     label='Calculator'
                     value='calculator'
                     icon={<CalculateRoundedIcon />}
