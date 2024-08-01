@@ -69,8 +69,7 @@ function Navigation() {
                     value='recipe'
                     icon={<LocalDiningRoundedIcon />}
                 />
-                <BottomNavigationItem
-                    route='/calculator'
+                <BottomNavigationAction
                     label='Calculator'
                     value='calculator'
                     icon={<CalculateRoundedIcon />}
