@@ -1,6 +1,7 @@
 'use client';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
+import flag from '/public/assets/app/icons/armeniaflag.png';
 
 const Dashboard = () => {
     return (

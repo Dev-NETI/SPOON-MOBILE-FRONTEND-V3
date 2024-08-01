@@ -1,37 +1,52 @@
-import React from 'react'
-import FavoriteCardComponent from '@/components/app/favorite/FavoriteCardComponent'
+import React from 'react';
+import FavoriteCardComponent from '@/components/app/favorite/FavoriteCardComponent';
+import img from '/public/assets/app/recipes/WINGKO.JPG';
 
 function FavoriteRecipe() {
     return (
-        <div className="flex flex-col gap-4">
-            <div className="flex justify-center">
-                <p className="font-bold text-stone-800 text-xl">Favorite</p>
+        <div className='gap-4 animate-fade-up animate-once animate-duration-1000'>
+            <div className='flex justify-center mt-4 shadow-sm h-10 '>
+                <p className='font-bold text-stone-800 text-xl'>Favorites</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 p-4">
+            <div className='grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 px-5 mt-3'>
                 <FavoriteCardComponent
-                    recipe="Adobo"
-                    src="/assets/app/recipe/adobo.jpg"
-                    alt="food image"
+                    recipe='Adobo'
+                    src={img}
+                    alt='food image'
                 />
                 <FavoriteCardComponent
-                    recipe="Spaghetti"
-                    src="/assets/app/recipe/spaghetti.jpg"
-                    alt="food image"
+                    recipe='Spaghetti'
+                    src={img}
+                    alt='food image'
                 />
                 <FavoriteCardComponent
-                    recipe="Tinola"
-                    src="/assets/app/recipe/tinola.jpg"
-                    alt="food image"
+                    recipe='Tinola'
+                    src={img}
+                    alt='food image'
                 />
                 <FavoriteCardComponent
-                    recipe="Ginisang Munggo"
-                    src="/assets/app/recipe/munggo.jpg"
-                    alt="food image"
+                    recipe='Ginisang Munggo'
+                    src={img}
+                    alt='food image'
                 />
+
+                <FavoriteCardComponent
+                    recipe='Ginisang Munggo'
+                    src={img}
+                    alt='food image'
+                />
+
+                <FavoriteCardComponent
+                    recipe='Ginisang Munggo'
+                    src={img}
+                    alt='food image'
+                />
+
+                <FavoriteCardComponent />
             </div>
         </div>
-    )
+    );
 }
 
-export default FavoriteRecipe
+export default FavoriteRecipe;

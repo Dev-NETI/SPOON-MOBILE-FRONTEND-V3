@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/auth';
 import Loading from '@/app/(app)/Loading';
 import BottomNavigation from '@/components/app/BottomNavigation';
 import Image from 'next/image';
+import logo from '/public/images/spoon_logo.png';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import icon from '/public/assets/app/icons/plate.png';
 
 function layout({ children }) {
     return (
