@@ -22,7 +22,7 @@ function BottomNavigation() {
                     icon='M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM21.707 21.707a1 1 0 0 1-1.414 0l-3.5-3.5a1 1 0 0 1 1.414-1.414l3.5 3.5a1 1 0 0 1 0 1.414Z'
                 />
                 <BottomNavigationItem
-                    route='/calculator'
+                    route='/calculator/nutrient-calculator'
                     label='Calculator'
                     active={activeLink === 'Calculator'}
                     onClick={() => setActiveLink('Calculator')}

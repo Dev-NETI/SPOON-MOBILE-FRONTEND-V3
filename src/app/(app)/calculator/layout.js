@@ -5,7 +5,7 @@ function layout({ children }) {
     return (
         <div
             className='flex flex-col bg-gray-100
-        md:p-5 lg:p-5 '
+        md:p-5 lg:p-5 mb-14'
         >
             <Disclaimer />
             {children}
