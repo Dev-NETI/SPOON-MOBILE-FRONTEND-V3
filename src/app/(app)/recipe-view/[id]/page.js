@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -6,14 +7,29 @@ import { Card, CardContent } from '@/components/ui/card';
 import icon1 from '../../../../../public/images/cooking.png';
 import icon2 from '../../../../../public/images/spoon.png';
 import icon3 from '../../../../../public/images/group.png';
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
 
 function page() {
+    const [value, setValue] = React.useState(2);
     return (
-        <div className='flex flex-col p-4 sm:p-6 md:p-8'>
-            <div className='grid gap-6'>
-                <h1 className='text-3xl font-semibold text-gray-900 text-left mb-4'>
+        <div className='flex flex-col p-2 sm:p-3 md:p-8'>
+            <div className='grid'>
+                <h1 className='text-3xl font-semibold text-gray-900 text-left'>
                     Chicken Curry with Onion Garlic
                 </h1>
+                <div className='flex items-center space-x-2'>
+                    <Box sx={{ '& > legend': { mt: 2 } }}>
+                        <Rating
+                            name='simple-controlled'
+                            value={value}
+                            onChange={(event, newValue) => {
+                                setValue(newValue);
+                            }}
+                        />
+                    </Box>
+                    <p className='font-light mb-1'>{value}/5(163)</p>
+                </div>
 
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     <Image
