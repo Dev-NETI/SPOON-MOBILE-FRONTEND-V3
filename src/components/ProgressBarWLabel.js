@@ -1,6 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { calculatePercentage } from '@/lib/utils';
 
 function ProgressBarWLabel({
     label,
@@ -8,23 +6,16 @@ function ProgressBarWLabel({
     labelClassName,
     progressClassName,
 }) {
-    const width = calculatePercentage(value, appropriateValue);
-    const progressText = `${value.toFixed(2)} g / ${appropriateValue} g`;
-
     return (
         <>
-            <div className={`${labelClassName} mb-1 text-xs font-semibold`}>
-                {label} - {progressText}
+            <div className={`${labelClassName} mb-1 text-base font-medium`}>
+                {label}
             </div>
-            <div className='w-full bg-gray-200 rounded-full h-4 mb-4'>
-                <motion.div
-                    className={`${progressClassName} h-4 rounded-full text-center text-xs items-center text-stone-900`}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${width}%` }}
-                    transition={{ duration: 0.5 }}
-                >
-                    {width}%
-                </motion.div>
+            <div className='w-full bg-gray-200 rounded-full h-2.5 mb-4 '>
+                <div
+                    className={`${progressClassName} h-2.5 rounded-full`}
+                    style={{ width: width }}
+                ></div>
             </div>
         </>
     );
