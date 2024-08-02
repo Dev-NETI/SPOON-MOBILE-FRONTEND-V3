@@ -24,7 +24,7 @@ function Navigation() {
                 router.push('/recipe');
                 break;
             case 'calculator':
-                router.push('/calculator');
+                router.push('/calculator/nutrient-calculator');
                 break;
             case 'favorite':
                 router.push('/dashboard');
@@ -72,7 +72,6 @@ function Navigation() {
                     icon={<LocalDiningRoundedIcon />}
                 />
                 <BottomNavigationAction
-                    route='/calculator/nutrient-calculator'
                     label='Calculator'
                     value='calculator'
                     icon={<CalculateRoundedIcon />}
