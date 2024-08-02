@@ -30,6 +30,7 @@ function Calculator() {
                     <CardListItem
                         title='Nutrient Calculator'
                         className='col-start-3 col-span-2'
+                        href='/calculator/nutrient-calculator'
                     />
                 </CardContent>
             </Card>
