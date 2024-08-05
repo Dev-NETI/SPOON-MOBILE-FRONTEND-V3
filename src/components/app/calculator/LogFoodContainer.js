@@ -11,6 +11,7 @@ function LogFoodContainer() {
                 title='Breakfast'
                 cardClassName='bg-green-500'
                 consumedCalories='400'
+                mealId={1}
             >
                 test 1
             </LogFoodCardComponent>
@@ -18,6 +19,7 @@ function LogFoodContainer() {
                 title='Lunch'
                 cardClassName='bg-orange-500'
                 consumedCalories='550'
+                mealId={2}
             >
                 test 2
             </LogFoodCardComponent>
@@ -25,6 +27,7 @@ function LogFoodContainer() {
                 title='Snacks'
                 cardClassName='bg-sky-600'
                 consumedCalories='250'
+                mealId={4}
             >
                 test 3
             </LogFoodCardComponent>
@@ -32,6 +35,7 @@ function LogFoodContainer() {
                 title='Dinner'
                 cardClassName='bg-indigo-700'
                 consumedCalories='250'
+                mealId={3}
             >
                 test 4
             </LogFoodCardComponent>
