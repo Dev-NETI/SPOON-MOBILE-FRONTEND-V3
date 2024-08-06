@@ -104,6 +104,14 @@ const getCurrentDate = () => {
     return `${year}-${month}-${day}`;
 };
 
+function calculatePercentage(value1, value2) {
+    if (value2 === 0) {
+        return 0; // Avoid division by zero
+    }
+    const percentage = (value1 / value2) * 100;
+    return Math.min(percentage, 100).toFixed(2); // Ensure it doesn't exceed 100% and format to two decimal places
+}
+
 export {
     cn,
     computeAge,
@@ -115,4 +123,5 @@ export {
     calculateBMI,
     computeBloodPressure,
     getCurrentDate,
+    calculatePercentage,
 };

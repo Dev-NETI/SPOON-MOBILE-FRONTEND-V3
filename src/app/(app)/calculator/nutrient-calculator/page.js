@@ -5,12 +5,12 @@ import LogFoodContainer from '@/components/app/calculator/LogFoodContainer';
 
 function page() {
     const [foodData, setFoodData] = useState({
-        totalCalories: null,
-        totalCarbs: null,
-        totalProtein: null,
-        totalFat: null,
-        totalSodium: null,
-        totalFiber: null,
+        totalCalories: 0,
+        totalCarbs: 0,
+        totalProtein: 0,
+        totalFat: 0,
+        totalSodium: 0,
+        totalFiber: 0,
     });
     return (
         <div
