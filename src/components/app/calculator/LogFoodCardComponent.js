@@ -8,14 +8,14 @@ function LogFoodCardComponent({
     title,
     cardClassName,
     consumedCalories,
-    children,
+    data,
     mealId,
 }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <>
-            <motion.Card
+            <motion.div
                 className={`${cardClassName} p-4 rounded-xl shadow-lg flex flex-col gap-2`}
                 onClick={() => setIsOpen(!isOpen)}
                 whileHover={{ backgroundColor: '#f3f4f6' }}
@@ -43,7 +43,27 @@ function LogFoodCardComponent({
                     transition={{ duration: 0.5 }}
                     className='overflow-hidden rounded-xl shadow-lg'
                 >
-                    <div className='p-4 bg-white'>{children}</div>
+                    <div className='p-4 bg-white'>
+                        {data &&
+                            data.map(item => (
+                                <div
+                                    key={item.id}
+                                    className='flex flex-row justify-between items-center gap-4 mt-2'
+                                >
+                                    <div className='flex flex-col'>
+                                        <h1 className='text-stone-800 text-sm font-semibold'>
+                                            {item.recipe?.name}
+                                        </h1>
+                                        <p className='text-stone-700 text-xs italic'>
+                                            {item.number_of_serving} serving/s
+                                        </p>
+                                    </div>
+                                    <h1 className='text-stone-800 text-xs '>
+                                        {item.recipe?.calories}
+                                    </h1>
+                                </div>
+                            ))}
+                    </div>
                 </motion.div>
                 <div className='flex justify-end'>
                     <Link
@@ -53,7 +73,7 @@ function LogFoodCardComponent({
                         Add Food
                     </Link>
                 </div>
-            </motion.Card>
+            </motion.div>
         </>
     );
 }
