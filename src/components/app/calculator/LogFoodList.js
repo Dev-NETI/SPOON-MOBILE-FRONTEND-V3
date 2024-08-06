@@ -1,15 +1,21 @@
 import React from 'react';
 import LogFoodListItem from './LogFoodListItem';
+import { NutrientCalculatorContext } from '@/stores/NutrientCalculatorContext';
+import { useContext } from 'react';
 
-function LogFoodList({ data, currentPage, itemsPerPage }) {
+function LogFoodList() {
+    const { currentPage, itemsPerPage, searchValue, filteredData, recipeData } =
+        useContext(NutrientCalculatorContext);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentItems = data.slice(startIndex, endIndex);
+    const currentItems = searchValue
+        ? filteredData
+        : recipeData.slice(startIndex, endIndex);
 
     return (
         <>
             {currentItems.map(data => (
-                <LogFoodListItem key={data.id} title={data.name} />
+                <LogFoodListItem key={data.id} data={data} />
             ))}
         </>
     );

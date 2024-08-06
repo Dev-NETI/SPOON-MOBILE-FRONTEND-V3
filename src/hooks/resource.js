@@ -22,8 +22,11 @@ const useResource = ({ baseURL, route }) => {
      */
     const show = id => axios.get(`${route}/${id}`);
 
-    const fetchDataWith2Params = (param1, param2) =>
+    const showWith2Parameter = (param1, param2) =>
         axios.get(`${route}/${param1}/${param2}`);
+
+    const showWith3Parameter = (param1, param2, param3) =>
+        axios.get(`${route}/${param1}/${param2}/${param3}`);
 
     /**
      * Store a new record in the resource.
@@ -55,11 +58,12 @@ const useResource = ({ baseURL, route }) => {
     return {
         index,
         show,
-        fetchDataWith2Params,
+        showWith2Parameter,
         store,
         update,
         destroy,
         patch,
+        showWith3Parameter,
     };
 };
 
