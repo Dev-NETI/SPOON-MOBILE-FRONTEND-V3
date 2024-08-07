@@ -8,7 +8,7 @@ function layout({ children }) {
             <div className='flex flex-row md:flex-row md:grow items-center pb-3 bg-blue-300 relative'>
                 <div className='order-1 md:hidden z-40'>
                     <Image
-                        src='/images/spoon_icon.png'
+                        src={icon}
                         width={300}
                         height={300}
                         className='mt-4 shadow-sm animate-spin-slow'
