@@ -69,7 +69,7 @@ function NutrientCalculatorResultComponent({ data }) {
                 clearInterval(totalSodiumCounter),
                 clearInterval(totalFiberCounter);
         };
-    }, [data.totalCalories]);
+    }, [data]);
 
     return (
         <div
@@ -79,7 +79,9 @@ function NutrientCalculatorResultComponent({ data }) {
         >
             <div className='basis-6/12 flex flex-col justify-center items-center p-5 '>
                 <p className='text-slate-100 font-bold text-3xl'>
-                    {counterState.totalCalorie}
+                    {data.totalCalories > 0
+                        ? counterState.totalCalorie
+                        : data.totalCalories}
                 </p>
                 <p className='text-slate-100 font-semibold text-base italic'>
                     Total Calories
@@ -90,7 +92,11 @@ function NutrientCalculatorResultComponent({ data }) {
                     label='Carbs'
                     labelClassName='text-green-500'
                     progressClassName='bg-green-500'
-                    value={counterState.totalCarbs}
+                    value={
+                        data.totalCarbs > 0
+                            ? counterState.totalCarbs
+                            : data.totalCarbs
+                    }
                     appropriateValue={
                         data.totalCarbs !== 0 ? driData.carbohydrate : 0
                     }
@@ -99,7 +105,11 @@ function NutrientCalculatorResultComponent({ data }) {
                     label='Protein'
                     labelClassName='text-orange-500'
                     progressClassName='bg-orange-500'
-                    value={counterState.totalProtein}
+                    value={
+                        data.totalProtein > 0
+                            ? counterState.totalProtein
+                            : data.totalProtein
+                    }
                     appropriateValue={
                         data.totalProtein !== 0 ? driData.protein : 0
                     }
@@ -108,14 +118,22 @@ function NutrientCalculatorResultComponent({ data }) {
                     label='Fat'
                     labelClassName='text-cyan-500'
                     progressClassName='bg-cyan-500'
-                    value={counterState.totalFat}
+                    value={
+                        data.totalFat > 0
+                            ? counterState.totalFat
+                            : data.totalFat
+                    }
                     appropriateValue={data.totalFat !== 0 ? driData.fat : 0}
                 />
                 <ProgressBarWLabel
                     label='Sodium'
                     labelClassName='text-violet-500'
                     progressClassName='bg-violet-500'
-                    value={counterState.totalSodium}
+                    value={
+                        data.totalSodium > 0
+                            ? counterState.totalSodium
+                            : data.totalSodium
+                    }
                     appropriateValue={
                         data.totalSodium !== 0 ? driData.sodium : 0
                     }
@@ -124,7 +142,11 @@ function NutrientCalculatorResultComponent({ data }) {
                     label='Fiber'
                     labelClassName='text-fuchsia-700'
                     progressClassName='bg-fuchsia-600'
-                    value={counterState.totalFiber}
+                    value={
+                        data.totalFiber > 0
+                            ? counterState.totalFiber
+                            : data.totalFiber
+                    }
                     appropriateValue={data.totalFiber !== 0 ? driData.fiber : 0}
                 />
             </div>
