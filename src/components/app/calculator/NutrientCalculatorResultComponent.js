@@ -20,9 +20,9 @@ function NutrientCalculatorResultComponent({ data }) {
             border-0 rounded-lg bg-blue-700 shadow-lg
             flex flex-row gap-4 '
         >
-            <div className='basis-6/12 flex flex-col justify-center items-center p-5 text'>
+            <div className='basis-6/12 flex flex-col justify-center items-center p-5 '>
                 <p className='text-slate-100 font-bold text-3xl'>
-                    {data.totalCalories}
+                    {data.totalCalories.toFixed(2)}
                 </p>
                 <p className='text-slate-100 font-semibold text-base italic'>
                     Total Calories
