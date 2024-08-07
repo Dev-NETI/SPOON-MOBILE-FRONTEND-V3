@@ -7,13 +7,19 @@ function BloodPressureResultView({ bloodPressureCategory }) {
         <div
             className='basis-full md:basis-6/12 lg:basis-6/12 
             border-0 rounded-lg bg-gray-50 shadow-lg
-            flex flex-col gap-4 p-4 '
+            flex flex-col gap-4 p-2 '
         >
-            <div className='flex justify-center items-center'>
-                <h1 className='font-bold text-2xl text-stone-800'>
-                    {bloodPressureCategory}
-                </h1>
+            <div className='flex justify-end items-center'>
+                <BloodPressureHistoryModal />
             </div>
+            {bloodPressureCategory && (
+                <div className='flex justify-center items-center'>
+                    <h1 className='font-bold text-2xl text-stone-800'>
+                        {bloodPressureCategory}
+                    </h1>
+                </div>
+            )}
+
             <div className='flex justify-center items-center'>
                 <HeartAnimation
                     key={bloodPressureCategory}

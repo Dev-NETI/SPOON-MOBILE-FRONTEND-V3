@@ -5,7 +5,7 @@ import BloodPressureTrackerForm from '@/components/app/calculator/BloodPressureT
 import BloodPressureResultView from '@/components/app/calculator/BloodPressureResultView';
 
 function BloodPressureTracker() {
-    const [bloodPressureCategory, setBloodPressureCategory] = useState('');
+    const [bloodPressureCategory, setBloodPressureCategory] = useState(null);
 
     return (
         <BloodPressureContext.Provider
