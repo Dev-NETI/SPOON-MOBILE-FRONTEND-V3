@@ -43,7 +43,7 @@ function BmiHistoryModal() {
                 <DialogHeader>
                     <DialogTitle>BMI History</DialogTitle>
                 </DialogHeader>
-                <DialogDescription>
+                <div>
                     <BmiHistoryList
                         bmiLogData={bmiLogData}
                         currentPage={currentPage}
@@ -67,7 +67,8 @@ function BmiHistoryModal() {
                             Next
                         </button>
                     </div>
-                </DialogDescription>
+                </div>
+                <DialogDescription></DialogDescription>
             </DialogContent>
         </Dialog>
     );
