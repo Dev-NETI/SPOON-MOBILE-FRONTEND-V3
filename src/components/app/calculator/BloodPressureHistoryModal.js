@@ -27,8 +27,6 @@ function BloodPressureHistoryModal() {
         fetchBPData();
     }, []);
 
-    bpData && console.log(bpData);
-
     const handlePageChange = newPage => {
         setCurrentPage(newPage);
     };
@@ -46,7 +44,7 @@ function BloodPressureHistoryModal() {
                 <DialogHeader>
                     <DialogTitle>List</DialogTitle>
                 </DialogHeader>
-                <DialogDescription>
+                <div>
                     <BloodPressureHistoryList
                         bpData={bpData}
                         currentPage={currentPage}
@@ -70,7 +68,8 @@ function BloodPressureHistoryModal() {
                             Next
                         </button>
                     </div>
-                </DialogDescription>
+                </div>
+                <DialogDescription></DialogDescription>
             </DialogContent>
         </Dialog>
     );
