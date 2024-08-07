@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import LogFoodCardComponent from './LogFoodCardComponent';
 import { useMealLogItem } from '@/hooks/api/meal-log-item';
 import { useAuth } from '@/hooks/auth';
-import { getCurrentDate } from '@/lib/utils';
 
-function LogFoodContainer({ setParentState }) {
+function LogFoodContainer({ setParentState, currentDate }) {
     const { showWith2Parameter: showMealLog } = useMealLogItem();
     const { user } = useAuth({ middleware: 'auth' });
-    const currentDate = getCurrentDate();
     const [foodLogData, setFoodLogData] = useState({
         allData: [],
         breakfastData: [],
@@ -23,7 +21,7 @@ function LogFoodContainer({ setParentState }) {
         };
 
         fetchData();
-    }, []);
+    }, [currentDate]);
 
     useEffect(() => {
         if (foodLogData.allData) {
