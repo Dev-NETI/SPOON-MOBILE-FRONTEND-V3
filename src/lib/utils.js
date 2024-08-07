@@ -112,6 +112,25 @@ function calculatePercentage(value1, value2) {
     return Math.min(percentage, 100).toFixed(2); // Ensure it doesn't exceed 100% and format to two decimal places
 }
 
+const counter = (setState, propName, targetValue, intervalDuration) => {
+    const intervalId = setInterval(() => {
+        setState(prevState => {
+            const currentValue = prevState[propName];
+            if (currentValue < targetValue) {
+                return {
+                    ...prevState,
+                    [propName]: currentValue + 1,
+                };
+            } else {
+                clearInterval(intervalId);
+                return prevState;
+            }
+        });
+    }, intervalDuration);
+
+    return intervalId;
+};
+
 export {
     cn,
     computeAge,
@@ -124,4 +143,5 @@ export {
     computeBloodPressure,
     getCurrentDate,
     calculatePercentage,
+    counter,
 };

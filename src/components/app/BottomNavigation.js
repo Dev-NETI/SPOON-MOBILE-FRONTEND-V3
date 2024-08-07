@@ -24,7 +24,7 @@ function Navigation() {
                 router.push('/recipe');
                 break;
             case 'calculator':
-                router.push('/calculator/nutrient-calculator');
+                router.push('/calculator');
                 break;
             case 'favorite':
                 router.push('/dashboard');

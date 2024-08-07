@@ -1,4 +1,4 @@
-mport React, { useState } from 'react';
+import React, { useState } from 'react';
 import InputGroupV2 from '@/components/InputGroupV2';
 import Button from '@/components/Button';
 import * as Yup from 'yup';
