@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import food1 from '../../../../public/assets/app/recipes/01 BANH MI.jpg';
 import food2 from '../../../../public/assets/app/recipes/TOSHIKOSHI SOBA (NEW YEAR_S EVE NOODLES).jpg';
 import Image from 'next/image';
+import { Box } from '@mui/material';
 
 const Profile = () => {
     return (
@@ -18,7 +19,7 @@ const Profile = () => {
                 </div>
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4'>
-                <Card>
+                <Box className='animate-fade-up animate-once animate-duration-1000'>
                     <a href='/recipe-view/1'>
                         <div className='relative h-48 w-full '>
                             <Image
@@ -34,8 +35,8 @@ const Profile = () => {
                             </div>
                         </div>
                     </a>
-                </Card>
-                <Card>
+                </Box>
+                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-100'>
                     <a href='/recipe-view/1'>
                         <div className='relative h-48 w-full'>
                             <Image
@@ -51,8 +52,8 @@ const Profile = () => {
                             </div>
                         </div>
                     </a>
-                </Card>
-                <Card>
+                </Box>
+                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-200'>
                     <div className='relative h-48 w-full'>
                         <Image
                             src={food1}
@@ -64,8 +65,8 @@ const Profile = () => {
                             <p className='text-white text-center'>Category</p>
                         </div>
                     </div>
-                </Card>
-                <Card>
+                </Box>
+                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-300'>
                     <div className='relative h-48 w-full'>
                         <Image
                             src={food1}
@@ -77,8 +78,8 @@ const Profile = () => {
                             <p className='text-white text-center'>Category</p>
                         </div>
                     </div>
-                </Card>
-                <Card>
+                </Box>
+                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-400'>
                     <div className='relative h-48 w-full'>
                         <Image
                             src={food2}
@@ -90,8 +91,8 @@ const Profile = () => {
                             <p className='text-white text-center'>Category</p>
                         </div>
                     </div>
-                </Card>
-                <Card>
+                </Box>
+                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-500'>
                     <div className='relative h-48 w-full'>
                         <Image
                             src={food1}
@@ -103,7 +104,7 @@ const Profile = () => {
                             <p className='text-white text-center'>Category</p>
                         </div>
                     </div>
-                </Card>
+                </Box>
             </div>
         </>
     );

@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 import food1 from '../../../../../public/assets/app/recipes/01 BANH MI.jpg';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,21 +8,13 @@ import icon2 from '../../../../../public/images/spoon.png';
 import icon3 from '../../../../../public/images/group.png';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import {
-    Chip,
-    Grid,
-    Icon,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-} from '@mui/material';
+import { Chip, Grid, List } from '@mui/material';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { green } from '@mui/material/colors';
+import IngridientsTab from './IngridientsTab';
+import InstructionTab from './InstructionTab';
+import NutritionTab from './NutritionTab';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -73,28 +64,6 @@ const howToCookCurry = {
         'Reduce the heat and let it simmer for about 30 minutes or until the curry is nice and thick.',
     ],
 };
-
-function generateIngredients() {
-    return howToCookCurry.ingredients.map((instruction, index) => (
-        <ListItem key={index}>
-            <ListItemIcon>
-                <CheckRoundedIcon sx={{ color: green[500] }} />
-            </ListItemIcon>
-            <ListItemText primary={instruction} sx={{ textAlign: 'justify' }} />
-        </ListItem>
-    ));
-}
-
-function generateInstructions() {
-    return howToCookCurry.instructions.map((instruction, index) => (
-        <ListItem key={index}>
-            <ListItemText
-                primary={`${index + 1}. ${instruction}`}
-                sx={{ textAlign: 'justify' }}
-            />
-        </ListItem>
-    ));
-}
 
 function page() {
     const [value, setValue] = React.useState(2);
@@ -206,17 +175,21 @@ function page() {
                         <CustomTabPanel value={tab} index={0}>
                             <Grid container>
                                 <Grid item xs={12} md={12}>
-                                    <List>{generateIngredients()}</List>
+                                    <List>
+                                        <IngridientsTab Item={howToCookCurry} />
+                                    </List>
                                 </Grid>
                             </Grid>
                         </CustomTabPanel>
                         <CustomTabPanel value={tab} index={1}>
                             <Grid item xs={12} md={12}>
-                                <List>{generateInstructions()}</List>
+                                <List>
+                                    <InstructionTab Item={howToCookCurry} />
+                                </List>
                             </Grid>
                         </CustomTabPanel>
                         <CustomTabPanel value={tab} index={2}>
-                            Item Three
+                            <NutritionTab />
                         </CustomTabPanel>
                     </Box>
                 </div>
