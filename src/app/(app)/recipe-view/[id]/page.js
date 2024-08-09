@@ -8,9 +8,70 @@ import icon2 from '../../../../../public/images/spoon.png';
 import icon3 from '../../../../../public/images/group.png';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
+import { Chip, Grid, List } from '@mui/material';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import IngridientsTab from './IngridientsTab';
+import InstructionTab from './InstructionTab';
+import NutritionTab from './NutritionTab';
+
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role='tabpanel'
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
+    );
+}
+
+CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
+const howToCookCurry = {
+    title: 'How to cook curry',
+    ingredients: [
+        '2 onions',
+        '3 cloves of garlic',
+        '2 tbsp curry paste',
+        '400ml coconut milk',
+        '500g chicken',
+        '200ml water',
+    ],
+    instructions: [
+        'Slice the onions and garlic and sauté them in a pan with a little oil until they are soft.',
+        'Add the curry paste and cook for a few minutes until fragrant.',
+        'Add the coconut milk and bring to the boil.',
+        'Add the chicken and cook until it is cooked through.',
+        'Add the water and bring to the boil again.',
+        'Reduce the heat and let it simmer for about 30 minutes or until the curry is nice and thick.',
+    ],
+};
 
 function page() {
     const [value, setValue] = React.useState(2);
+    const [tab, setTab] = React.useState(0);
+    const handleChange = (event, newTab) => {
+        setTab(newTab);
+    };
+
     return (
         <div className='flex flex-col p-2 sm:p-3 md:p-8'>
             <div className='grid'>
