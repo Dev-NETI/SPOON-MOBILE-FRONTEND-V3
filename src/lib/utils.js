@@ -162,6 +162,32 @@ function formatDate(dateString, format) {
     return formatMap[format]();
 }
 
+function calculateTDEE(age, gender, heightCm, weightKg, activityLevel) {
+    // Mifflin-St Jeor Equation for BMR
+    let BMR;
+    if (gender === 1) {
+        BMR = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+    } else {
+        BMR = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+    }
+
+    // TDEE Calculation
+    const TDEE = BMR * activityLevel;
+
+    // Goals multipliers (values can be adjusted according to specific needs)
+    const goals = {
+        maintainWeight: TDEE,
+        mildWeightLoss: TDEE - 250,
+        weightLoss: TDEE - 500,
+        aggressiveWeightLoss: TDEE - 750,
+        mildWeightGain: TDEE + 250,
+        weightGain: TDEE + 500,
+        aggressiveWeightGain: TDEE + 750,
+    };
+
+    return goals;
+}
+
 export {
     cn,
     computeAge,
@@ -176,4 +202,5 @@ export {
     calculatePercentage,
     counter,
     formatDate,
+    calculateTDEE,
 };
