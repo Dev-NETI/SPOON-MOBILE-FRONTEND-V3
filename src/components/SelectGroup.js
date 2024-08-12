@@ -1,9 +1,11 @@
 import React from 'react';
 import ErrorBadge from './ErrorBadge';
 
-function InputGroup({
+function SelectGroup({
+    data = null,
     editMode = false,
     title,
+    initialValueId,
     initialValue,
     className,
     error = null,
@@ -19,11 +21,23 @@ function InputGroup({
                 <p className=' text-lg text-slate-800'>{initialValue}</p>
             )}
             {editMode && (
-                <input
-                    value={initialValue}
+                <select
                     className={`${inputErrorStyle} w-32 bg-gray-200 text-lg `}
                     {...props}
-                />
+                >
+                    {data ? (
+                        <>
+                            <option value=''>Select</option>
+                            {data.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </>
+                    ) : (
+                        <option value=''>Select</option>
+                    )}
+                </select>
             )}
             {error && (
                 <>
@@ -35,4 +49,4 @@ function InputGroup({
     );
 }
 
-export default InputGroup;
+export default SelectGroup;

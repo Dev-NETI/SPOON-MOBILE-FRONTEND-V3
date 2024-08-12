@@ -5,6 +5,7 @@ import BmiResultComponent from '@/components/app/calculator/BmiResultComponent';
 
 function Bmi() {
     const [bmi, setBmi] = useState();
+    const [loading, setLoading] = useState(true);
 
     return (
         <div
