@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import ProgressBarWLabel from '@/components/ProgressBarWLabel';
 import { useDietaryReferenceValue } from '@/hooks/api/dietary-reference-value';
 import { counter } from '@/lib/utils';
+import { useAuth } from '@/hooks/auth';
 
 function NutrientCalculatorResultComponent({ data }) {
     const { index } = useDietaryReferenceValue();
     const [driData, setDriData] = useState();
+    const { user } = useAuth({ middleware: 'auth' });
     const [counterState, setCounterState] = useState({
         totalCalorie: 0,
         totalCarbs: 0,
@@ -71,21 +73,27 @@ function NutrientCalculatorResultComponent({ data }) {
         };
     }, [data]);
 
+    let calorieIntake =
+        data.totalCalories > 0 ? counterState.totalCalorie : data.totalCalories;
+
     return (
         <div
             className='basis-full md:basis-6/12 lg:basis-6/12 
-            border-0 rounded-lg bg-blue-700 shadow-lg
+            border-0 rounded-lg bg-blue-700 shadow-lg 
             flex flex-row gap-4 '
         >
             <div className='basis-6/12 flex flex-col justify-center items-center p-5 '>
                 <p className='text-slate-100 font-bold text-3xl'>
-                    {data.totalCalories > 0
-                        ? counterState.totalCalorie
-                        : data.totalCalories}
+                    {calorieIntake}
                 </p>
-                <p className='text-slate-100 font-semibold text-base italic'>
-                    Total Calories
-                </p>
+                <ProgressBarWLabel
+                    label='Calorie Intake'
+                    labelClassName='text-amber-500'
+                    progressClassName='bg-amber-500'
+                    value={calorieIntake}
+                    appropriateValue={user.calorie_intake}
+                    defaultUnit='cal'
+                />
             </div>
             <div className='basis-6/12 flex flex-col justify-center py-2 px-4'>
                 <ProgressBarWLabel

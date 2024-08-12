@@ -3,19 +3,20 @@ import { motion } from 'framer-motion';
 import { calculatePercentage } from '@/lib/utils';
 
 function ProgressBarWLabel({
-    label,
+    label = null,
     labelClassName,
     progressClassName,
     value,
     appropriateValue,
+    defaultUnit = 'g',
 }) {
     const width = calculatePercentage(value, appropriateValue);
-    const progressText = `${value.toFixed(2)} g / ${appropriateValue} g`;
+    const progressText = `${value.toFixed(2)} ${defaultUnit} / ${appropriateValue} ${defaultUnit}`;
 
     return (
         <>
             <div className={`${labelClassName} mb-1 text-xs font-semibold`}>
-                {label} - {progressText}
+                {label !== null ? label + ' - ' + progressText : ''}
             </div>
             <div className='w-full bg-gray-200 rounded-full h-4 mb-4'>
                 <motion.div
