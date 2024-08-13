@@ -24,7 +24,7 @@ const AppLayout = ({ children }) => {
                         alt='Spoon Logo'
                         width={150}
                         height={150}
-                        priority={false}
+                        priority
                     />
                     <div className='flex flex-row items-center mt-12 md:mt-0 lg:mt-0'>
                         <Avatar>
