@@ -1,13 +1,23 @@
 'use client';
-import Input from '@/components/Input';
 import InputWithIcon from '@/components/InputWithIcon';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import food1 from '../../../../public/assets/app/recipes/01 BANH MI.jpg';
-import food2 from '../../../../public/assets/app/recipes/TOSHIKOSHI SOBA (NEW YEAR_S EVE NOODLES).jpg';
-import Image from 'next/image';
-import { Box } from '@mui/material';
+import { useFoodGroup } from '@/hooks/api/food-group';
+import { useEffect, useState } from 'react';
+import FoodGroupListItem from '@/components/app/recipe/FoodGroupListItem';
 
 const Profile = () => {
+    const { index: getAllFoodGroup } = useFoodGroup();
+    const [foodGroupData, setFoodGroupData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { data } = await getAllFoodGroup();
+            if (data) {
+                setFoodGroupData(data);
+            }
+        };
+        fetchData();
+    }, []);
+
     return (
         <>
             <div className='flex flex-row md:justify-end'>
@@ -18,93 +28,14 @@ const Profile = () => {
                     />
                 </div>
             </div>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4'>
-                <Box className='animate-fade-up animate-once animate-duration-1000'>
-                    <a href='/recipe-view/1'>
-                        <div className='relative h-48 w-full '>
-                            <Image
-                                src={food1}
-                                alt='flag'
-                                layout='fill'
-                                className='object-cover rounded-md hover:brightness-75'
-                            />
-                            <div className='absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2 rounded-b-md'>
-                                <p className='text-white text-center'>
-                                    Category
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                </Box>
-                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-100'>
-                    <a href='/recipe-view/1'>
-                        <div className='relative h-48 w-full'>
-                            <Image
-                                src={food2}
-                                alt='flag'
-                                layout='fill'
-                                className='object-cover rounded-md hover:brightness-75'
-                            />
-                            <div className='absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2 rounded-b-md'>
-                                <p className='text-white text-center'>
-                                    Category
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                </Box>
-                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-200'>
-                    <div className='relative h-48 w-full'>
-                        <Image
-                            src={food1}
-                            alt='flag'
-                            layout='fill'
-                            className='object-cover rounded-md hover:brightness-75'
-                        />
-                        <div className='absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2 rounded-b-md'>
-                            <p className='text-white text-center'>Category</p>
-                        </div>
-                    </div>
-                </Box>
-                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-300'>
-                    <div className='relative h-48 w-full'>
-                        <Image
-                            src={food1}
-                            alt='flag'
-                            layout='fill'
-                            className='object-cover rounded-md hover:brightness-75'
-                        />
-                        <div className='absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2 rounded-b-md'>
-                            <p className='text-white text-center'>Category</p>
-                        </div>
-                    </div>
-                </Box>
-                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-400'>
-                    <div className='relative h-48 w-full'>
-                        <Image
-                            src={food2}
-                            alt='flag'
-                            layout='fill'
-                            className='object-cover rounded-md hover:brightness-75'
-                        />
-                        <div className='absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2 rounded-b-md'>
-                            <p className='text-white text-center'>Category</p>
-                        </div>
-                    </div>
-                </Box>
-                <Box className='animate-fade-up animate-once animate-duration-1000 animate-delay-500'>
-                    <div className='relative h-48 w-full'>
-                        <Image
-                            src={food1}
-                            alt='flag'
-                            layout='fill'
-                            className='object-cover rounded-md hover:brightness-75'
-                        />
-                        <div className='absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2 rounded-b-md'>
-                            <p className='text-white text-center'>Category</p>
-                        </div>
-                    </div>
-                </Box>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4 py-8'>
+                {foodGroupData.map(data => (
+                    <FoodGroupListItem
+                        key={data.id}
+                        category={data.name}
+                        imagePath={data.image_path}
+                    />
+                ))}
             </div>
         </>
     );
