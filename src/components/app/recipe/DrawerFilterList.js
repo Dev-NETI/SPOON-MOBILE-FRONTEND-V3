@@ -1,18 +1,17 @@
 import React from 'react';
-import { Chip } from '@mui/material';
+import DrawerFilterListItem from './DrawerFilterListItem';
 
-function DrawerFilterList({ label, data = null }) {
+function DrawerFilterList({ label, data = null, identifier }) {
     return (
         <div>
             <h1 className='font-semibold text-stone-800'>{label}</h1>
             <div className='grid grid-cols-3 gap-2 py-1'>
                 {data &&
                     data.map(item => (
-                        <Chip
+                        <DrawerFilterListItem
                             key={item.id}
-                            label={item.name}
-                            color='primary'
-                            variant='outlined'
+                            data={item}
+                            identifier={identifier}
                         />
                     ))}
             </div>
