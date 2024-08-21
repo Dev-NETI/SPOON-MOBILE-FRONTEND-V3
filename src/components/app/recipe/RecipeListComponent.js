@@ -15,8 +15,12 @@ function RecipeListComponent({ data }) {
     return (
         <>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 mt-4 py-8'>
-                {currentItems.map(item => (
-                    <RecipeListItemComponent key={item.id} data={item} />
+                {currentItems.map((item, index) => (
+                    <RecipeListItemComponent
+                        key={item.id}
+                        data={item}
+                        index={index}
+                    />
                 ))}
             </div>
             <div className='flex justify-center mt-4'>
