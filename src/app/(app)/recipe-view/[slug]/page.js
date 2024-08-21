@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import { Chip, Grid, List } from '@mui/material';
+import { Card, CardContent, CardMedia, Chip, Grid, List } from '@mui/material';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -82,13 +82,15 @@ function page({ params }) {
                 </div>
 
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                    <div className='relative rounded-xl hover:brightness-75 w-full shadow-md'>
-                        <Image
-                            src={recipeData?.image_path}
-                            alt={recipeData?.name}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                        />
+                    <div className='relative rounded-xl hover:brightness-75 w-full h-auto'>
+                        <Card className='hover:shadow-lg transition-shadow duration-300 shadow-md'>
+                            <CardMedia
+                                component='img'
+                                alt={recipeData?.name}
+                                height={500}
+                                image={recipeData?.image_path}
+                            />
+                        </Card>
                     </div>
 
                     <div className='grid grid-cols-3 sm:grid-cols-3 md:grid-cols-1 gap-2'>
@@ -121,47 +123,55 @@ function page({ params }) {
                     </div>
                 </div>
                 <div className='grid grid-cols-1 gap-2 mt-1'>
-                    <Box sx={{ width: '100%' }}>
-                        <Box
-                            sx={{
-                                borderBottom: 1,
-                                pt: 1,
-                                borderColor: 'divider',
-                            }}
-                        >
-                            <Tabs
-                                value={tab}
-                                onChange={handleChange}
-                                variant='scrollable'
-                                scrollButtons
-                                allowScrollButtonsMobile
-                                aria-label='scrollable force tabs example'
+                    <Card sx={{ mt: 2, mb: 2 }}>
+                        <Box sx={{ width: '100%' }}>
+                            <Box
+                                sx={{
+                                    borderBottom: 1,
+                                    pt: 1,
+                                    borderColor: 'divider',
+                                }}
                             >
-                                <Tab label='Ingredients' {...a11yProps(0)} />
-                                <Tab label='Instructions' {...a11yProps(1)} />
-                                <Tab label='Nutrition' {...a11yProps(2)} />
-                            </Tabs>
-                        </Box>
-                        <CustomTabPanel value={tab} index={0}>
-                            <Grid container>
+                                <Tabs
+                                    value={tab}
+                                    onChange={handleChange}
+                                    variant='scrollable'
+                                    scrollButtons
+                                    allowScrollButtonsMobile
+                                    aria-label='scrollable force tabs example'
+                                >
+                                    <Tab
+                                        label='Ingredients'
+                                        {...a11yProps(0)}
+                                    />
+                                    <Tab
+                                        label='Instructions'
+                                        {...a11yProps(1)}
+                                    />
+                                    <Tab label='Nutrition' {...a11yProps(2)} />
+                                </Tabs>
+                            </Box>
+                            <CustomTabPanel value={tab} index={0}>
+                                <Grid container>
+                                    <Grid item xs={12} md={12}>
+                                        <List>
+                                            <IngridientsTab Item={recipeData} />
+                                        </List>
+                                    </Grid>
+                                </Grid>
+                            </CustomTabPanel>
+                            <CustomTabPanel value={tab} index={1}>
                                 <Grid item xs={12} md={12}>
                                     <List>
-                                        <IngridientsTab Item={recipeData} />
+                                        <InstructionTab Item={recipeData} />
                                     </List>
                                 </Grid>
-                            </Grid>
-                        </CustomTabPanel>
-                        <CustomTabPanel value={tab} index={1}>
-                            <Grid item xs={12} md={12}>
-                                <List>
-                                    <InstructionTab Item={recipeData} />
-                                </List>
-                            </Grid>
-                        </CustomTabPanel>
-                        <CustomTabPanel value={tab} index={2}>
-                            <NutritionTab data={recipeData} />
-                        </CustomTabPanel>
-                    </Box>
+                            </CustomTabPanel>
+                            <CustomTabPanel value={tab} index={2}>
+                                <NutritionTab data={recipeData} />
+                            </CustomTabPanel>
+                        </Box>
+                    </Card>
                 </div>
             </div>
         </div>

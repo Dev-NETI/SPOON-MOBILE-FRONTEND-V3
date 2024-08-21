@@ -29,12 +29,13 @@ const Profile = () => {
                 </div>
             </div> */}
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4 py-8'>
-                {foodGroupData.map(data => (
+                {foodGroupData.map((data, index) => (
                     <RecipeCardComponent
                         key={data.id}
                         label={data.name}
                         imagePath={data.image_path}
                         href={`/recipe/list/${data.id}`}
+                        delay={200 * index} // Incremental delay of 200ms per item
                     />
                 ))}
             </div>
