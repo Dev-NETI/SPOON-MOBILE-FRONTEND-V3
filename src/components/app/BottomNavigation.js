@@ -27,7 +27,7 @@ function Navigation() {
                 router.push('/calculator');
                 break;
             case 'favorite':
-                router.push('/favorite-recipe');
+                router.push('/dashboard');
                 break;
             case 'profile':
                 router.push('/profile');
@@ -41,6 +41,7 @@ function Navigation() {
         <Box
             sx={{
                 width: '100%',
+                mx: 'auto',
                 position: 'fixed',
                 bottom: 0,
                 left: 0,
@@ -48,6 +49,7 @@ function Navigation() {
                 zIndex: 50,
                 bgcolor: 'background.paper',
                 boxShadow: 1,
+                pb: 1,
             }}
         >
             <BottomNavigation
@@ -60,7 +62,7 @@ function Navigation() {
                 }}
             >
                 <BottomNavigationAction
-                    label='Dashboard'
+                    label='Home'
                     value='dashboard'
                     icon={<HomeRoundedIcon />}
                 />

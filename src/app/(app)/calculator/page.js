@@ -25,10 +25,12 @@ function Calculator() {
                     <CardListItem
                         title='Blood Pressure Tracker'
                         className='col-span-2'
+                        href='/calculator/blood-pressure-tracker'
                     />
                     <CardListItem
                         title='Nutrient Calculator'
                         className='col-start-3 col-span-2'
+                        href='/calculator/nutrient-calculator'
                     />
                 </CardContent>
             </Card>

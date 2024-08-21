@@ -5,6 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogDescription,
 } from '@/components/ui/dialog';
 import BmiHistoryList from './BmiHistoryList';
 import { useAuth } from '@/hooks/auth';
@@ -42,29 +43,32 @@ function BmiHistoryModal() {
                 <DialogHeader>
                     <DialogTitle>BMI History</DialogTitle>
                 </DialogHeader>
-                <BmiHistoryList
-                    bmiLogData={bmiLogData}
-                    currentPage={currentPage}
-                    itemsPerPage={itemsPerPage}
-                />
-                <div className='flex justify-center mt-4'>
-                    <button
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className='px-4 py-2 mr-2 bg-gray-800 text-white rounded disabled:opacity-50'
-                    >
-                        Previous
-                    </button>
-                    <button
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={
-                            currentPage * itemsPerPage >= bmiLogData.length
-                        }
-                        className='px-4 py-2 bg-gray-800 text-white rounded disabled:opacity-50'
-                    >
-                        Next
-                    </button>
+                <div>
+                    <BmiHistoryList
+                        bmiLogData={bmiLogData}
+                        currentPage={currentPage}
+                        itemsPerPage={itemsPerPage}
+                    />
+                    <div className='flex justify-center mt-4'>
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className='px-4 py-2 mr-2 bg-gray-800 text-white rounded disabled:opacity-50'
+                        >
+                            Previous
+                        </button>
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={
+                                currentPage * itemsPerPage >= bmiLogData.length
+                            }
+                            className='px-4 py-2 bg-gray-800 text-white rounded disabled:opacity-50'
+                        >
+                            Next
+                        </button>
+                    </div>
                 </div>
+                <DialogDescription></DialogDescription>
             </DialogContent>
         </Dialog>
     );

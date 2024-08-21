@@ -80,6 +80,114 @@ const calculateBMI = (heightFt, heightCm, weightKg, weightLbs) => {
     return bmi.toFixed(2);
 };
 
+const computeBloodPressure = (sys, dia) => {
+    if (sys > 180 || dia > 120) {
+        return 'Hypertensive Crisis';
+    } else if (sys >= 140 || dia >= 90) {
+        return 'Hypertension Stage 2';
+    } else if (sys >= 130 || dia >= 80) {
+        return 'Hypertension Stage 1';
+    } else if (sys >= 120 && dia < 80) {
+        return 'Elevated';
+    } else if (sys < 120 && dia < 80) {
+        return 'Normal';
+    }
+    return 'Unknown';
+};
+
+const getCurrentDate = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+};
+
+function calculatePercentage(value1, value2) {
+    if (value2 === 0) {
+        return 0; // Avoid division by zero
+    }
+    const percentage = (value1 / value2) * 100;
+    return Math.min(percentage, 100).toFixed(2); // Ensure it doesn't exceed 100% and format to two decimal places
+}
+
+const counter = (setState, propName, targetValue, intervalDuration) => {
+    const intervalId = setInterval(() => {
+        setState(prevState => {
+            const currentValue = prevState[propName];
+            if (currentValue < targetValue) {
+                return {
+                    ...prevState,
+                    [propName]: currentValue + 1,
+                };
+            } else {
+                clearInterval(intervalId);
+                return prevState;
+            }
+        });
+    }, intervalDuration);
+
+    return intervalId;
+};
+
+function formatDate(dateString, format) {
+    const date = new Date(dateString);
+
+    const pad = number => String(number).padStart(2, '0');
+
+    const formatMap = {
+        'yyyy-mm-dd': () =>
+            `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+        'd F, Y': () =>
+            `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${date.getFullYear()}`,
+        'mm/dd/yyyy': () =>
+            `${pad(date.getMonth() + 1)}/${pad(date.getDate())}/${date.getFullYear()}`,
+        'dd-mm-yyyy': () =>
+            `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()}`,
+        'MMMM d, yyyy': () =>
+            `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`,
+        'yyyy-mm-dd hh:mm:ss': () =>
+            `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
+        'dd-mm-yyyy hh:mm:ss': () =>
+            `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
+        'd F, Y hh:mm:ss': () =>
+            `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
+    };
+
+    if (!formatMap[format]) {
+        throw new Error('Unsupported format');
+    }
+
+    return formatMap[format]();
+}
+
+function calculateTDEE(age, gender, heightCm, weightKg, activityLevel) {
+    // Mifflin-St Jeor Equation for BMR
+    let BMR;
+    if (gender === 1) {
+        BMR = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+    } else {
+        BMR = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+    }
+
+    // TDEE Calculation
+    const TDEE = BMR * activityLevel;
+
+    // Goals multipliers (values can be adjusted according to specific needs)
+    const goals = {
+        maintainWeight: TDEE,
+        mildWeightLoss: TDEE - 250,
+        weightLoss: TDEE - 500,
+        aggressiveWeightLoss: TDEE - 750,
+        mildWeightGain: TDEE + 250,
+        weightGain: TDEE + 500,
+        aggressiveWeightGain: TDEE + 750,
+    };
+
+    return goals;
+}
+
 export {
     cn,
     computeAge,
@@ -89,4 +197,10 @@ export {
     convertToLbs,
     passwordRules,
     calculateBMI,
+    computeBloodPressure,
+    getCurrentDate,
+    calculatePercentage,
+    counter,
+    formatDate,
+    calculateTDEE,
 };

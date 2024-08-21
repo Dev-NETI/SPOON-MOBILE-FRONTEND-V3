@@ -7,6 +7,7 @@ import Image from 'next/image';
 import logo from '/public/images/spoon_logo.png';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Toaster } from '@/components/ui/toaster';
 
 const AppLayout = ({ children }) => {
     const { user } = useAuth({ middleware: 'auth' });
@@ -25,6 +26,7 @@ const AppLayout = ({ children }) => {
                         alt='Spoon Logo'
                         width={150}
                         height={150}
+                        priority
                     />
                     <div className='flex flex-row items-center mt-12 md:mt-0 lg:mt-0'>
                         <Avatar>
@@ -43,6 +45,7 @@ const AppLayout = ({ children }) => {
                 </header>
                 <div className='basis-full'>{children}</div>
                 <BottomNavigation />
+                <Toaster />
             </div>
         </div>
     );

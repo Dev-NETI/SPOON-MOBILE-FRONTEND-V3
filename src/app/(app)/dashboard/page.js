@@ -1,9 +1,27 @@
 'use client';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
-import flag from '/public/assets/app/icons/armeniaflag.png';
+import { useRecipeOrigin } from '@/hooks/api/recipe-origin';
+import { useEffect, useState } from 'react';
+import RecipeOriginCard from '@/components/app/dashboard/RecipeOriginCard';
 
 const Dashboard = () => {
+    const { index: getAllRecipeOrigin } = useRecipeOrigin();
+    const [dashboardState, setDashboardState] = useState({
+        recipeOriginData: [],
+    });
+
+    useEffect(() => {
+        const fetchRecipeOriginData = async () => {
+            const { data } = await getAllRecipeOrigin();
+            setDashboardState(prevState => ({
+                ...prevState,
+                recipeOriginData: data,
+            }));
+        };
+        fetchRecipeOriginData();
+    }, []);
+
     return (
         <>
             <div className='flex flex-row z-50'>
@@ -20,96 +38,13 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className='flex flex-row mt-2 overflow-x-auto space-x-2 py-3'>
-                <div className='w-3/12 flex-shrink-0'>
-                    <div className='w-full max-w-xs px-1'>
-                        <Card>
-                            <CardContent className='flex flex-col items-center justify-center'>
-                                <Image
-                                    src='/assets/app/icons/armeniaflag.png'
-                                    alt='flag'
-                                    width={100}
-                                    height={100}
-                                    className='rounded-full  mt-5'
-                                />
-                                <p className='text-center text-sm font-light mt-2'>
-                                    Armenia
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-                <div className='w-3/12 flex-shrink-0'>
-                    <div className='w-full max-w-xs px-1'>
-                        <Card>
-                            <CardContent className='flex flex-col items-center justify-center'>
-                                <Image
-                                    src='/assets/app/icons/armeniaflag.png'
-                                    alt='flag'
-                                    width={100}
-                                    height={100}
-                                    className='rounded-full  mt-5'
-                                />
-                                <p className='text-center text-sm font-light mt-2'>
-                                    Armenia
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-                <div className='w-3/12 flex-shrink-0'>
-                    <div className='w-full max-w-xs px-1'>
-                        <Card>
-                            <CardContent className='flex flex-col items-center justify-center'>
-                                <Image
-                                    src='/assets/app/icons/armeniaflag.png'
-                                    alt='flag'
-                                    width={100}
-                                    height={100}
-                                    className='rounded-full mt-5'
-                                />
-                                <p className='text-center text-sm font-light mt-2'>
-                                    Armenia
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-                <div className='w-3/12 flex-shrink-0'>
-                    <div className='w-full max-w-xs px-1'>
-                        <Card>
-                            <CardContent className='flex flex-col items-center justify-center'>
-                                <Image
-                                    src='/assets/app/icons/armeniaflag.png'
-                                    alt='flag'
-                                    width={100}
-                                    height={100}
-                                    className='rounded-full  mt-5'
-                                />
-                                <p className='text-center text-sm font-light mt-2'>
-                                    Armenia
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-                <div className='w-3/12 flex-shrink-0'>
-                    <div className='w-full max-w-xs px-1'>
-                        <Card>
-                            <CardContent className='flex flex-col items-center justify-center'>
-                                <Image
-                                    src='/assets/app/icons/armeniaflag.png'
-                                    alt='flag'
-                                    width={100}
-                                    height={100}
-                                    className='rounded-full mt-5'
-                                />
-                                <p className='text-center text-sm font-light mt-2'>
-                                    Armenia
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+                {dashboardState.recipeOriginData.map(data => (
+                    <RecipeOriginCard
+                        key={data.id}
+                        imagePath={data.image_path}
+                        origin={data.name}
+                    />
+                ))}
             </div>
             <div className='flex flex-row z-50 mt-5'>
                 <div className='basis-8/12'>
