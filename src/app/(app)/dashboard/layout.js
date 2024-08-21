@@ -31,7 +31,7 @@ function layout({ children }) {
                     <div class='wave'></div>
                 </div>
             </div>
-            <div className='flex-1 bg-slate-50 p-4'>
+            <div className='flex-1 bg-slate-50 p-4 achor'>
                 <div className='mx-auto max-w-screen-xl'>{children}</div>
             </div>
         </div>

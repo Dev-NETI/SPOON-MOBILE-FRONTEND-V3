@@ -41,7 +41,7 @@ const AppLayout = ({ children }) => {
                         </p>
                     </div>
                 </header>
-                <div className='basis-full '>{children}</div>
+                <div className='basis-full'>{children}</div>
                 <BottomNavigation />
             </div>
         </div>

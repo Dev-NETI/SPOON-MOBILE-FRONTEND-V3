@@ -79,7 +79,7 @@ const Dashboard = () => {
                         <Card>
                             <CardContent className='flex flex-col items-center justify-center'>
                                 <Image
-                                    src={flag}
+                                    src='/assets/app/icons/armeniaflag.png'
                                     alt='flag'
                                     width={100}
                                     height={100}
@@ -135,7 +135,7 @@ const Dashboard = () => {
                                 alt='flag'
                                 height={100}
                                 width={100}
-                                className='h-full w-full object-cover rounded-md'
+                                className='h-full w-full object-cover rounded-t-md'
                             />
                             <CardFooter>
                                 <div className='flex flex-col mt-2'>
@@ -172,7 +172,7 @@ const Dashboard = () => {
                                 alt='flag'
                                 height={100}
                                 width={100}
-                                className='h-full w-full object-cover rounded-md'
+                                className='h-full w-full object-cover rounded-t-md'
                             />
                             <CardFooter>
                                 <div className='flex flex-col mt-2'>
