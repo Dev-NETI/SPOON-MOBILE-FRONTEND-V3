@@ -4,6 +4,8 @@ import { useAuth } from '@/hooks/auth';
 import Loading from '@/app/(app)/Loading';
 import BottomNavigation from '@/components/app/BottomNavigation';
 import Image from 'next/image';
+import logo from '/public/images/spoon_logo.png';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -20,7 +22,7 @@ const AppLayout = ({ children }) => {
                 <header className='sticky top-0 bg-blue-800 flex items-center justify-between px-2 py-2 z-50 stroke-white shadow-md'>
                     <Image
                         className='mt-12 md:mt-0 lg:mt-0'
-                        src='/images/spoon_logo.png'
+                        src={logo}
                         alt='Spoon Logo'
                         width={150}
                         height={150}
