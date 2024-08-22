@@ -12,6 +12,7 @@ import InstructionTab from './InstructionTab';
 import NutritionTab from './NutritionTab';
 import { useRecipe } from '@/hooks/api/recipe';
 import RecipeViewIconCardComponent from '@/components/app/recipe-view/RecipeViewIconCardComponent';
+import Loading from '../../Loading';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -45,6 +46,7 @@ function a11yProps(index) {
 function page({ params }) {
     const { show: showRecipe } = useRecipe();
     const [recipeData, setRecipeData] = useState();
+    const [loading, setLoading] = useState(true);
     const [value, setValue] = useState(2);
     const [tab, setTab] = useState(0);
     const handleChange = (event, newTab) => {
@@ -55,6 +57,7 @@ function page({ params }) {
         const fetchRecipeData = async () => {
             const { data } = await showRecipe(params.slug);
             setRecipeData(data);
+            setLoading(false);
         };
 
         fetchRecipeData();
@@ -62,7 +65,9 @@ function page({ params }) {
 
     // recipeData && console.log(recipeData?.ingredient);
 
-    return (
+    const ui = loading ? (
+        <Loading />
+    ) : (
         <div className='flex flex-col p-2 sm:p-3 md:p-8'>
             <div className='grid'>
                 <h1 className='text-3xl font-semibold text-gray-900 text-left'>
@@ -166,6 +171,7 @@ function page({ params }) {
             </div>
         </div>
     );
+    return ui;
 }
 
 export default page;
