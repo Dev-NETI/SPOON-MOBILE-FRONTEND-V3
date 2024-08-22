@@ -72,6 +72,10 @@ function Page() {
         getAllRecipe,
     ]);
 
+    useEffect(() => {
+        console.log(recipeDataState.filteredRecipeData);
+    }, [recipeDataState.filteredRecipeData]);
+
     const ui = recipeState.loading ? (
         <Loading />
     ) : (
@@ -91,17 +95,39 @@ function Page() {
                     label={'Search'}
                 />
             </div>
-            <div>
-                <button
-                    onClick={() => setIsDrawerOpen(true)}
-                    className='py-2 px-5 bg-gray-300 rounded-md'
-                >
-                    <TuneIcon color='disabled' />
-                </button>
-                <DrawerComponent />
+            <div className='flex flex-row gap-1'>
+                {recipeDataState.filteredRecipeData.length > 0 ? (
+                    <div className='flex items-center justify-center py-1'>
+                        <h1
+                            className='font-semibold text-blue-700'
+                            onClick={() =>
+                                setRecipeDataState(prevState => ({
+                                    ...prevState,
+                                    filteredRecipeData: [],
+                                }))
+                            }
+                        >
+                            Reset Filters
+                        </h1>
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => setIsDrawerOpen(true)}
+                        className='py-2 px-5 bg-gray-300 rounded-md'
+                    >
+                        <TuneIcon color='disabled' />
+                    </button>
+                )}
             </div>
+            <DrawerComponent />
             <div className='py-5'>
-                <RecipeListComponent data={recipeDataState.allRecipeData} />
+                <RecipeListComponent
+                    data={
+                        recipeDataState.filteredRecipeData.length > 0
+                            ? recipeDataState.filteredRecipeData
+                            : recipeDataState.allRecipeData
+                    }
+                />
             </div>
         </RecipeContext.Provider>
     );
