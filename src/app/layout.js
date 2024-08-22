@@ -1,6 +1,5 @@
 import { Nunito } from 'next/font/google';
 import '@/app/global.css';
-import LoginComponent from '@/components/auth/LoginComponent';
 
 const nunitoFont = Nunito({
     subsets: ['latin'],
@@ -10,9 +9,7 @@ const nunitoFont = Nunito({
 const RootLayout = ({ children }) => {
     return (
         <html lang='en' className={nunitoFont.className}>
-            <body className='antialiased'>
-                <LoginComponent>{children}</LoginComponent>
-            </body>
+            <body className='antialiased'>{children}</body>
         </html>
     );
 };
