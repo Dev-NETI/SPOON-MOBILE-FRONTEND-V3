@@ -12,6 +12,7 @@ function DrawerComponent() {
         setIsDrawerOpen,
         recipeState,
         setRecipeDataState,
+        resetFilterStates,
     } = useContext(RecipeContext);
 
     const theme = useTheme();
@@ -62,12 +63,14 @@ function DrawerComponent() {
             );
         });
 
-        setRecipeDataState(prevState => ({
-            ...prevState,
-            filteredRecipeData: filteredData,
-        }));
+        filteredData.length > 0
+            ? setRecipeDataState(prevState => ({
+                  ...prevState,
+                  filteredRecipeData: filteredData,
+              }))
+            : resetFilterStates();
 
-        setIsDrawerOpen(false); // Close the drawer after applying filters
+        setIsDrawerOpen(false);
     }
 
     function getRecipesByMealHours(recipes, selectedMealHours) {
