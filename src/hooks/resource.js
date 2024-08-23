@@ -54,6 +54,8 @@ const useResource = ({ baseURL, route }) => {
      * @return {*}
      */
     const destroy = id => axios.delete(`${route}/${id}`);
+    const destroy2Parameter = (id, id2) =>
+        axios.delete(`${route}/${id}/${id2}`);
 
     return {
         index,
@@ -64,6 +66,7 @@ const useResource = ({ baseURL, route }) => {
         destroy,
         patch,
         showWith3Parameter,
+        destroy2Parameter,
     };
 };
 
