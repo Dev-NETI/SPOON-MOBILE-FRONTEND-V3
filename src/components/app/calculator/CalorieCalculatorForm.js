@@ -17,20 +17,34 @@ import {
 } from '@/lib/utils';
 import { useUserHook } from '@/hooks/api/user';
 import { motion } from 'framer-motion';
+import { AccountSetupContext } from '@/stores/AccountSetupContext';
 
-function CalorieCalculatorForm() {
+function CalorieCalculatorForm({ isFirstLogin = false }) {
     const { index: getAllActivityLevel } = useActivityLevel();
     const [error, setError] = useState({});
     const [activityLevelData, setActivityLevelData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const {
-        isEdit,
-        setIsEdit,
-        user,
+    let user,
         formDataState,
         setFormDataState,
         setShowGoalComponent,
-    } = useContext(CalorieCalculatorContext);
+        isEdit = true,
+        setIsEdit,
+        handleNextView;
+    if (isFirstLogin) {
+        ({ user, formDataState, setFormDataState, handleNextView } =
+            useContext(AccountSetupContext));
+    } else {
+        ({
+            isEdit,
+            setIsEdit,
+            user,
+            formDataState,
+            setFormDataState,
+            setShowGoalComponent,
+        } = useContext(CalorieCalculatorContext));
+    }
+
     const { patch: updateUserData } = useUserHook('update-data');
     const rules = Yup.object().shape({
         age: Yup.number()
@@ -69,14 +83,21 @@ function CalorieCalculatorForm() {
                 object
             );
 
-            if (updateResponse) {
-                setShowGoalComponent(true);
-                setFormDataState(prevState => ({
-                    ...prevState,
-                    updateResponse: updateResponse,
-                }));
+            if (!isFirstLogin) {
+                if (updateResponse) {
+                    setShowGoalComponent(true);
+                    setFormDataState(prevState => ({
+                        ...prevState,
+                        updateResponse: updateResponse,
+                    }));
+                }
+                setIsEdit(false);
+            } else {
+                if (updateResponse) {
+                    handleNextView();
+                    // console.log(updateResponse);
+                }
             }
-            setIsEdit(false);
         } catch (error) {
             const errors = error.inner.reduce((acc, curr) => {
                 acc[curr.path] = curr.message;
@@ -113,25 +134,29 @@ function CalorieCalculatorForm() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ ease: 'easeIn', duration: 1 }}
             >
-                <div className='col-span-2 flex justify-end '>
-                    <Button
-                        type='button'
-                        onClick={() => {
-                            setIsEdit(!isEdit);
-                            setError({});
-                        }}
-                    >
-                        {isEdit ? 'Cancel' : 'Edit'}
-                    </Button>
-                </div>
-                <InputGroup
-                    editMode={false}
-                    name='calorieIntake'
-                    type='text'
-                    title='Current Calorie Intake'
-                    initialValue={formDataState.calorieIntake}
-                    className='col-span-2'
-                />
+                {!isFirstLogin && (
+                    <>
+                        <div className='col-span-2 flex justify-end '>
+                            <Button
+                                type='button'
+                                onClick={() => {
+                                    setIsEdit(!isEdit);
+                                    setError({});
+                                }}
+                            >
+                                {isEdit ? 'Cancel' : 'Edit'}
+                            </Button>
+                        </div>
+                        <InputGroup
+                            editMode={false}
+                            name='calorieIntake'
+                            type='text'
+                            title='Current Calorie Intake'
+                            initialValue={formDataState.calorieIntake}
+                            className='col-span-2'
+                        />
+                    </>
+                )}
                 <InputGroup
                     editMode={isEdit}
                     name='dateOfBirth'
@@ -278,7 +303,7 @@ function CalorieCalculatorForm() {
                             type='submit'
                             className='w-full rounded-full flex items-center justify-center'
                         >
-                            Compute Energy Intake
+                            {isFirstLogin ? 'Next' : 'Compute Energy Intake'}
                         </Button>
                     )}
                 </div>
