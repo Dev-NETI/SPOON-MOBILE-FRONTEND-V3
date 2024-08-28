@@ -94,6 +94,17 @@ function CalorieCalculatorForm({ isFirstLogin = false }) {
                 setIsEdit(false);
             } else {
                 if (updateResponse) {
+                    setFormDataState(prevState => ({
+                        ...prevState,
+                        age: object.age,
+                        gender: object.gender,
+                        heightImperial: object.heightStandard,
+                        heightMetric: object.heightMetric,
+                        weightImperial: object.weightStandard,
+                        weightMetric: object.weightMetric,
+                        activityLevelId: object.activityLevel,
+                        dateOfBirth: object.dateOfBirth,
+                    }));
                     handleNextView();
                     // console.log(updateResponse);
                 }
