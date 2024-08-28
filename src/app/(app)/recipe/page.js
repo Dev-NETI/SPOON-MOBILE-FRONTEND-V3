@@ -12,6 +12,7 @@ import { RecipeContext } from '@/stores/RecipeContext';
 import DrawerComponent from '@/components/app/recipe/Drawer';
 import { useRecipe } from '@/hooks/api/recipe';
 import RecipeListComponent from '@/components/app/recipe/RecipeListComponent';
+import { Chip } from '@mui/material';
 
 function Page() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -32,6 +33,7 @@ function Page() {
     });
     const [recipeState, setRecipeState] = useState({
         loading: true,
+        searchField: '',
         selectedOriginData: [],
         selectedMealHourData: [],
         selectedMealTypeData: [],
@@ -72,9 +74,38 @@ function Page() {
         getAllRecipe,
     ]);
 
-    useEffect(() => {
-        console.log(recipeDataState.filteredRecipeData);
-    }, [recipeDataState.filteredRecipeData]);
+    function resetFilterStates() {
+        setRecipeState(prevState => ({
+            ...prevState,
+            searchField: '',
+            selectedOriginData: [],
+            selectedMealHourData: [],
+            selectedMealTypeData: [],
+            selectedFoodGroupData: [],
+            selectedSeasonData: [],
+        }));
+    }
+
+    function handleSearch(value) {
+        setRecipeState(prevState => ({
+            ...prevState,
+            searchField: value,
+        }));
+        const searchValue = recipeState.searchField;
+
+        if (value === '') {
+            return setRecipeDataState(prevState => ({
+                ...prevState,
+                filteredRecipeData: [],
+            }));
+        }
+        setRecipeDataState(prevState => ({
+            ...prevState,
+            filteredRecipeData: recipeDataState.allRecipeData.filter(data =>
+                data.name.includes(searchValue.toUpperCase())
+            ),
+        }));
+    }
 
     const ui = recipeState.loading ? (
         <Loading />
@@ -87,29 +118,39 @@ function Page() {
                 setIsDrawerOpen,
                 recipeState,
                 setRecipeState,
+                resetFilterStates,
             }}
         >
             <div>
                 <InputWithIcon
                     icon='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'
                     label={'Search'}
+                    type='text'
+                    value={recipeState.searchField}
+                    onChange={event => handleSearch(event.target.value)}
                 />
             </div>
             <div className='flex flex-row gap-1'>
                 {recipeDataState.filteredRecipeData.length > 0 ? (
-                    <div className='flex items-center justify-center py-1'>
-                        <h1
-                            className='font-semibold text-blue-700'
-                            onClick={() =>
-                                setRecipeDataState(prevState => ({
-                                    ...prevState,
-                                    filteredRecipeData: [],
-                                }))
-                            }
-                        >
-                            Reset Filters
-                        </h1>
-                    </div>
+                    <>
+                        <Chip
+                            label={`Showing ${recipeDataState.filteredRecipeData.length} result${recipeDataState.filteredRecipeData.length > 1 ? 's' : ''}.`}
+                        />
+                        <div className='flex items-center justify-center py-1'>
+                            <h1
+                                className='font-semibold text-blue-700'
+                                onClick={() => {
+                                    setRecipeDataState(prevState => ({
+                                        ...prevState,
+                                        filteredRecipeData: [],
+                                    }));
+                                    resetFilterStates();
+                                }}
+                            >
+                                Reset
+                            </h1>
+                        </div>
+                    </>
                 ) : (
                     <button
                         onClick={() => setIsDrawerOpen(true)}

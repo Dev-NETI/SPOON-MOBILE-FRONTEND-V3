@@ -8,10 +8,11 @@ import logo from '/public/images/spoon_logo.png';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Toaster } from '@/components/ui/toaster';
+import { useFirstLoginHook } from '@/hooks/firstLoginHook';
 
 const AppLayout = ({ children }) => {
+    useFirstLoginHook();
     const { user } = useAuth({ middleware: 'auth' });
-
     if (!user) {
         return <Loading />;
     }
@@ -44,7 +45,7 @@ const AppLayout = ({ children }) => {
                     </div>
                 </header>
                 <div className='basis-full'>{children}</div>
-                <BottomNavigation />
+                {user.is_first_login !== 1 && <BottomNavigation />}
                 <Toaster />
             </div>
         </div>

@@ -12,6 +12,11 @@ import InstructionTab from './InstructionTab';
 import NutritionTab from './NutritionTab';
 import { useRecipe } from '@/hooks/api/recipe';
 import RecipeViewIconCardComponent from '@/components/app/recipe-view/RecipeViewIconCardComponent';
+import Loading from '../../Loading';
+import SaveRecipeComponent from '@/components/app/recipe-view/SaveRecipeComponent';
+import { useSavedRecipe } from '@/hooks/api/saved-recipe';
+import { useAuth } from '@/hooks/auth';
+import CustomizedSnackbar from '@/components/CustomSnackBar';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -43,31 +48,109 @@ function a11yProps(index) {
 }
 
 function page({ params }) {
+    const { user } = useAuth({ middleware: 'auth' });
     const { show: showRecipe } = useRecipe();
     const [recipeData, setRecipeData] = useState();
+    const [isRecipeSaved, setIsRecipeSaved] = useState();
+    const [loading, setLoading] = useState(true);
     const [value, setValue] = useState(2);
+    const [snackBarState, setSnackBarState] = useState({
+        severity: 'success',
+        open: false,
+        message: 'This is a success Alert inside a Snackbar!',
+    });
     const [tab, setTab] = useState(0);
     const handleChange = (event, newTab) => {
         setTab(newTab);
     };
+    const { showWith2Parameter: getIsSaved } = useSavedRecipe('show');
+    const { store: saveToFavorite } = useSavedRecipe();
+    const { destroy2Parameter: unSaveRecipe } = useSavedRecipe('destroy');
 
     useEffect(() => {
-        const fetchRecipeData = async () => {
+        const fetchData = async () => {
             const { data } = await showRecipe(params.slug);
             setRecipeData(data);
         };
 
-        fetchRecipeData();
+        fetchData();
     }, []);
 
-    // recipeData && console.log(recipeData?.ingredient);
+    useEffect(() => {
+        if (recipeData) {
+            const fetchIsSaved = async () => {
+                const { data: isSavedData } = await getIsSaved(
+                    recipeData.id,
+                    user.id
+                );
+                // const { data: isSavedData } = await getIsSaved(1025, 4);
+                setIsRecipeSaved(isSavedData);
+                setLoading(false);
+            };
+            fetchIsSaved();
+        }
+    }, [recipeData, snackBarState]);
 
-    return (
+    async function handleSaveRecipe() {
+        const object = {
+            recipeId: recipeData.id,
+            userId: user.id,
+        };
+        if (isRecipeSaved) {
+            //unsave
+            const { data: destroyResponse } = await unSaveRecipe(
+                recipeData.id,
+                user.id
+            );
+            destroyResponse
+                ? setSnackBarState(() => ({
+                      severity: 'warning',
+                      open: true,
+                      message: 'Recipe removed from favorites!',
+                  }))
+                : setSnackBarState(() => ({
+                      severity: 'error',
+                      open: true,
+                      message: 'Oops! Something went wrong!',
+                  }));
+        } else {
+            //save
+            const { data: storeResponse } = await saveToFavorite(object);
+            storeResponse
+                ? setSnackBarState(() => ({
+                      severity: 'success',
+                      open: true,
+                      message: 'Recipe added to favorites!',
+                  }))
+                : setSnackBarState(() => ({
+                      severity: 'error',
+                      open: true,
+                      message: 'Oops! Something went wrong!',
+                  }));
+        }
+    }
+
+    function closeSnackBar() {
+        setSnackBarState(prevState => ({
+            ...prevState,
+            open: false,
+        }));
+    }
+
+    const ui = loading ? (
+        <Loading />
+    ) : (
         <div className='flex flex-col p-2 sm:p-3 md:p-8'>
             <div className='grid'>
-                <h1 className='text-3xl font-semibold text-gray-900 text-left'>
-                    {recipeData?.name}
-                </h1>
+                <div className='flex flex-row gap-4'>
+                    <h1 className='text-3xl font-semibold text-gray-900 text-left'>
+                        {recipeData?.name}
+                    </h1>
+                    <SaveRecipeComponent
+                        isSaved={isRecipeSaved}
+                        onClick={handleSaveRecipe}
+                    />
+                </div>
                 <div className='flex items-center space-x-2'>
                     <Box sx={{ '& > legend': { mt: 2 } }}>
                         <Rating
@@ -165,6 +248,17 @@ function page({ params }) {
                 </div>
             </div>
         </div>
+    );
+    return (
+        <>
+            {ui}
+            <CustomizedSnackbar
+                open={snackBarState.open}
+                severity={snackBarState.severity}
+                message={snackBarState.message}
+                onClose={closeSnackBar}
+            />
+        </>
     );
 }
 

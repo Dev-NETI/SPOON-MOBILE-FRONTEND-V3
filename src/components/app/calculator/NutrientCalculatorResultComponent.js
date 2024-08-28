@@ -78,8 +78,8 @@ function NutrientCalculatorResultComponent({ data }) {
 
     return (
         <div
-            className='basis-full md:basis-6/12 lg:basis-6/12 
-            border-0 rounded-lg bg-blue-700 shadow-lg 
+            className='basis-full md:basis-6/12 lg:basis-6/12
+            border-0 rounded-lg bg-blue-700 shadow-lg
             flex flex-row gap-4 '
         >
             <div className='basis-6/12 flex flex-col justify-center items-center p-5 '>

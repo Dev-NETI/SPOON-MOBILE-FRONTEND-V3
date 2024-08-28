@@ -2,9 +2,11 @@
 
 import { useResource } from '../resource';
 
-const useSavedRecipe = () => {
+const useSavedRecipe = (customUrl = null) => {
     const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
-    const route = '/api/saved-recipe';
+    const route = customUrl
+        ? `/api/saved-recipe/${customUrl}`
+        : '/api/saved-recipe';
 
     return {
         ...useResource({ baseURL, route }),

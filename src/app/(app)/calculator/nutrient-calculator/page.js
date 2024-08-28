@@ -22,7 +22,7 @@ function page() {
                 <DatePicker date={date} setDate={setDate} />
             </div>
             <div
-                className='basis-full  gap-2 p-10 md:p-5 lg:p-5  
+                className='basis-full  gap-2 md:gap-16 lg:gap-16 p-10 md:p-5 lg:p-5  
                        flex flex-col md:flex-row lg:flex-row '
             >
                 <NutrientCalculatorResultComponent data={foodData} />

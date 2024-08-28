@@ -9,12 +9,24 @@ import ErrorBadge from '@/components/ErrorBadge';
 import * as Yup from 'yup';
 import { useUserHook } from '@/hooks/api/user';
 import { useToast } from '@/components/ui/use-toast';
+import { AccountSetupContext } from '@/stores/AccountSetupContext';
 
-function CalorieGoalResultComponent() {
+function CalorieGoalResultComponent({ isFirstLogin = false }) {
     const { patch: updateCalorieIntake } = useUserHook('update-calorie-intake');
     const { toast } = useToast();
-    const { formDataState, user, setShowGoalComponent, setFormDataState } =
-        useContext(CalorieCalculatorContext);
+    let formDataState,
+        user,
+        setShowGoalComponent,
+        setFormDataState,
+        handleNextView;
+    if (isFirstLogin) {
+        ({ user, formDataState, setFormDataState, handleNextView } =
+            useContext(AccountSetupContext));
+    } else {
+        ({ formDataState, user, setShowGoalComponent, setFormDataState } =
+            useContext(CalorieCalculatorContext));
+    }
+
     const [error, setError] = useState({});
     const rules = Yup.object().shape({
         radioCalorieGoal: Yup.string().required(
@@ -35,26 +47,33 @@ function CalorieGoalResultComponent() {
                 user.slug,
                 object
             );
-            if (!updateResponse) {
+
+            if (!isFirstLogin) {
+                if (!updateResponse) {
+                    setShowGoalComponent(false);
+                    return toast({
+                        title: 'Oops!',
+                        description: 'Something went wrong!',
+                        variant: 'destructive',
+                        position: 'top-right',
+                    });
+                }
+
                 setShowGoalComponent(false);
-                return toast({
-                    title: 'Oops!',
-                    description: 'Something went wrong!',
-                    variant: 'destructive',
+                setFormDataState(prevState => ({
+                    ...prevState,
+                    calorieIntake: object.radioCalorieGoal,
+                }));
+                toast({
+                    title: 'Success',
+                    description: 'Calorie Intake updated successfully!',
                     position: 'top-right',
                 });
+            } else {
+                if (updateResponse) {
+                    handleNextView();
+                }
             }
-
-            setShowGoalComponent(false);
-            setFormDataState(prevState => ({
-                ...prevState,
-                calorieIntake: object.radioCalorieGoal,
-            }));
-            toast({
-                title: 'Success',
-                description: 'Calorie Intake updated successfully!',
-                position: 'top-right',
-            });
         } catch (error) {
             const errors = error.inner.reduce((acc, curr) => {
                 acc[curr.path] = curr.message;
@@ -71,16 +90,19 @@ function CalorieGoalResultComponent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ ease: 'easeIn', duration: 1 }}
         >
-            <div className='flex items-center justify-center'>
-                <h1 className='text-stone-800 font-semibold text-xl'>
-                    Please select your goal
-                </h1>
-            </div>
+            {!isFirstLogin && (
+                <div className='flex items-center justify-center'>
+                    <h1 className='text-stone-800 font-semibold text-xl'>
+                        Please select your goal
+                    </h1>
+                </div>
+            )}
+
             {error.radioCalorieGoal && (
                 <ErrorBadge message={error.radioCalorieGoal} />
             )}
             <CalorieIntakeItem
-                description={`Maintain weight calories is: ${
+                description={`Maintain weight: ${
                     calculateTDEE(
                         formDataState.age,
                         formDataState.gender,
@@ -101,7 +123,7 @@ function CalorieGoalResultComponent() {
                 ).maintainWeight.toFixed(2)}
             />
             <CalorieIntakeItem
-                description={`Mild weight loss calories is: ${
+                description={`Mild weight loss: ${
                     calculateTDEE(
                         formDataState.age,
                         formDataState.gender,
@@ -122,7 +144,7 @@ function CalorieGoalResultComponent() {
                 ).mildWeightLoss.toFixed(2)}
             />
             <CalorieIntakeItem
-                description={`Weight loss calories is: ${
+                description={`Weight loss: ${
                     calculateTDEE(
                         formDataState.age,
                         formDataState.gender,
@@ -143,7 +165,7 @@ function CalorieGoalResultComponent() {
                 ).weightLoss.toFixed(2)}
             />
             <CalorieIntakeItem
-                description={`Aggressive weight loss calories is: ${
+                description={`Aggressive weight loss: ${
                     calculateTDEE(
                         formDataState.age,
                         formDataState.gender,
@@ -164,7 +186,7 @@ function CalorieGoalResultComponent() {
                 ).aggressiveWeightLoss.toFixed(2)}
             />
             <CalorieIntakeItem
-                description={`Mild weight gain calories is: ${
+                description={`Mild weight gain: ${
                     calculateTDEE(
                         formDataState.age,
                         formDataState.gender,
@@ -185,7 +207,7 @@ function CalorieGoalResultComponent() {
                 ).mildWeightGain.toFixed(2)}
             />
             <CalorieIntakeItem
-                description={`Weight gain calories is: ${
+                description={`Weight gain: ${
                     calculateTDEE(
                         formDataState.age,
                         formDataState.gender,
@@ -206,7 +228,7 @@ function CalorieGoalResultComponent() {
                 ).weightGain.toFixed(2)}
             />
             <CalorieIntakeItem
-                description={`Aggresive weight gain calories is: ${
+                description={`Aggresive weight gain: ${
                     calculateTDEE(
                         formDataState.age,
                         formDataState.gender,
@@ -231,7 +253,9 @@ function CalorieGoalResultComponent() {
                 onSubmit={handleSubmit}
                 className='flex justify-end items-center'
             >
-                <Button form='formCalories'>Save</Button>
+                <Button form='formCalories'>
+                    {isFirstLogin ? 'Next' : 'Save'}
+                </Button>
             </form>
         </motion.div>
     );
