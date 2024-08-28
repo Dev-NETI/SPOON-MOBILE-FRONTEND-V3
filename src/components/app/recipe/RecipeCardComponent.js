@@ -3,11 +3,14 @@ import Image from 'next/image';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 
-function RecipeCardComponent({ label, imagePath, href = '#' }) {
+function RecipeCardComponent({ label, imagePath, href = '#', delay = 200 }) {
     return (
-        <Box className='animate-fade-up animate-once animate-duration-1000'>
+        <Box
+            className={`animate-fade-up animate-once animate-duration-1000`}
+            style={{ animationDelay: `${delay}ms` }}
+        >
             <Link href={href}>
-                <div className='relative h-36 md:h-48 lg:h-48 w-full '>
+                <div className='relative h-48 w-full'>
                     <Image
                         src={imagePath}
                         alt='flag'
