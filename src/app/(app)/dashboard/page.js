@@ -21,7 +21,6 @@ const Dashboard = () => {
         };
         fetchRecipeOriginData();
     }, []);
-
     return (
         <>
             <div className='flex flex-row z-50'>
