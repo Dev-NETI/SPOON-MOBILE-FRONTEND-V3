@@ -9,8 +9,6 @@ const useFirstLoginHook = () => {
     useEffect(() => {
         if (user?.is_first_login === 1) {
             router.push('/account-setup');
-        } else {
-            router.push('/dashboard');
         }
     }, [user, router, user?.is_first_login]);
 };

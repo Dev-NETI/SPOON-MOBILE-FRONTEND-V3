@@ -71,6 +71,10 @@ function CalorieGoalResultComponent({ isFirstLogin = false }) {
                 });
             } else {
                 if (updateResponse) {
+                    setFormDataState(prevState => ({
+                        ...prevState,
+                        calorieIntake: object.radioCalorieGoal,
+                    }));
                     handleNextView();
                 }
             }

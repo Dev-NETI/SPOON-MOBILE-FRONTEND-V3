@@ -60,8 +60,12 @@ function LoginOtp() {
                     description:
                         'You have successfully verified your account. You can now log in.',
                 });
-                console.log(response.data.status);
-                router.push('/dashboard');
+                // console.log(response.data);
+                if (user?.is_first_login === 1) {
+                    router.push('/account-setup');
+                } else {
+                    router.push('/dashboard');
+                }
             })
             .catch(error => {
                 console.error(
@@ -77,11 +81,11 @@ function LoginOtp() {
     };
 
     async function generateOtp() {
-        console.log(user);
+        // console.log(user);
         await axios
             .post('/api/authenticating', { temp_otp: tempt_otp })
             .then(response => {
-                console.log(response.data.status);
+                // console.log(response.data.status);
             })
             .catch(error => {
                 console.error('Error authenticating:', error);
@@ -92,7 +96,7 @@ function LoginOtp() {
         axios.get('/api/checking-status-otp').then(response => {
             if (response.data.status === true) {
                 router.push('/dashboard');
-                console.log('Verified');
+                // console.log('Verified');
             } else {
                 generateOtp();
             }
