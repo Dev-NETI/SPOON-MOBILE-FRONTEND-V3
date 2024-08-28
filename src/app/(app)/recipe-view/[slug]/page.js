@@ -17,6 +17,8 @@ import SaveRecipeComponent from '@/components/app/recipe-view/SaveRecipeComponen
 import { useSavedRecipe } from '@/hooks/api/saved-recipe';
 import { useAuth } from '@/hooks/auth';
 import CustomizedSnackbar from '@/components/CustomSnackBar';
+import CommentSection from '@/components/app/recipe-view/CommentSection';
+import { useRecipeReview } from '@/hooks/api/recipe-review';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -66,6 +68,8 @@ function page({ params }) {
     const { showWith2Parameter: getIsSaved } = useSavedRecipe('show');
     const { store: saveToFavorite } = useSavedRecipe();
     const { destroy2Parameter: unSaveRecipe } = useSavedRecipe('destroy');
+    const { show: showRecipeReview } = useRecipeReview();
+    const [recipeReviewData, setRecipeReviewData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -78,16 +82,20 @@ function page({ params }) {
 
     useEffect(() => {
         if (recipeData) {
-            const fetchIsSaved = async () => {
+            const fetchData = async () => {
                 const { data: isSavedData } = await getIsSaved(
                     recipeData.id,
                     user.id
                 );
                 // const { data: isSavedData } = await getIsSaved(1025, 4);
                 setIsRecipeSaved(isSavedData);
+                const { data: reviewData } = await showRecipeReview(
+                    recipeData.id
+                );
+                setRecipeReviewData(reviewData);
                 setLoading(false);
             };
-            fetchIsSaved();
+            fetchData();
         }
     }, [recipeData, snackBarState]);
 
@@ -203,8 +211,8 @@ function page({ params }) {
                         ))}
                     </div>
                 </div>
-                <div className='grid grid-cols-1 gap-2 mt-1'>
-                    <Box sx={{ width: '100%' }}>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mt-1 py-2'>
+                    <Box>
                         <Box
                             sx={{
                                 borderBottom: 1,
@@ -244,6 +252,13 @@ function page({ params }) {
                         <CustomTabPanel value={tab} index={2}>
                             <NutritionTab data={recipeData} />
                         </CustomTabPanel>
+                    </Box>
+                    <Box>
+                        <CommentSection
+                            recipeData={recipeData}
+                            setSnackBarState={setSnackBarState}
+                            reviewData={recipeReviewData}
+                        />
                     </Box>
                 </div>
             </div>
