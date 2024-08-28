@@ -8,11 +8,12 @@ import { useAuth } from '@/hooks/auth';
 function FavoriteCardComponent({
     recipe = null,
     src = null,
+    url = null,
     alt = null,
     originname = null,
     originflag = null,
 }) {
-    if (recipe == null || src == null || alt == null) {
+    if (recipe == null || src == null || alt == null || url == null) {
         return (
             <a href='/recipe' className='flex justify-center items-center'>
                 <Image
@@ -25,8 +26,8 @@ function FavoriteCardComponent({
     } else {
         return (
             <a
-                href='/recipe'
-                className='bg-slate-50 rounded-lg md:rounded-3xl shadow-md shadow-slate-200 hover:-translate-y-3 duration-300 ease-in-out'
+                href={url}
+                className='bg-slate-50 rounded-lg md:rounded-3xl shadow-md shadow-slate-200 hover:-translate-y-1 duration-300 ease-in-out'
             >
                 <Image
                     src={src}
@@ -47,7 +48,9 @@ function FavoriteCardComponent({
                 <div className='grid grid-cols-1 my-2 md:my-2 lg:grid-cols-2 sm:mb-3'>
                     <div className='flex items-center'>
                         <Image
-                            className='w-5 sm:w-8 rounded-full ms-2 border' width={100} height={100}
+                            className='w-5 sm:w-8 rounded-full ms-2 border'
+                            width={100}
+                            height={100}
                             src={originflag}
                         ></Image>
                         <p className='ms-2 text-sm '>{originname}</p>
