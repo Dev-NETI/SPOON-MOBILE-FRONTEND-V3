@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import { Card, CardContent, CardMedia, Chip, Grid, List } from '@mui/material';
+import { Chip, Grid, List } from '@mui/material';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -17,6 +17,8 @@ import SaveRecipeComponent from '@/components/app/recipe-view/SaveRecipeComponen
 import { useSavedRecipe } from '@/hooks/api/saved-recipe';
 import { useAuth } from '@/hooks/auth';
 import CustomizedSnackbar from '@/components/CustomSnackBar';
+import CommentSection from '@/components/app/recipe-view/CommentSection';
+import { useRecipeReview } from '@/hooks/api/recipe-review';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -66,6 +68,8 @@ function page({ params }) {
     const { showWith2Parameter: getIsSaved } = useSavedRecipe('show');
     const { store: saveToFavorite } = useSavedRecipe();
     const { destroy2Parameter: unSaveRecipe } = useSavedRecipe('destroy');
+    const { show: showRecipeReview } = useRecipeReview();
+    const [recipeReviewData, setRecipeReviewData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -78,16 +82,20 @@ function page({ params }) {
 
     useEffect(() => {
         if (recipeData) {
-            const fetchIsSaved = async () => {
+            const fetchData = async () => {
                 const { data: isSavedData } = await getIsSaved(
                     recipeData.id,
                     user.id
                 );
                 // const { data: isSavedData } = await getIsSaved(1025, 4);
                 setIsRecipeSaved(isSavedData);
+                const { data: reviewData } = await showRecipeReview(
+                    recipeData.id
+                );
+                setRecipeReviewData(reviewData);
                 setLoading(false);
             };
-            fetchIsSaved();
+            fetchData();
         }
     }, [recipeData, snackBarState]);
 
@@ -165,15 +173,13 @@ function page({ params }) {
                 </div>
 
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                    <div className='relative rounded-xl hover:brightness-75 w-full h-auto'>
-                        <Card className='hover:shadow-lg transition-shadow duration-300 shadow-md'>
-                            <CardMedia
-                                component='img'
-                                alt={recipeData?.name}
-                                height={500}
-                                image={recipeData?.image_path}
-                            />
-                        </Card>
+                    <div className='relative rounded-xl hover:brightness-75 w-full shadow-md'>
+                        <Image
+                            src={recipeData?.image_path}
+                            alt={recipeData?.name}
+                            fill
+                            style={{ objectFit: 'cover' }}
+                        />
                     </div>
 
                     <div className='grid grid-cols-3 sm:grid-cols-3 md:grid-cols-1 gap-2'>
@@ -205,56 +211,55 @@ function page({ params }) {
                         )) || <p>No season name available.</p>}
                     </div>
                 </div>
-                <div className='grid grid-cols-1 gap-2 mt-1'>
-                    <Card sx={{ mt: 2, mb: 2 }}>
-                        <Box sx={{ width: '100%' }}>
-                            <Box
-                                sx={{
-                                    borderBottom: 1,
-                                    pt: 1,
-                                    borderColor: 'divider',
-                                }}
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mt-1 py-2'>
+                    <Box>
+                        <Box
+                            sx={{
+                                borderBottom: 1,
+                                pt: 1,
+                                borderColor: 'divider',
+                            }}
+                        >
+                            <Tabs
+                                value={tab}
+                                onChange={handleChange}
+                                variant='scrollable'
+                                scrollButtons
+                                allowScrollButtonsMobile
+                                aria-label='scrollable force tabs example'
                             >
-                                <Tabs
-                                    value={tab}
-                                    onChange={handleChange}
-                                    variant='scrollable'
-                                    scrollButtons
-                                    allowScrollButtonsMobile
-                                    aria-label='scrollable force tabs example'
-                                >
-                                    <Tab
-                                        label='Ingredients'
-                                        {...a11yProps(0)}
-                                    />
-                                    <Tab
-                                        label='Instructions'
-                                        {...a11yProps(1)}
-                                    />
-                                    <Tab label='Nutrition' {...a11yProps(2)} />
-                                </Tabs>
-                            </Box>
-                            <CustomTabPanel value={tab} index={0}>
-                                <Grid container>
-                                    <Grid item xs={12} md={12}>
-                                        <List>
-                                            <IngridientsTab Item={recipeData} />
-                                        </List>
-                                    </Grid>
-                                </Grid>
-                            </CustomTabPanel>
-                            <CustomTabPanel value={tab} index={1}>
+                                <Tab label='Ingredients' {...a11yProps(0)} />
+                                <Tab label='Instructions' {...a11yProps(1)} />
+                                <Tab label='Nutrition' {...a11yProps(2)} />
+                            </Tabs>
+                        </Box>
+                        <CustomTabPanel value={tab} index={0}>
+                            <Grid container>
                                 <Grid item xs={12} md={12}>
                                     <List>
-                                        <InstructionTab Item={recipeData} />
+                                        <IngridientsTab Item={recipeData} />
                                     </List>
                                 </Grid>
-                            </CustomTabPanel>
-                            <CustomTabPanel value={tab} index={2}>
-                                <NutritionTab data={recipeData} />
-                            </CustomTabPanel>
-                        </Box>
-                    </Card>
+                            </Grid>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={tab} index={1}>
+                            <Grid item xs={12} md={12}>
+                                <List>
+                                    <InstructionTab Item={recipeData} />
+                                </List>
+                            </Grid>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={tab} index={2}>
+                            <NutritionTab data={recipeData} />
+                        </CustomTabPanel>
+                    </Box>
+                    <Box>
+                        <CommentSection
+                            recipeData={recipeData}
+                            setSnackBarState={setSnackBarState}
+                            reviewData={recipeReviewData}
+                        />
+                    </Box>
                 </div>
             </div>
         </div>
