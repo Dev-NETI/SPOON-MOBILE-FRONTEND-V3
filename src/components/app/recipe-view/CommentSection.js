@@ -28,22 +28,27 @@ function CommentSection({ reviewData, recipeData, setSnackBarState }) {
                     rating={data.rating}
                 />
             ))}
-            <div className='flex justify-center mt-4'>
-                <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className='px-4 py-2 mr-2 bg-gray-800 text-white rounded disabled:opacity-50'
-                >
-                    Previous
-                </button>
-                <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage * itemsPerPage >= reviewData.length}
-                    className='px-4 py-2 bg-gray-800 text-white rounded disabled:opacity-50'
-                >
-                    Next
-                </button>
-            </div>
+            {reviewData.length > 0 && (
+                <div className='flex justify-center mt-4'>
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className='px-4 py-2 mr-2 bg-gray-800 text-white rounded disabled:opacity-50'
+                    >
+                        Previous
+                    </button>
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={
+                            currentPage * itemsPerPage >= reviewData.length
+                        }
+                        className='px-4 py-2 bg-gray-800 text-white rounded disabled:opacity-50'
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
+
             <CommentSectionForm
                 recipeData={recipeData}
                 setSnackBarState={setSnackBarState}

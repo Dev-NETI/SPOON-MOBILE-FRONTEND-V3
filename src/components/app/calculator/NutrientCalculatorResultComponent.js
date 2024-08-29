@@ -80,9 +80,9 @@ function NutrientCalculatorResultComponent({ data }) {
         <div
             className='basis-full md:basis-6/12 lg:basis-6/12
             border-0 rounded-lg bg-blue-700 shadow-lg
-            flex flex-row gap-4 '
+            flex flex-row gap-4 h-4/6'
         >
-            <div className='basis-6/12 flex flex-col justify-center items-center p-5 '>
+            <div className='basis-6/12 flex flex-col justify-center items-center px-5'>
                 <p className='text-slate-100 font-bold text-3xl'>
                     {calorieIntake}
                 </p>
@@ -95,7 +95,7 @@ function NutrientCalculatorResultComponent({ data }) {
                     defaultUnit='cal'
                 />
             </div>
-            <div className='basis-6/12 flex flex-col justify-center py-2 px-4'>
+            <div className='basis-6/12 flex flex-col justify-center  px-5 py-4'>
                 <ProgressBarWLabel
                     label='Carbs'
                     labelClassName='text-green-500'
