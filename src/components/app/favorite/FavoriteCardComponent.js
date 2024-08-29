@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import HeartSvg from '/public/assets/app/icons/heart-fill.svg';
+// import HeartSvg from '/public/assets/app/icons/heart-fill.svg';
 import flag from '/public/assets/app/icons/armenia flag.png';
 import addCard from '/public/images/addCard.png';
 
@@ -29,10 +29,10 @@ function FavoriteCardComponent({ recipe = null, src = null, alt = null }) {
                     <p className='ms-2 font-semibold text-sm sm:text-md text-stone-800'>
                         {recipe}
                     </p>
-                    <Image
+                    {/* <Image
                         className='justify-self-end w-4 sm:w-5 sm:me-6'
                         src={HeartSvg}
-                    ></Image>
+                    ></Image> */}
                 </div>
                 <div className='grid grid-cols-1 my-2 md:my-2 lg:grid-cols-2 sm:mb-3'>
                     <div className='flex items-center'>
