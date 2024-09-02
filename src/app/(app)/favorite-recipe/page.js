@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import FavoriteCardComponent from '@/components/app/favorite/FavoriteCardComponent';
 import { useSavedRecipe } from '@/hooks/api/saved-recipe';
 import { useAuth } from '@/hooks/auth';
-import Loading from '../Loading';
 import { miyagi } from 'ldrs';
+import CustomizedSnackbar from '@/components/CustomSnackBar';
 
 const FavoriteRecipe = () => {
     miyagi.register();
@@ -16,26 +16,23 @@ const FavoriteRecipe = () => {
         loading: true,
         savedRecipeData: [],
     });
+    const [snackBarState, setSnackBarState] = useState({
+        severity: 'success',
+        open: false,
+        message: 'This is a success Alert inside a Snackbar!',
+    });
 
     useEffect(() => {
         const fetchSavedRecipe = async () => {
-            try {
-                const { data } = await showSavedRecipe(user.id);
-                setFavoriteRecipeState({
-                    loading: false,
-                    savedRecipeData: data,
-                });
-            } catch (error) {
-                console.error('Failed to fetch saved recipes:', error);
-                setFavoriteRecipeState(prevState => ({
-                    ...prevState,
-                    loading: false,
-                }));
-            }
+            const { data } = await showSavedRecipe(user.id);
+            setFavoriteRecipeState({
+                savedRecipeData: data,
+                loading: false,
+            });
         };
 
         fetchSavedRecipe();
-    }, [user.id]); // Only run the effect when the user id changes
+    }, [user.id, snackBarState.open]); // Only run the effect when the user id changes
 
     return favoriteRecipeState.loading ? (
         // Default values shown
@@ -50,6 +47,17 @@ const FavoriteRecipe = () => {
         </div>
     ) : (
         <>
+            <CustomizedSnackbar
+                open={snackBarState.open}
+                message={snackBarState.message}
+                severity={snackBarState.severity}
+                onClose={() =>
+                    setSnackBarState(prevState => ({
+                        ...prevState,
+                        open: false,
+                    }))
+                }
+            />
             <div className='gap-4 animate-fade-up animate-once animate-duration-1000'>
                 <div className='flex justify-center mt-4 shadow-sm h-10'>
                     <p className='font-bold text-stone-800 text-xl'>
@@ -64,15 +72,19 @@ const FavoriteRecipe = () => {
                                 <FavoriteCardComponent
                                     url={'/recipe-view/' + recipe.slug}
                                     key={index}
+                                    recipeId={recipe.id}
                                     recipe={recipe.name || 'Recipe'}
                                     originflag={
-                                        recipe.image_path || 'Origin Image'
+                                        recipe.image_path ||
+                                        '/assets/app/icons/armenia flag.png'
                                     }
                                     originname={
                                         recipe.origin_name || 'Origin Name'
                                     }
                                     src={recipe.recipe_img} // Replace with dynamic image source if available
                                     alt={`${recipe.name || 'Recipe'} image`}
+                                    snackBarState={snackBarState}
+                                    setSnackBarState={setSnackBarState}
                                 />
                             )
                         )
