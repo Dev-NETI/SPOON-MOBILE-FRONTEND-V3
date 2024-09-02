@@ -75,7 +75,7 @@ function NutritionTab({ data }) {
                                 <td>{/* <b>6%</b> */}</td>
                             </tr>
                             <tr>
-                                <td className='blank-cell'></td>
+                                <td className='blank-cell' />
                                 <th>Dietary Fiber {data?.fiber}g</th>
                                 <td>{/* <b>4%</b> */}</td>
                             </tr>
@@ -88,7 +88,7 @@ function NutritionTab({ data }) {
                                 <th colSpan='2'>
                                     <b>Protein</b> {data?.protein}g
                                 </th>
-                                <td></td>
+                                <td />
                             </tr>
                         </tbody>
                     </table>

@@ -72,7 +72,7 @@ function CommentSectionForm({ recipeData, setSnackBarState }) {
                         value={review}
                         onChange={e => setReview(e.target.value)}
                         className='bg-gray-200 rounded-md w-full'
-                    ></textarea>
+                     />
                     {error.review && <ErrorBadge message={error.review} />}
                 </div>
                 <div className='flex justify-end py-2'>

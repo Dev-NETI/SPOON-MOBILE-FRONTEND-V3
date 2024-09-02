@@ -16,11 +16,11 @@ function FavoriteCardComponent({
     if (recipe == null || src == null || alt == null || url == null) {
         return (
             <a href='/recipe' className='flex justify-center items-center'>
-                <Image
+                 <Image
                     className='hover:scale-110 w-28 duration-200 ease-in-out shadow-lg rounded-full'
                     src={addCard}
-                    alt='ff'
-                ></Image>
+                     alt='ff'
+                  />
             </a>
         );
     } else {

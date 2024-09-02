@@ -69,7 +69,7 @@ function BloodPressureHistoryModal() {
                         </button>
                     </div>
                 </div>
-                <DialogDescription></DialogDescription>
+                <DialogDescription />
             </DialogContent>
         </Dialog>
     );

@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { useAuth } from '@/hooks/auth'
-import Navigation from '@/app/(app)/Navigation'
-import Loading from '@/app/(app)/Loading'
-import BottomNavigation from '@/components/app/BottomNavigation'
+import { useAuth } from '@/hooks/auth';
+import Navigation from '@/app/(app)/Navigation';
+import Loading from '@/app/(app)/Loading';
+import BottomNavigation from '@/components/app/BottomNavigation';
 
 const AppLayout = ({ children }) => {
-    const { user } = useAuth({ middleware: 'auth' })
+    const { user } = useAuth({ middleware: 'auth' });
 
     if (!user) {
-        return <Loading />
+        return <Loading />;
     }
 
     return (
@@ -24,7 +24,7 @@ const AppLayout = ({ children }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default AppLayout
+export default AppLayout;

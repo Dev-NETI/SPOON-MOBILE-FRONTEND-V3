@@ -1,5 +1,5 @@
-import React from 'react'
-import Link from 'next/link'
+import React from 'react';
+import Link from 'next/link';
 
 function BottomNavigationItem({
     route,
@@ -8,7 +8,7 @@ function BottomNavigationItem({
     icon,
     ...props
 }) {
-    let style = active ? 'text-blue-500' : 'text-gray-800'
+    let style = active ? 'text-blue-500' : 'text-gray-800';
     return (
         <Link href={route}>
             <button
@@ -26,7 +26,7 @@ function BottomNavigationItem({
                 <span className={`${style} text-sm`}>{label}</span>
             </button>
         </Link>
-    )
+    );
 }
 
-export default BottomNavigationItem
+export default BottomNavigationItem;
