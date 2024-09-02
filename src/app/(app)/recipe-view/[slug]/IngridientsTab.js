@@ -14,7 +14,7 @@ import React from 'react';
 
 function IngridientsTab({ Item }) {
     function generateIngredients() {
-        return Item?.ingredient.map(data => (
+        return (Item?.ingredient || []).map(data => (
             <ListItem key={data.id}>
                 <ListItemIcon>
                     <CheckRoundedIcon sx={{ color: green[500] }} />

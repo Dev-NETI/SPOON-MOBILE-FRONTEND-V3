@@ -203,12 +203,12 @@ function page({ params }) {
                         Best served
                     </h1>
                     <div className='grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-2 mt-1'>
-                        {recipeData?.food_group_list_item.map(data => (
+                        {recipeData?.food_group_list_item?.map(data => (
                             <Chip key={data.id} label={data?.food_group.name} />
-                        ))}
-                        {recipeData?.season_list_item.map(data => (
+                        )) || <p>No food group items available.</p>}
+                        {recipeData?.season_list_item?.map(data => (
                             <Chip key={data.id} label={data?.season.name} />
-                        ))}
+                        )) || <p>No season name available.</p>}
                     </div>
                 </div>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mt-1 py-2'>

@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import axios from '@/lib/axios';
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { Prosto_One } from 'next/font/google';
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter();
@@ -44,13 +45,12 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
         setErrors([]);
         setStatus(null);
-
+        
         axios
             .post('/login', props)
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error;
-
                 setErrors(error.response.data.errors);
             });
     };
