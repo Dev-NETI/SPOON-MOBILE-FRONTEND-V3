@@ -4,9 +4,9 @@ function page() {
     return (
         <>
             <div className='ocean'>
-                <div className='wave'></div>
-                <div className='wave'></div>
-                <div className='wave'></div>
+                <div className='wave' />
+                <div className='wave' />
+                <div className='wave' />
             </div>
         </>
     );

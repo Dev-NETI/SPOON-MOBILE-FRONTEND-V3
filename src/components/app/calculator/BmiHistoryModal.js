@@ -68,7 +68,7 @@ function BmiHistoryModal() {
                         </button>
                     </div>
                 </div>
-                <DialogDescription></DialogDescription>
+                <DialogDescription />
             </DialogContent>
         </Dialog>
     );

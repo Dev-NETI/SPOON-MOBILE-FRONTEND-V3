@@ -1,5 +1,5 @@
-import React from 'react'
-import Link from 'next/link'
+import React from 'react';
+import Link from 'next/link';
 function RegisterLink() {
     return (
         <Link
@@ -7,7 +7,7 @@ function RegisterLink() {
             className="underline text-sm text-gray-600 hover:text-gray-900">
             Already registered?
         </Link>
-    )
+    );
 }
 
-export default RegisterLink
+export default RegisterLink;

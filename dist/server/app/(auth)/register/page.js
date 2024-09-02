@@ -506,7 +506,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! next/dist/build/webpack/loaders/next-flight-loader/module-proxy */ "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-loader/module-proxy.js");
 
-const proxy = (0,next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__.createProxy)(String.raw`C:\xampp\htdocs\Mobile Applications\SPOON\spoon-mobile-frontend\src\app\(auth)\layout.js`)
+const proxy = (0,next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__.createProxy)(String.raw`C:\xampp\htdocs\Mobile Applications\SPOON\spoon-mobile-frontend\src\app\(auth)\layout.js`);
 
 // Accessing the __esModule property and exporting $$typeof are required here.
 // The __esModule getter forces the proxy target to create the default export
@@ -535,7 +535,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! next/dist/build/webpack/loaders/next-flight-loader/module-proxy */ "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-loader/module-proxy.js");
 
-const proxy = (0,next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__.createProxy)(String.raw`C:\xampp\htdocs\Mobile Applications\SPOON\spoon-mobile-frontend\src\app\(auth)\register\page.js`)
+const proxy = (0,next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__.createProxy)(String.raw`C:\xampp\htdocs\Mobile Applications\SPOON\spoon-mobile-frontend\src\app\(auth)\register\page.js`);
 
 // Accessing the __esModule property and exporting $$typeof are required here.
 // The __esModule getter forces the proxy target to create the default export
@@ -599,7 +599,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 // load runtime
 var __webpack_require__ = require("../../../webpack-runtime.js");
 __webpack_require__.C(exports);
-var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId));
 var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/axios","vendor-chunks/@radix-ui","vendor-chunks/@swc","vendor-chunks/lucide-react","vendor-chunks/debug","vendor-chunks/class-variance-authority","vendor-chunks/follow-redirects","vendor-chunks/tailwind-merge","vendor-chunks/swr","vendor-chunks/clsx","vendor-chunks/yup","vendor-chunks/toposort","vendor-chunks/tiny-case","vendor-chunks/supports-color","vendor-chunks/property-expr","vendor-chunks/ms","vendor-chunks/has-flag"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2F(auth)%2Fregister%2Fpage&page=%2F(auth)%2Fregister%2Fpage&appPaths=%2F(auth)%2Fregister%2Fpage&pagePath=private-next-app-dir%2F(auth)%2Fregister%2Fpage.js&appDir=C%3A%5Cxampp%5Chtdocs%5CMobile%20Applications%5CSPOON%5Cspoon-mobile-frontend%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5Cxampp%5Chtdocs%5CMobile%20Applications%5CSPOON%5Cspoon-mobile-frontend&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=export&preferredRegion=&middlewareConfig=e30%3D!")));
 module.exports = __webpack_exports__;
 

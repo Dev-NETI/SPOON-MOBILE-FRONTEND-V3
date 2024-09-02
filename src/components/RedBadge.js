@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 function RedBadge({ message }) {
     return (
@@ -7,7 +7,7 @@ function RedBadge({ message }) {
                 message
             }
         </span>
-    )
+    );
 }
 
-export default RedBadge
+export default RedBadge;

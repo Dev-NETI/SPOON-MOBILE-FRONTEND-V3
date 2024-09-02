@@ -1,17 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
 // import HeartSvg from '/public/assets/app/icons/heart-fill.svg';
-import flag from '/public/assets/app/icons/armenia flag.png';
-import addCard from '/public/images/addCard.png';
+// import flag from '/public/assets/app/icons/armenia flag.png';
+// import addCard from '/public/images/addCard.png';
 
 function FavoriteCardComponent({ recipe = null, src = null, alt = null }) {
     if (recipe == null || src == null || alt == null) {
         return (
             <a href='/recipe' className='flex justify-center items-center'>
-                <Image
+                {/* <Image
                     className='hover:scale-110 w-28 duration-200 ease-in-out shadow-lg rounded-full'
                     src={addCard}
-                ></Image>
+                ></Image> */}
             </a>
         );
     } else {
@@ -36,10 +36,10 @@ function FavoriteCardComponent({ recipe = null, src = null, alt = null }) {
                 </div>
                 <div className='grid grid-cols-1 my-2 md:my-2 lg:grid-cols-2 sm:mb-3'>
                     <div className='flex items-center'>
-                        <Image
+                        {/* <Image
                             className='w-5 sm:w-8 rounded-full ms-2'
                             src={flag}
-                        ></Image>
+                        ></Image> */}
                         <p className='ms-2 text-sm '>Armenian</p>
                     </div>
                     <div className='bg-blue-950 m-2 md:m-1 rounded-md sm:rounded-2xl me-2'>
