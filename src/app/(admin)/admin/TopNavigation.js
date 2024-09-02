@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import ApplicationLogo from '@/components/ApplicationLogo';
 
-const pages = ['Home', 'Recipe', 'Category', 'Rank'];
+const pages = ['Home', 'Recipe', 'Category', 'Rank', 'User Management'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function TopNavigation() {
@@ -48,6 +48,9 @@ function TopNavigation() {
                     break;
                 case 'rank':
                     router.push('/admin/rank');
+                    break;
+                case 'user management':
+                    router.push('/admin/user');
                     break;
                 default:
                     break;
@@ -161,10 +164,7 @@ function TopNavigation() {
                                 onClick={handleOpenUserMenu}
                                 sx={{ p: 0 }}
                             >
-                                <Avatar
-                                    alt='Remy Sharp'
-                                    src='/static/images/avatar/2.jpg'
-                                />
+                                <Avatar alt='Remy Sharp' src='' />
                             </IconButton>
                         </Tooltip>
                         <Menu
