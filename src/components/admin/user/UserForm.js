@@ -5,6 +5,7 @@ import Button from '@/components/Button';
 import CustomizedSnackbar from '@/components/CustomSnackBar';
 import { useUserHook } from '@/hooks/api/user';
 import ConfirmationDialog from '@/components/ConfirmationDialog';
+import ResetPasswordForm from './ResetPasswordForm';
 
 function UserForm({ data, editMode, userSlug = null, setEditMode }) {
     const [error, setError] = useState({
@@ -18,10 +19,10 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
         message: '',
         severity: 'success',
     });
-    const [confirmDialogState, setConfirmDialogState] = useState({
-        open: false,
-    });
-    const { patch: updateUser } = useUserHook('update-basic-information');
+    const [confirmDialogState, setConfirmDialogState] = useState(false);
+    const [resetPasswordDialogState, setResetPasswordDialogState] =
+        useState(false);
+    const { patch: updateUser } = useUserHook('user/update-basic-information');
 
     const rules = Yup.object().shape({
         firstname: Yup.string()
@@ -66,6 +67,7 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
                 severity: 'success',
             }));
             setEditMode(prevState => ({ ...prevState, editMode: false }));
+            setConfirmDialogState(false);
             setError({});
         } catch (error) {
             const errors = error.inner.reduce((acc, curr) => {
@@ -80,6 +82,11 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
         setSnackbarState(prevState => ({ ...prevState, open: false }));
     };
 
+    const handleResetState = () => {
+        setResetPasswordDialogState(false);
+        setEditMode(prevState => ({ ...prevState, editMode: false }));
+    };
+
     return (
         <>
             <CustomizedSnackbar
@@ -88,7 +95,28 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
                 severity={snackbarState.severity}
                 onClose={handleCloseSnackbar}
             />
-            <ConfirmationDialog open={confirmDialogState.open} />
+            <ConfirmationDialog
+                open={confirmDialogState}
+                submitButtonSlot={
+                    <Button form='formUser' type='submit'>
+                        Update
+                    </Button>
+                }
+                closeDialog={() => setConfirmDialogState(false)}
+                children='Are you sure you want to update?'
+            />
+            <ConfirmationDialog
+                title='Reset Password'
+                open={resetPasswordDialogState}
+                closeDialog={() => setResetPasswordDialogState(false)}
+                children={
+                    <ResetPasswordForm
+                        userSlug={userSlug}
+                        resetStateMethod={handleResetState}
+                        setSnackBarMethod={setSnackbarState}
+                    />
+                }
+            />
             <form id='formUser' onSubmit={handleSubmit}>
                 <TextField
                     error={!!error.firstname}
@@ -144,8 +172,19 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
                     margin='normal'
                 />
                 {editMode && (
-                    <div className='flex justify-end'>
-                        <Button type='submit'>Update</Button>
+                    <div className='flex justify-end gap-2'>
+                        <Button
+                            type='button'
+                            onClick={() => setResetPasswordDialogState(true)}
+                        >
+                            Reset Password
+                        </Button>
+                        <Button
+                            type='button'
+                            onClick={() => setConfirmDialogState(true)}
+                        >
+                            Update
+                        </Button>
                     </div>
                 )}
             </form>
