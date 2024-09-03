@@ -45,7 +45,7 @@ function CalorieCalculatorForm({ isFirstLogin = false }) {
         } = useContext(CalorieCalculatorContext));
     }
 
-    const { patch: updateUserData } = useUserHook('update-data');
+    const { patch: updateUserData } = useUserHook('user/update-data');
     const rules = Yup.object().shape({
         age: Yup.number()
             .required('Age is required!')

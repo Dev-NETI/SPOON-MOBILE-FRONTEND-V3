@@ -12,7 +12,9 @@ import { useToast } from '@/components/ui/use-toast';
 import { AccountSetupContext } from '@/stores/AccountSetupContext';
 
 function CalorieGoalResultComponent({ isFirstLogin = false }) {
-    const { patch: updateCalorieIntake } = useUserHook('update-calorie-intake');
+    const { patch: updateCalorieIntake } = useUserHook(
+        'user/update-calorie-intake'
+    );
     const { toast } = useToast();
     let formDataState,
         user,

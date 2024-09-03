@@ -6,7 +6,7 @@ import UserListComponent from '@/components/admin/user/UserListComponent';
 import Input from '@/components/Input';
 
 function page() {
-    const { index: getAllUser } = useUserHook();
+    const { index: getAllUser } = useUserHook('users/get-all-user');
     const [userModuleState, setUserModuleState] = useState({
         userData: null,
         loading: true,
