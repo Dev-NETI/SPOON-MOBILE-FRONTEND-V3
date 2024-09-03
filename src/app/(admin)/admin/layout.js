@@ -7,10 +7,8 @@ function layout({ children }) {
     return (
         <>
             <TopNavigation />
-            <Container maxWidth='lg'>
-                {children}
-                <OceanAnimation />
-            </Container>
+            <Container maxWidth='lg'>{children}</Container>
+            <OceanAnimation />
         </>
     );
 }
