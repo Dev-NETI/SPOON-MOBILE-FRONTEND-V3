@@ -12,7 +12,6 @@ function FavoriteCardComponent({
     alt = null,
     originname = null,
     originflag = null,
-    snackBarState,
     setSnackBarState,
 }) {
     const { user } = useAuth({ middleware: 'auth' });
@@ -41,11 +40,12 @@ function FavoriteCardComponent({
     if (recipe == null || src == null || alt == null || url == null) {
         ui = (
             <a href='/recipe' className='flex justify-center items-center'>
-                <Image
+                {/* <Image
                     className='hover:scale-110 w-28 duration-200 ease-in-out shadow-lg rounded-full'
                     src={addCard}
                     alt='ff'
-                />
+                /> */}
+                Add Card
             </a>
         );
     } else {
@@ -78,7 +78,7 @@ function FavoriteCardComponent({
                                 height={100}
                                 src={originflag}
                                 alt={originflag}
-                            ></Image>
+                            />
                             <p className='ms-2 text-sm '>{originname}</p>
                         </div>
                         <div className='bg-blue-950 m-2 md:m-1 rounded-md sm:rounded-2xl me-2'>

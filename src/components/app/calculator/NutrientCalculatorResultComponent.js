@@ -64,12 +64,12 @@ function NutrientCalculatorResultComponent({ data }) {
         );
 
         return () => {
-            clearInterval(totalCalorieCounter),
-                clearInterval(totalCarbsCounter),
-                clearInterval(totalProteinCounter),
-                clearInterval(totalFatCounter),
-                clearInterval(totalSodiumCounter),
-                clearInterval(totalFiberCounter);
+            clearInterval(totalCalorieCounter);
+            clearInterval(totalCarbsCounter);
+            clearInterval(totalProteinCounter);
+            clearInterval(totalFatCounter);
+            clearInterval(totalSodiumCounter);
+            clearInterval(totalFiberCounter);
         };
     }, [data]);
 

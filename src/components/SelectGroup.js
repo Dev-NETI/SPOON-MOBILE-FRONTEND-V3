@@ -5,7 +5,6 @@ function SelectGroup({
     data = null,
     editMode = false,
     title,
-    initialValueId,
     initialValue,
     className,
     error = null,

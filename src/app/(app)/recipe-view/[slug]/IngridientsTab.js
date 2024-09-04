@@ -1,13 +1,4 @@
-import {
-    Chip,
-    Grid,
-    Icon,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-} from '@mui/material';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { green } from '@mui/material/colors';
 import React from 'react';

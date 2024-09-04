@@ -6,7 +6,7 @@ import axios from '@/lib/axios';
  * @param {*} { baseURL, route }
  * @return {*}
  */
-const useResource = ({ baseURL, route }) => {
+const useResource = ({ route }) => {
     /**
      * Fetch all records from the resource.
      *
