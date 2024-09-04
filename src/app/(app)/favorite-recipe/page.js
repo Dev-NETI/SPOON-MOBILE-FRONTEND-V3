@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import FavoriteCardComponent from '@/components/app/favorite/FavoriteCardComponent';
 import { useSavedRecipe } from '@/hooks/api/saved-recipe';
 import { useAuth } from '@/hooks/auth';
-import { miyagi } from 'ldrs';
+// import { miyagi } from 'ldrs';
 import CustomizedSnackbar from '@/components/CustomSnackBar';
+import Loading from '../Loading';
 
 const FavoriteRecipe = () => {
-    miyagi.register();
+    // miyagi.register();
     const { user } = useAuth({ middleware: 'auth' });
-    const { index: getAllSavedRecipe, show: showSavedRecipe } =
-        useSavedRecipe();
+    const { show: showSavedRecipe } = useSavedRecipe();
 
     const [favoriteRecipeState, setFavoriteRecipeState] = useState({
         loading: true,
@@ -37,13 +37,14 @@ const FavoriteRecipe = () => {
     return favoriteRecipeState.loading ? (
         // Default values shown
         <div className='container flex justify-center items-center h-screen'>
-            <l-miyagi
+            {/* <l-miyagi
                 className='mx-auto'
                 size='150'
                 stroke='10'
                 speed='0.9'
                 color='#00023d'
-            ></l-miyagi>
+            /> */}
+            <Loading />
         </div>
     ) : (
         <>

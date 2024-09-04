@@ -19,7 +19,7 @@ function CommentSectionForm({ recipeData, setSnackBarState }) {
     });
     const { store: storeRecipeReview } = useRecipeReview();
 
-    const handleStoreReview = async event => {
+    const handleStoreReview = async () => {
         const object = {
             review,
             rating,
@@ -72,7 +72,7 @@ function CommentSectionForm({ recipeData, setSnackBarState }) {
                         value={review}
                         onChange={e => setReview(e.target.value)}
                         className='bg-gray-200 rounded-md w-full'
-                     />
+                    />
                     {error.review && <ErrorBadge message={error.review} />}
                 </div>
                 <div className='flex justify-end py-2'>

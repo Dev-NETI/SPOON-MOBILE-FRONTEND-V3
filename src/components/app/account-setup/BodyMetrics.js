@@ -1,13 +1,9 @@
 import React from 'react';
-import { AccountSetupContext } from '@/stores/AccountSetupContext';
-import { useContext } from 'react';
-import Button from '@/components/Button';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import CalorieCalculatorForm from '../calculator/CalorieCalculatorForm';
 
 function BodyMetrics() {
     const label = 'Please input your age, height and weight';
-    const { handleNextView } = useContext(AccountSetupContext);
 
     return (
         <div

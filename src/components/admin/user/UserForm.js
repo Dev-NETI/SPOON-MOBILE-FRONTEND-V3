@@ -103,20 +103,20 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
                     </Button>
                 }
                 closeDialog={() => setConfirmDialogState(false)}
-                children='Are you sure you want to update?'
-            />
+            >
+                Are you sure you want to update?
+            </ConfirmationDialog>
             <ConfirmationDialog
                 title='Reset Password'
                 open={resetPasswordDialogState}
                 closeDialog={() => setResetPasswordDialogState(false)}
-                children={
-                    <ResetPasswordForm
-                        userSlug={userSlug}
-                        resetStateMethod={handleResetState}
-                        setSnackBarMethod={setSnackbarState}
-                    />
-                }
-            />
+            >
+                <ResetPasswordForm
+                    userSlug={userSlug}
+                    resetStateMethod={handleResetState}
+                    setSnackBarMethod={setSnackbarState}
+                />
+            </ConfirmationDialog>
             <form id='formUser' onSubmit={handleSubmit}>
                 <TextField
                     error={!!error.firstname}

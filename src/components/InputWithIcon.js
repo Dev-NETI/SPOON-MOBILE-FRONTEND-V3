@@ -1,10 +1,4 @@
-const InputWithIcon = ({
-    disabled = false,
-    className,
-    icon,
-    label,
-    ...props
-}) => (
+const InputWithIcon = ({ className, icon, ...props }) => (
     <div className='basis-full'>
         <div className='relative'>
             <div className='absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none'>

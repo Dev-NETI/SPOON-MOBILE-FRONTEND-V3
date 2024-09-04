@@ -1,5 +1,5 @@
 'use client';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
 import { useRecipeOrigin } from '@/hooks/api/recipe-origin';
 import { useEffect, useState } from 'react';

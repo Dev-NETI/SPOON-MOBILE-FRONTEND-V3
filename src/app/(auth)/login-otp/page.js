@@ -1,6 +1,6 @@
 'use client';
 
-import { React, useEffect, useState } from 'react';
+import { React, useEffect } from 'react';
 import {
     InputOTP,
     InputOTPGroup,
@@ -39,10 +39,10 @@ function LoginOtp() {
     const { user, logout } = useAuth({
         middleware: 'auth',
     });
-
-    const [tempt_otp, setTempt_otp] = useState(
-        Math.floor(100000 + Math.random() * 900000)
-    );
+    const tempt_otp = Math.floor(100000 + Math.random() * 900000);
+    // const [tempt_otp, setTempt_otp] = useState(
+    //     Math.floor(100000 + Math.random() * 900000)
+    // );
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -54,7 +54,7 @@ function LoginOtp() {
     const onSubmit = async data => {
         axios
             .post('/api/verify-otp', { otp: data.pin, temp_otp: tempt_otp })
-            .then(response => {
+            .then(() => {
                 toast({
                     title: 'Successfully Verified',
                     description:
@@ -68,10 +68,10 @@ function LoginOtp() {
                 }
             })
             .catch(error => {
-                console.error(
-                    'Error authenticating:',
-                    error.response.data.status
-                );
+                // console.error(
+                //     'Error authenticating:',
+                //     error.response.data.status
+                // );
                 toast({
                     title: 'Authentication failed',
                     variant: 'destructive',
@@ -84,12 +84,8 @@ function LoginOtp() {
         // console.log(user);
         await axios
             .post('/api/authenticating', { temp_otp: tempt_otp })
-            .then(response => {
-                // console.log(response.data.status);
-            })
-            .catch(error => {
-                console.error('Error authenticating:', error);
-            });
+            .then(() => {})
+            .catch(() => {});
     }
 
     useEffect(() => {

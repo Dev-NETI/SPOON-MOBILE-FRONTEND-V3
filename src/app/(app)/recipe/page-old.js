@@ -1,5 +1,4 @@
 'use client';
-import InputWithIcon from '@/components/InputWithIcon';
 import { useFoodGroup } from '@/hooks/api/food-group';
 import { useEffect, useState } from 'react';
 import RecipeCardComponent from '@/components/app/recipe/RecipeCardComponent';
