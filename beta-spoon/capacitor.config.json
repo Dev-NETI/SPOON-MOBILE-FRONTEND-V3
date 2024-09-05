@@ -1,0 +1,10 @@
+{
+  "appId": "ph.spoon.beta",
+  "appName": "Spoon PH",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}
