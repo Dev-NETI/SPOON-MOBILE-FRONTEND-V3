@@ -1,4 +1,4 @@
-import Image from 'next/image';
+// import Image from 'next/image';
 // import icon from '../../../public/images/star.png';
 import AuthCardHeader from './AuthCardHeader';
 const AuthCard = ({ logo, children, title }) => (
