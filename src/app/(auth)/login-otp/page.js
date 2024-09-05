@@ -1,6 +1,6 @@
 'use client';
 
-import { React, useEffect } from 'react';
+import { React, useEffect, useState } from 'react';
 import {
     InputOTP,
     InputOTPGroup,
@@ -39,10 +39,8 @@ function LoginOtp() {
     const { user, logout } = useAuth({
         middleware: 'auth',
     });
-    const tempt_otp = Math.floor(100000 + Math.random() * 900000);
-    // const [tempt_otp, setTempt_otp] = useState(
-    //     Math.floor(100000 + Math.random() * 900000)
-    // );
+
+    const [tempt_otp, setTempt_otp] = useState();
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -50,6 +48,10 @@ function LoginOtp() {
             pin: '',
         },
     });
+
+    useEffect(() => {
+        setTempt_otp(Math.floor(100000 + Math.random() * 900000));
+    }, []);
 
     const onSubmit = async data => {
         axios
@@ -60,12 +62,8 @@ function LoginOtp() {
                     description:
                         'You have successfully verified your account. You can now log in.',
                 });
-                // console.log(response.data);
-                if (user?.is_first_login === 1) {
-                    router.push('/account-setup');
-                } else {
-                    router.push('/dashboard');
-                }
+                // console.log(response.data.status);
+                router.push('/dashboard');
             })
             .catch(error => {
                 // console.error(
@@ -84,8 +82,12 @@ function LoginOtp() {
         // console.log(user);
         await axios
             .post('/api/authenticating', { temp_otp: tempt_otp })
-            .then(() => {})
-            .catch(() => {});
+            .then(() => {
+                // console.log(response.data.status);
+            })
+            .catch(() => {
+                // console.error('Error authenticating:', error);
+            });
     }
 
     useEffect(() => {
