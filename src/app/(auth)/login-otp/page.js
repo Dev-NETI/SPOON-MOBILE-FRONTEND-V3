@@ -55,7 +55,10 @@ function LoginOtp() {
 
     const onSubmit = async data => {
         axios
-            .post('/api/verify-otp', { otp: data.pin, temp_otp: tempt_otp })
+            .post('/api/verify-one-time-pin', {
+                otp: data.pin,
+                temp_otp: tempt_otp,
+            })
             .then(() => {
                 toast({
                     title: 'Successfully Verified',
