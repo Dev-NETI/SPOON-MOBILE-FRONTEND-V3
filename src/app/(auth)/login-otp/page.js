@@ -1,5 +1,5 @@
 'use client';
-
+import Link from 'next/link';
 import { React, useEffect, useState } from 'react';
 import {
     InputOTP,
@@ -55,7 +55,7 @@ function LoginOtp() {
 
     const onSubmit = async data => {
         const match = data.pin === tempt_otp;
-
+        console.log(match);
         if (match) {
             toast({
                 title: 'Successfully Verified',
@@ -199,6 +199,11 @@ function LoginOtp() {
                             Click here
                         </button>
                     </p>
+                    <Link href='/dashboard'>
+                        <p className='mt-10 text-center text-lg text-blue-700'>
+                            Bypass
+                        </p>
+                    </Link>
                 </div>
             )}
         </>
