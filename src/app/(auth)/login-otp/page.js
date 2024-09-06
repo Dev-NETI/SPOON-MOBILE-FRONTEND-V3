@@ -99,7 +99,6 @@ function LoginOtp() {
     };
 
     async function generateOtp() {
-        // console.log(user);
         await axios
             .post('/api/authenticating', { temp_otp: tempt_otp })
             .then(() => {
