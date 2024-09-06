@@ -36,7 +36,9 @@ const FormSchema = z.object({
 
 function LoginOtp() {
     const router = useRouter();
-    const { user, logout } = useAuth();
+    const { user, logout } = useAuth({
+        middleware: 'auth',
+    });
 
     const [tempt_otp, setTempt_otp] = useState();
 
