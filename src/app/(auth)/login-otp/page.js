@@ -54,35 +54,51 @@ function LoginOtp() {
     }, []);
 
     const onSubmit = async data => {
-        axios
-            .post('/api/verify-one-time-pin', {
-                otp: data.pin,
-                temp_otp: tempt_otp,
-            })
-            .then(() => {
-                toast({
-                    title: 'Successfully Verified',
-                    description:
-                        'You have successfully verified your account. You can now log in.',
-                });
-                // console.log(response.data.status);
-                router.push('/dashboard');
-            })
-            .catch(error => {
-                // console.error(
-                //     'Error authenticating:',
-                //     error.response.data.status
-                // );
-                toast({
-                    title: 'Authentication failed',
-                    variant: 'destructive',
-                    description: error.response.data.status,
-                });
+        const match = data.pin === tempt_otp;
+
+        if (match) {
+            toast({
+                title: 'Successfully Verified',
+                description:
+                    'You have successfully verified your account. You can now log in.',
             });
+            router.push('/dashboard');
+        } else {
+            toast({
+                title: 'Authentication failed',
+                variant: 'destructive',
+                description: error.response.data.status,
+            });
+        }
+
+        // axios
+        //     .post('/api/verify-one-time-pin', {
+        //         otp: data.pin,
+        //         temp_otp: tempt_otp,
+        //     })
+        //     .then(() => {
+        //         toast({
+        //             title: 'Successfully Verified',
+        //             description:
+        //                 'You have successfully verified your account. You can now log in.',
+        //         });
+        //         // console.log(response.data.status);
+        //         router.push('/dashboard');
+        //     })
+        //     .catch(error => {
+        //         // console.error(
+        //         //     'Error authenticating:',
+        //         //     error.response.data.status
+        //         // );
+        //         toast({
+        //             title: 'Authentication failed',
+        //             variant: 'destructive',
+        //             description: error.response.data.status,
+        //         });
+        //     });
     };
 
     async function generateOtp() {
-        // console.log(user);
         await axios
             .post('/api/authenticating', { temp_otp: tempt_otp })
             .then(() => {
