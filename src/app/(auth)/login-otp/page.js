@@ -67,7 +67,7 @@ function LoginOtp() {
             toast({
                 title: 'Authentication failed',
                 variant: 'destructive',
-                description: error.response.data.status,
+                description: 'Oops, something went wrong!',
             });
         }
 
