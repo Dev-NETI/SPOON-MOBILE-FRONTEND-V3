@@ -221,6 +221,16 @@ function generateStrongPassword() {
     return password;
 }
 
+const clearCookies = () => {
+    // Split document.cookie on '; ' to get all cookie key-value pairs
+    document.cookie.split(';').forEach(cookie => {
+        // Split each cookie on '=' to separate the key and value
+        const [key] = cookie.split('=');
+        // Clear each cookie by setting its expiry date to a past date
+        document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
+    });
+};
+
 export {
     cn,
     computeAge,
@@ -237,4 +247,5 @@ export {
     formatDate,
     calculateTDEE,
     generateStrongPassword,
+    clearCookies,
 };

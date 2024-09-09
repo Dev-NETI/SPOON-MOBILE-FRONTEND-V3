@@ -20,7 +20,6 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
 import { Button } from '@/components/ui/button';
 import axios from '@/lib/axios';
 import { useRouter } from 'next/navigation';
@@ -58,15 +57,15 @@ function LoginOtp() {
         if (match) {
             toast({
                 title: 'Successfully Verified',
-                description:
-                    'You have successfully verified your account. You can now log in.',
+                description: 'You have successfully verified your account!',
             });
+            document.cookie = `35de80170cda0d14e2cdd82e9e89d375 = 6f7d41b92d3e4519c9f12b765a83ab4f; path=/; max-age=600`;
             router.push('/dashboard');
         } else {
             toast({
                 title: 'Authentication failed',
                 variant: 'destructive',
-                description: 'Oops, something went wrong!',
+                description: 'Invalid OTP. Please try again.!',
             });
         }
     };

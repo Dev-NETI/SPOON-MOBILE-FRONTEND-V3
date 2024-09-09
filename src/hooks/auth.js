@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import axios from '@/lib/axios';
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { clearCookies } from '@/lib/utils';
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter();
@@ -100,6 +101,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             await axios.post('/logout').then(() => mutate());
         }
 
+        clearCookies();
         window.location.pathname = '/login';
     };
 
