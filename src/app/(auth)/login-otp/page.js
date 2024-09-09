@@ -54,8 +54,8 @@ function LoginOtp() {
     }, []);
 
     const onSubmit = async data => {
-        const match = data.pin === tempt_otp;
-        console.log(match);
+        const match = parseInt(data.pin) === tempt_otp;
+
         if (match) {
             toast({
                 title: 'Successfully Verified',
@@ -70,32 +70,6 @@ function LoginOtp() {
                 description: 'Oops, something went wrong!',
             });
         }
-
-        // axios
-        //     .post('/api/verify-one-time-pin', {
-        //         otp: data.pin,
-        //         temp_otp: tempt_otp,
-        //     })
-        //     .then(() => {
-        //         toast({
-        //             title: 'Successfully Verified',
-        //             description:
-        //                 'You have successfully verified your account. You can now log in.',
-        //         });
-        //         // console.log(response.data.status);
-        //         router.push('/dashboard');
-        //     })
-        //     .catch(error => {
-        //         // console.error(
-        //         //     'Error authenticating:',
-        //         //     error.response.data.status
-        //         // );
-        //         toast({
-        //             title: 'Authentication failed',
-        //             variant: 'destructive',
-        //             description: error.response.data.status,
-        //         });
-        //     });
     };
 
     async function generateOtp() {
@@ -199,11 +173,6 @@ function LoginOtp() {
                             Click here
                         </button>
                     </p>
-                    <Link href='/dashboard'>
-                        <p className='mt-10 text-center text-lg text-blue-700'>
-                            Bypass
-                        </p>
-                    </Link>
                 </div>
             )}
         </>
