@@ -8,6 +8,7 @@ import { useFirstLoginHook } from '@/hooks/firstLoginHook';
 import { useEffect, useState } from 'react';
 import SideNavigation from '@/components/app/SideNavigation';
 import TopBar from '@/components/app/TopBar';
+import Box from '@mui/material/Box';
 
 const AppLayout = ({ children }) => {
     useFirstLoginHook();
@@ -37,33 +38,47 @@ const AppLayout = ({ children }) => {
         setIsDrawerOpen(false);
     };
     return (
-        <div className='min-h-screen bg-gray-100'>
-            <div className='flex flex-col'>
-                <TopBar
-                    isDrawerOpen={isDrawerOpen}
-                    handleDrawerOpen={handleDrawerOpen}
-                    isMobileView={isMobileView}
-                />
-                <div
-                    className='basis-full 
-                mt-24 mb-16
-                md:mt-16 md:pl-16 lg:mt-16 lg:pl-16
-                md:mb-0 lg:mb-0'
-                >
-                    {children}
-                </div>
-                {isMobileView && user.is_first_login !== 1 && (
-                    <BottomNavigation />
-                )}
-                {!isMobileView && user.is_first_login !== 1 && (
+        <>
+            {!isMobileView && user.is_first_login !== 1 && (
+                <Box sx={{ display: 'flex' }}>
+                    <TopBar
+                        isDrawerOpen={isDrawerOpen}
+                        handleDrawerOpen={handleDrawerOpen}
+                        isMobileView={isMobileView}
+                    />
+
                     <SideNavigation
                         open={isDrawerOpen}
                         handleDrawerClose={handleDrawerClose}
                     />
-                )}
-                <Toaster />
-            </div>
-        </div>
+                    <Box component='main' sx={{ flexGrow: 1, py: 8 }}>
+                        <div>{children}</div>
+                    </Box>
+                </Box>
+            )}
+            {isMobileView && user.is_first_login !== 1 && (
+                <div className='min-h-screen bg-gray-100'>
+                    <div className='flex flex-col'>
+                        <TopBar
+                            isDrawerOpen={isDrawerOpen}
+                            handleDrawerOpen={handleDrawerOpen}
+                            isMobileView={isMobileView}
+                        />
+                        <BottomNavigation />
+                        <div
+                            className='basis-full
+                    mt-24 mb-16
+                    md:mt-16 md:pl-16 lg:mt-16 lg:pl-16
+                    md:mb-0 lg:mb-0'
+                        >
+                            {children}
+                        </div>
+
+                        <Toaster />
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 
