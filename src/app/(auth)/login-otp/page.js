@@ -7,7 +7,6 @@ import {
     InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { useAuth } from '@/hooks/auth';
-
 import {
     Form,
     FormControl,
@@ -25,6 +24,7 @@ import axios from '@/lib/axios';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
 import Loading from '@/app/(app)/Loading';
+import { useEmailHook } from '@/hooks/api/email-hook';
 
 const FormSchema = z.object({
     pin: z.string().min(6, {
@@ -37,8 +37,11 @@ function LoginOtp() {
     const { user, logout } = useAuth({
         middleware: 'auth',
     });
-
+    const { showWith2Parameter: sendVerificationCode } = useEmailHook(
+        'send-verification-code'
+    );
     const [tempt_otp, setTempt_otp] = useState();
+    const [timerState, setTimerState] = useState(null);
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -50,6 +53,26 @@ function LoginOtp() {
     useEffect(() => {
         setTempt_otp(Math.floor(100000 + Math.random() * 900000));
     }, []);
+
+    useEffect(() => {
+        const sendEmail = async () => {
+            if (user?.email && tempt_otp && timerState === null) {
+                await handleSendVerificationCode();
+            }
+        };
+
+        sendEmail();
+    }, [user, tempt_otp, sendVerificationCode, timerState]);
+
+    useEffect(() => {
+        let timer;
+        if (timerState > 0) {
+            timer = setInterval(() => {
+                setTimerState(prev => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [timerState]);
 
     const onSubmit = async data => {
         const match = parseInt(data.pin) === tempt_otp;
@@ -91,6 +114,22 @@ function LoginOtp() {
             }
         });
     }, []);
+
+    const handleSendVerificationCode = async () => {
+        const { data: responseData } = await sendVerificationCode(
+            tempt_otp,
+            user.email
+        );
+        return responseData;
+    };
+
+    const handleResendVerificationCode = async () => {
+        const sendResponse = await handleSendVerificationCode();
+        // console.log(sendResponse);
+        if (sendResponse) {
+            setTimerState(60);
+        }
+    };
 
     return (
         <>
@@ -159,6 +198,22 @@ function LoginOtp() {
                             <Button className='w-full' type='submit'>
                                 Submit
                             </Button>
+                            <div className='flex justify-center items-center'>
+                                {timerState > 0 ? (
+                                    <p className='text-sm text-gray-500'>
+                                        Resend in {timerState}/s
+                                    </p>
+                                ) : (
+                                    <p
+                                        className='text-sm text-blue-700'
+                                        onClick={() =>
+                                            handleResendVerificationCode()
+                                        }
+                                    >
+                                        Click here to resend!
+                                    </p>
+                                )}
+                            </div>
                         </form>
                     </Form>
 
