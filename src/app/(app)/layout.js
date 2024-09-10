@@ -4,14 +4,14 @@ import { useAuth } from '@/hooks/auth';
 import Loading from '@/app/(app)/Loading';
 import BottomNavigation from '@/components/app/BottomNavigation';
 import { Toaster } from '@/components/ui/toaster';
-import { useFirstLoginHook } from '@/hooks/firstLoginHook';
+// import { useFirstLoginHook } from '@/hooks/firstLoginHook';
 import { useEffect, useState } from 'react';
 import SideNavigation from '@/components/app/SideNavigation';
 import TopBar from '@/components/app/TopBar';
 import Box from '@mui/material/Box';
 
 const AppLayout = ({ children }) => {
-    useFirstLoginHook();
+    // useFirstLoginHook();
     const { user } = useAuth({ middleware: 'auth' });
     const [isMobileView, setIsMobileView] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);

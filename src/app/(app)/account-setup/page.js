@@ -28,6 +28,8 @@ function Page() {
         updateResponse: null,
     });
 
+    console.log(user);
+
     let view;
     switch (activeView) {
         case 1:

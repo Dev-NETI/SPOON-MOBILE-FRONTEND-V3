@@ -11,6 +11,7 @@ import EmploymentDetailForm from '@/components/auth/register/EmploymentDetailFor
 import CredentialForm from '@/components/auth/register/CredentialForm';
 import ResponseView from '@/components/form/ResponseView';
 import AgreeForm from '@/components/auth/register/AgreeForm';
+import VerificationComponent from '@/components/auth/register/VerificationComponent';
 import * as Yup from 'yup';
 
 const Page = () => {
@@ -18,14 +19,11 @@ const Page = () => {
     const [email, setEmail] = useState('');
     const [registrationState, setRegistrationState] = useState({
         activeForm: 1,
-        progressBarValue: 16.666,
+        progressBarValue: 14.2857,
         formIndicator: 1,
         storeResponse: null,
     });
-
     const [userData, setUserData] = useState(null);
-
-    // userData && console.log(userData);
 
     useEffect(() => {
         axios.get('/api/check-status-email').then(response => {
@@ -37,11 +35,13 @@ const Page = () => {
         });
     }, []);
 
+    // email && console.log(email);
+
     const nextForm = () => {
         setRegistrationState(prevState => ({
             ...prevState,
             activeForm: registrationState.activeForm + 1,
-            progressBarValue: registrationState.progressBarValue + 16.666,
+            progressBarValue: registrationState.progressBarValue + 14.2857,
             formIndicator: registrationState.formIndicator + 1,
         }));
     };
@@ -49,19 +49,21 @@ const Page = () => {
     let activeUi;
     switch (registrationState.activeForm) {
         case 1:
-            activeUi = <PersonalInfoForm />;
-            // activeUi = <AgreeForm />;
+            activeUi = <VerificationComponent email={email} />;
             break;
         case 2:
-            activeUi = <BodyMetricsForm />;
+            activeUi = <PersonalInfoForm />;
             break;
         case 3:
-            activeUi = <EmploymentDetailForm />;
+            activeUi = <BodyMetricsForm />;
             break;
         case 4:
-            activeUi = <CredentialForm />;
+            activeUi = <EmploymentDetailForm />;
             break;
         case 5:
+            activeUi = <CredentialForm />;
+            break;
+        case 6:
             activeUi = <AgreeForm />;
             break;
         default:
@@ -88,7 +90,7 @@ const Page = () => {
                     style={{ width: `${registrationState.progressBarValue}%` }}
                 >
                     {' '}
-                    {registrationState.formIndicator}/6{' '}
+                    {registrationState.formIndicator}/7{' '}
                 </div>
             </div>
 
