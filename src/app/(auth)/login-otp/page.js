@@ -1,36 +1,12 @@
 'use client';
 import { React, useEffect, useState } from 'react';
-import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSeparator,
-    InputOTPSlot,
-} from '@/components/ui/input-otp';
 import { useAuth } from '@/hooks/auth';
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Button } from '@/components/ui/button';
 import axios from '@/lib/axios';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
 import Loading from '@/app/(app)/Loading';
 import { useEmailHook } from '@/hooks/api/email-hook';
-
-const FormSchema = z.object({
-    pin: z.string().min(6, {
-        message: 'Your one-time password must be 6 characters.',
-    }),
-});
+import VerificationCodeForm from '@/components/auth/register/VerificationCodeForm';
 
 function LoginOtp() {
     const router = useRouter();
@@ -42,13 +18,6 @@ function LoginOtp() {
     );
     const [tempt_otp, setTempt_otp] = useState();
     const [timerState, setTimerState] = useState(null);
-
-    const form = useForm({
-        resolver: zodResolver(FormSchema),
-        defaultValues: {
-            pin: '',
-        },
-    });
 
     useEffect(() => {
         setTempt_otp(Math.floor(100000 + Math.random() * 900000));
@@ -128,6 +97,10 @@ function LoginOtp() {
         // console.log(sendResponse);
         if (sendResponse) {
             setTimerState(60);
+            toast({
+                title: 'Verification Code',
+                description: 'Verification Code resent successfully!',
+            });
         }
     };
 
@@ -139,83 +112,14 @@ function LoginOtp() {
                 </div>
             ) : (
                 <div className='flex min-h-full flex-1 flex-col justify-center items-center lg:px-8'>
-                    <Form {...form}>
-                        <form
-                            onSubmit={form.handleSubmit(onSubmit)}
-                            className='space-y-6'
-                        >
-                            <FormField
-                                control={form.control}
-                                name='pin'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>One-Time Password</FormLabel>
-                                        <FormControl className='flex'>
-                                            <InputOTP maxLength={6} {...field}>
-                                                <InputOTPGroup className='flex mx-auto'>
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={0}
-                                                    />
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={1}
-                                                    />
-                                                </InputOTPGroup>
-                                                <InputOTPSeparator />
-                                                <InputOTPGroup>
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={2}
-                                                    />
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={3}
-                                                    />
-                                                </InputOTPGroup>
-                                                <InputOTPSeparator />
-                                                <InputOTPGroup>
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={4}
-                                                    />
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={5}
-                                                    />
-                                                </InputOTPGroup>
-                                            </InputOTP>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Please enter the one-time password
-                                            sent to your phone. ({tempt_otp})
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <Button className='w-full' type='submit'>
-                                Submit
-                            </Button>
-                            <div className='flex justify-center items-center'>
-                                {timerState > 0 ? (
-                                    <p className='text-sm text-gray-500'>
-                                        Resend in {timerState}/s
-                                    </p>
-                                ) : (
-                                    <p
-                                        className='text-sm text-blue-700'
-                                        onClick={() =>
-                                            handleResendVerificationCode()
-                                        }
-                                    >
-                                        Click here to resend!
-                                    </p>
-                                )}
-                            </div>
-                        </form>
-                    </Form>
+                    <VerificationCodeForm
+                        handleSubmit={onSubmit}
+                        timerState={timerState}
+                        verificationCode={tempt_otp}
+                        handleResendVerificationCode={
+                            handleResendVerificationCode
+                        }
+                    />
 
                     <p className='mt-10 text-center text-sm text-gray-500'>
                         Logout an Account?{' '}
