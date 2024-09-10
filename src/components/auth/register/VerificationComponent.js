@@ -6,7 +6,7 @@ import { RegisterContext } from '@/stores/RegisterContext';
 import { toast } from '@/components/ui/use-toast';
 
 function VerificationComponent({ email }) {
-    const { nextForm, Yup, setUserData } = useContext(RegisterContext);
+    const { nextForm } = useContext(RegisterContext);
     const [tempt_otp, setTempt_otp] = useState();
     const [timerState, setTimerState] = useState(null);
     const { showWith2Parameter: sendVerificationCode } = useEmailHook(
