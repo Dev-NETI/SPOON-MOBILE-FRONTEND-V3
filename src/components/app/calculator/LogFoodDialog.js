@@ -155,7 +155,7 @@ function LogFoodDialog({ data }) {
                 <form id='formMealLog' onSubmit={handleSubmit}>
                     <Button className='float-end mt-4'>Add</Button>
                 </form>
-                <DialogDescription></DialogDescription>
+                <DialogDescription />
             </DialogContent>
         </Dialog>
     );

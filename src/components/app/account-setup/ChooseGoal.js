@@ -1,14 +1,9 @@
 import React from 'react';
-import Button from '@/components/Button';
-import { AccountSetupContext } from '@/stores/AccountSetupContext';
-import { useContext } from 'react';
 import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 import CalorieGoalResultComponent from '../calculator/CalorieGoalResultComponent';
 
 function ChooseGoal() {
     const label = 'Choose your goal!';
-    const { handleNextView } = useContext(AccountSetupContext);
-
     return (
         <div
             className='flex flex-col 

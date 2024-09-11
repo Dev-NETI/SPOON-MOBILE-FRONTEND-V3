@@ -188,6 +188,49 @@ function calculateTDEE(age, gender, heightCm, weightKg, activityLevel) {
     return goals;
 }
 
+function generateStrongPassword() {
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const digits = '0123456789';
+    const specialCharacters = '@$!%*?&';
+    const allCharacters = lowercase + uppercase + digits + specialCharacters;
+
+    const passwordLength = 8;
+
+    let password = '';
+
+    // Ensure the password contains at least one lowercase, one uppercase, one digit, and one special character
+    password += lowercase[Math.floor(Math.random() * lowercase.length)];
+    password += uppercase[Math.floor(Math.random() * uppercase.length)];
+    password += digits[Math.floor(Math.random() * digits.length)];
+    password +=
+        specialCharacters[Math.floor(Math.random() * specialCharacters.length)];
+
+    // Fill the rest of the password length with random characters from the combined string
+    for (let i = password.length; i < passwordLength; i++) {
+        password +=
+            allCharacters[Math.floor(Math.random() * allCharacters.length)];
+    }
+
+    // Shuffle the password to avoid predictable patterns
+    password = password
+        .split('')
+        .sort(() => Math.random() - 0.5)
+        .join('');
+
+    return password;
+}
+
+const clearCookies = () => {
+    // Split document.cookie on '; ' to get all cookie key-value pairs
+    document.cookie.split(';').forEach(cookie => {
+        // Split each cookie on '=' to separate the key and value
+        const [key] = cookie.split('=');
+        // Clear each cookie by setting its expiry date to a past date
+        document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
+    });
+};
+
 export {
     cn,
     computeAge,
@@ -203,4 +246,6 @@ export {
     counter,
     formatDate,
     calculateTDEE,
+    generateStrongPassword,
+    clearCookies,
 };

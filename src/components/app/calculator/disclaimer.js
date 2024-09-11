@@ -1,5 +1,5 @@
-import React from 'react'
-import { disclaimerDescription } from '@/data/calculator-data'
+import React from 'react';
+import { disclaimerDescription } from '@/data/calculator-data';
 
 function Disclaimer() {
     return (
@@ -30,7 +30,7 @@ function Disclaimer() {
                 </p>
             </div>
         </div>
-    )
+    );
 }
 
-export default Disclaimer
+export default Disclaimer;

@@ -18,7 +18,7 @@ function AnthropometryCard({ bmi, setBmi }) {
         weightMetric: user.weight_metric,
     });
     const [error, setError] = useState({});
-    const { patch } = useUserHook('update-measurement');
+    const { patch } = useUserHook('user/update-measurement');
     const { toast } = useToast();
     const { store } = useBmiLog();
     const buttonLabel = editMode ? 'Cancel' : 'Edit';

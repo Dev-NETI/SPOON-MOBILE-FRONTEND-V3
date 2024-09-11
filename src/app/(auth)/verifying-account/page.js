@@ -1,39 +1,39 @@
-'use client'
+'use client';
 
-import Button from '@/components/Button'
-import Input from '@/components/Input'
-import Label from '@/components/Label'
-import { toast } from '@/components/ui/use-toast'
-import axios from '@/lib/axios'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import Label from '@/components/Label';
+import { toast } from '@/components/ui/use-toast';
+import axios from '@/lib/axios';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const Page = () => {
-    const [email, setEmail] = useState('')
-    const router = useRouter()
+    const [email, setEmail] = useState('');
+    const router = useRouter();
 
     const submitForm = async event => {
-        const isEmailValid = await verifyEmail(email)
-        event.preventDefault()
+        const isEmailValid = await verifyEmail(email);
+        event.preventDefault();
 
         if (isEmailValid) {
-            router.push('/register')
+            router.push('/register');
         } else {
             toast({
                 title: 'Authentication failed',
                 variant: 'destructive',
                 description: 'Email already exists try to forget password.',
-            })
+            });
         }
-    }
+    };
 
     const verifyEmail = async email => {
-        event.preventDefault()
+        event.preventDefault();
 
         return axios
             .post('/api/check-register-email', { email })
-            .then(response => response.data.isEmailValid)
-    }
+            .then(response => response.data.isEmailValid);
+    };
 
     return (
         <>
@@ -67,7 +67,7 @@ const Page = () => {
                 </div>
             </form>
         </>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;

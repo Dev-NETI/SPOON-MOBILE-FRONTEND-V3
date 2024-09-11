@@ -1,20 +1,11 @@
-import {
-    Chip,
-    Grid,
-    Icon,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-} from '@mui/material';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { green } from '@mui/material/colors';
 import React from 'react';
 
 function IngridientsTab({ Item }) {
     function generateIngredients() {
-        return Item?.ingredient.map(data => (
+        return (Item?.ingredient || []).map(data => (
             <ListItem key={data.id}>
                 <ListItemIcon>
                     <CheckRoundedIcon sx={{ color: green[500] }} />

@@ -14,7 +14,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import ApplicationLogo from '@/components/ApplicationLogo';
 
 const pages = ['Home', 'Manage', 'User Management'];
@@ -45,6 +44,9 @@ function TopNavigation() {
                     break;
                 case 'user':
                     router.push('/admin/user-management');
+                    break;
+                case 'user management':
+                    router.push('/admin/user');
                     break;
                 default:
                     break;
@@ -158,10 +160,7 @@ function TopNavigation() {
                                 onClick={handleOpenUserMenu}
                                 sx={{ p: 0 }}
                             >
-                                <Avatar
-                                    alt='Remy Sharp'
-                                    src='/static/images/avatar/2.jpg'
-                                />
+                                <Avatar alt='Remy Sharp' src='' />
                             </IconButton>
                         </Tooltip>
                         <Menu

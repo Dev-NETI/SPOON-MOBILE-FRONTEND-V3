@@ -1,9 +1,9 @@
-'use client'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useAuth } from '@/hooks/auth'
+'use client';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { useAuth } from '@/hooks/auth';
 
 const Profile = () => {
-    const { logout } = useAuth()
+    const { logout } = useAuth();
 
     return (
         <>
@@ -64,7 +64,7 @@ const Profile = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Profile
+export default Profile;

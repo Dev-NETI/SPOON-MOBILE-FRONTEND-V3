@@ -1,94 +1,75 @@
 'use client';
-
 import { React, useEffect, useState } from 'react';
-import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSeparator,
-    InputOTPSlot,
-} from '@/components/ui/input-otp';
 import { useAuth } from '@/hooks/auth';
-
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
-import { Button } from '@/components/ui/button';
 import axios from '@/lib/axios';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
 import Loading from '@/app/(app)/Loading';
-
-const FormSchema = z.object({
-    pin: z.string().min(6, {
-        message: 'Your one-time password must be 6 characters.',
-    }),
-});
+import { useEmailHook } from '@/hooks/api/email-hook';
+import VerificationCodeForm from '@/components/auth/register/VerificationCodeForm';
 
 function LoginOtp() {
     const router = useRouter();
     const { user, logout } = useAuth({
         middleware: 'auth',
     });
-
-    const [tempt_otp, setTempt_otp] = useState(
-        Math.floor(100000 + Math.random() * 900000)
+    const { showWith2Parameter: sendVerificationCode } = useEmailHook(
+        'send-verification-code'
     );
+    const [tempt_otp, setTempt_otp] = useState();
+    const [timerState, setTimerState] = useState(null);
 
-    const form = useForm({
-        resolver: zodResolver(FormSchema),
-        defaultValues: {
-            pin: '',
-        },
-    });
+    useEffect(() => {
+        setTempt_otp(Math.floor(100000 + Math.random() * 900000));
+    }, []);
+
+    useEffect(() => {
+        const sendEmail = async () => {
+            if (user?.email && tempt_otp && timerState === null) {
+                await handleSendVerificationCode();
+            }
+        };
+
+        sendEmail();
+    }, [user, tempt_otp, sendVerificationCode, timerState]);
+
+    useEffect(() => {
+        let timer;
+        if (timerState > 0) {
+            timer = setInterval(() => {
+                setTimerState(prev => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [timerState]);
 
     const onSubmit = async data => {
-        axios
-            .post('/api/verify-otp', { otp: data.pin, temp_otp: tempt_otp })
-            .then(response => {
-                toast({
-                    title: 'Successfully Verified',
-                    description:
-                        'You have successfully verified your account. You can now log in.',
-                });
-                // console.log(response.data);
-                if (user?.is_first_login === 1) {
-                    router.push('/account-setup');
-                } else {
-                    router.push('/dashboard');
-                }
-            })
-            .catch(error => {
-                console.error(
-                    'Error authenticating:',
-                    error.response.data.status
-                );
-                toast({
-                    title: 'Authentication failed',
-                    variant: 'destructive',
-                    description: error.response.data.status,
-                });
+        const match = parseInt(data.pin) === tempt_otp;
+
+        if (match) {
+            toast({
+                title: 'Successfully Verified',
+                description: 'You have successfully verified your account!',
             });
+            document.cookie = `35de80170cda0d14e2cdd82e9e89d375 = 6f7d41b92d3e4519c9f12b765a83ab4f; path=/; max-age=600`;
+            router.push('/dashboard');
+        } else {
+            toast({
+                title: 'Authentication failed',
+                variant: 'destructive',
+                description: 'Invalid OTP. Please try again.!',
+            });
+        }
     };
 
     async function generateOtp() {
-        // console.log(user);
         await axios
             .post('/api/authenticating', { temp_otp: tempt_otp })
-            .then(response => {
+            .then(() => {
                 // console.log(response.data.status);
             })
-            .catch(error => {
-                console.error('Error authenticating:', error);
+            .catch(() => {
+                // console.error('Error authenticating:', error);
             });
     }
 
@@ -103,6 +84,26 @@ function LoginOtp() {
         });
     }, []);
 
+    const handleSendVerificationCode = async () => {
+        const { data: responseData } = await sendVerificationCode(
+            tempt_otp,
+            user.email
+        );
+        return responseData;
+    };
+
+    const handleResendVerificationCode = async () => {
+        const sendResponse = await handleSendVerificationCode();
+        // console.log(sendResponse);
+        if (sendResponse) {
+            setTimerState(60);
+            toast({
+                title: 'Verification Code',
+                description: 'Verification Code resent successfully!',
+            });
+        }
+    };
+
     return (
         <>
             {!user ? (
@@ -111,67 +112,14 @@ function LoginOtp() {
                 </div>
             ) : (
                 <div className='flex min-h-full flex-1 flex-col justify-center items-center lg:px-8'>
-                    <Form {...form}>
-                        <form
-                            onSubmit={form.handleSubmit(onSubmit)}
-                            className='space-y-6'
-                        >
-                            <FormField
-                                control={form.control}
-                                name='pin'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>One-Time Password</FormLabel>
-                                        <FormControl className='flex'>
-                                            <InputOTP maxLength={6} {...field}>
-                                                <InputOTPGroup className='flex mx-auto'>
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={0}
-                                                    />
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={1}
-                                                    />
-                                                </InputOTPGroup>
-                                                <InputOTPSeparator />
-                                                <InputOTPGroup>
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={2}
-                                                    />
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={3}
-                                                    />
-                                                </InputOTPGroup>
-                                                <InputOTPSeparator />
-                                                <InputOTPGroup>
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={4}
-                                                    />
-                                                    <InputOTPSlot
-                                                        type='number'
-                                                        index={5}
-                                                    />
-                                                </InputOTPGroup>
-                                            </InputOTP>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Please enter the one-time password
-                                            sent to your phone. ({tempt_otp})
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <Button className='w-full' type='submit'>
-                                Submit
-                            </Button>
-                        </form>
-                    </Form>
+                    <VerificationCodeForm
+                        handleSubmit={onSubmit}
+                        timerState={timerState}
+                        verificationCode={tempt_otp}
+                        handleResendVerificationCode={
+                            handleResendVerificationCode
+                        }
+                    />
 
                     <p className='mt-10 text-center text-sm text-gray-500'>
                         Logout an Account?{' '}

@@ -1,13 +1,14 @@
-'use client';
-import { Box, Container, Tab, Tabs, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Container } from '@mui/material';
+import React from 'react';
 import TopNavigation from './TopNavigation';
+import OceanAnimation from '@/components/admin/OceanAnimation';
 
 function layout({ children }) {
     return (
         <>
             <TopNavigation />
-            <Box>{children}</Box>
+            <Container maxWidth='lg'>{children}</Container>
+            <OceanAnimation />
         </>
     );
 }

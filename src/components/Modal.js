@@ -29,4 +29,5 @@ const Modal = forwardRef(({ title, children }, ref) => {
     );
 });
 
+Modal.displayName = 'Modal';
 export default Modal;

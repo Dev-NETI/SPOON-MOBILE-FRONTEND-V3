@@ -21,7 +21,7 @@ function BmiHistoryModal() {
     useEffect(() => {
         const fetchBmiData = async () => {
             const { data } = await show(user.id);
-            data && setBmiLogData(data);
+            setBmiLogData(data);
         };
         fetchBmiData();
     }, [user.id, show]);
@@ -68,7 +68,7 @@ function BmiHistoryModal() {
                         </button>
                     </div>
                 </div>
-                <DialogDescription></DialogDescription>
+                <DialogDescription />
             </DialogContent>
         </Dialog>
     );

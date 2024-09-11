@@ -9,8 +9,9 @@ function Result() {
     const { user, handleNextView, formDataState } =
         useContext(AccountSetupContext);
     const label = `Your goal is ${formDataState.calorieIntake} calories daily!`;
-    const { patchNoPayload: updateFirstLogin } =
-        useUserHook('update-first-login');
+    const { patchNoPayload: updateFirstLogin } = useUserHook(
+        'user/update-first-login'
+    );
 
     const handleUpdateFirstLogin = async () => {
         const { data: updateResponse } = await updateFirstLogin(user.slug);

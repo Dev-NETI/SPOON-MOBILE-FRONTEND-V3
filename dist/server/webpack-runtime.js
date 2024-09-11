@@ -125,12 +125,12 @@
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("e43994c9ae91e8aa")
+/******/ 		__webpack_require__.h = () => ("e43994c9ae91e8aa");
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
@@ -159,10 +159,10 @@
 /******/ 			// arguments: chunkIds, moduleId are deprecated
 /******/ 			var moduleId = chunkIds;
 /******/ 			if(!fn) chunkIds = result, fn = () => (__webpack_require__(__webpack_require__.s = moduleId));
-/******/ 			chunkIds.map(__webpack_require__.e, __webpack_require__)
+/******/ 			chunkIds.map(__webpack_require__.e, __webpack_require__);
 /******/ 			var r = fn();
 /******/ 			return r === undefined ? result : r;
-/******/ 		}
+/******/ 		};
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/require chunk loading */

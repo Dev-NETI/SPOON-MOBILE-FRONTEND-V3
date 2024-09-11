@@ -26,9 +26,9 @@ function layout({ children }) {
                     </div>
                 </div>
                 <div className='ocean'>
-                    <div className='wave'></div>
-                    <div className='wave'></div>
-                    <div className='wave'></div>
+                    <div className='wave' />
+                    <div className='wave' />
+                    <div className='wave' />
                 </div>
             </div>
             <div className='flex-1 bg-slate-50 p-4 achor'>
