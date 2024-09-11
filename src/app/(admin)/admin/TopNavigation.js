@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import ApplicationLogo from '@/components/ApplicationLogo';
 
-const pages = ['Home', 'Recipe', 'Category', 'Rank'];
+const pages = ['Home', 'Manage', 'User Management'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function TopNavigation() {
@@ -40,14 +40,11 @@ function TopNavigation() {
                 case 'home':
                     router.push('/admin/home');
                     break;
-                case 'recipe':
-                    router.push('/admin/manage-recipe');
+                case 'manage':
+                    router.push('/admin/manage/recipe');
                     break;
-                case 'category':
-                    router.push('/admin/manage-category');
-                    break;
-                case 'rank':
-                    router.push('/admin/rank');
+                case 'user':
+                    router.push('/admin/user-management');
                     break;
                 default:
                     break;

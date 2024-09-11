@@ -1,12 +1,13 @@
-import { Box, Container, Typography } from '@mui/material';
-import React from 'react';
+'use client';
+import { Box, Container, Tab, Tabs, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import TopNavigation from './TopNavigation';
 
 function layout({ children }) {
     return (
         <>
             <TopNavigation />
-            <Container maxWidth='lg'>{children}</Container>
+            <Box>{children}</Box>
         </>
     );
 }
