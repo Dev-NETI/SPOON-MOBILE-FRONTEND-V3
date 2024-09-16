@@ -23,11 +23,11 @@ function Result() {
     return (
         <div
             className='flex flex-col  
-        py-52 px-3 gap-4 
+        px-3 gap-4 
         md:py-64 lg:py-64 md:gap-8 lg:gap-8 
         shadow-2xl border-2'
         >
-            <div className='flex items-center justify-center'>
+            <div className='flex items-center justify-center mt-52'>
                 <FastfoodIcon
                     color='primary'
                     fontSize='inherit'
@@ -39,7 +39,7 @@ function Result() {
                     {label}
                 </h1>
             </div>
-            <div className='absolute bottom-2 right-2 md:mx-72 lg:mx-72'>
+            <div className='flex justify-end mt-32 mb-4 md:mx-72 lg:mx-72'>
                 <Button onClick={handleUpdateFirstLogin}>Go to recipe</Button>
             </div>
         </div>
