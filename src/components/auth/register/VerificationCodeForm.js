@@ -78,7 +78,8 @@ function VerificationCodeForm({
                                 {mode === 'login'
                                     ? 'one-time password'
                                     : 'verification code'}{' '}
-                                sent to your phone. ({verificationCode})
+                                sent to your phone.
+                                {/* ({verificationCode}) */}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

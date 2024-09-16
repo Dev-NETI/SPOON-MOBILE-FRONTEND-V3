@@ -202,7 +202,6 @@ function CalorieCalculatorForm({ isFirstLogin = false }) {
                     editMode={isEdit}
                     name='gender'
                     title='Gender'
-                    initialValueId={formDataState.gender}
                     initialValue={
                         formDataState.gender === 1 ? 'Male' : 'Female'
                     }
@@ -291,7 +290,6 @@ function CalorieCalculatorForm({ isFirstLogin = false }) {
                     type='text'
                     title='Activity Level'
                     initialValue={formDataState.activityLevel}
-                    initialValueId={formDataState.activityLevelId}
                     className='col-span-2'
                     error={error.activityLevel}
                     errorMessage={error.activityLevel}
