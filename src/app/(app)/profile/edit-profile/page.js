@@ -7,7 +7,7 @@ import { useCompany } from '@/hooks/api/company';
 import { useRank } from '@/hooks/api/rank';
 import { useCategory } from '@/hooks/api/category';
 import { useNationality } from '@/hooks/api/nationality';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 import SelectComponent from '@/components/form/antd/SelectComponent';
 import InputComponent from '@/components/form/antd/InputComponent';
 import { gender } from '@/data/static-data';
