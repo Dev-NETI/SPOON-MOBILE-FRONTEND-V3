@@ -35,11 +35,46 @@ const Profile = () => {
                                         />
                                     </svg>
                                     <Link
-                                        href={`/edit-profile`}
+                                        href={`/profile/edit-profile`}
                                         className='text-left text-base font-light flex flex-col md:flex-row 
                                         gap-1 items-left w-full hover:text-blue-600'
                                     >
                                         Edit Personal Information
+                                    </Link>
+                                </div>
+                                <div className='flex flex-row items-left justify-left gap-2'>
+                                    <svg
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        className='h-6 w-6 hover:text-blue-600'
+                                        fill='none'
+                                        viewBox='0 0 24 24'
+                                        stroke='currentColor'
+                                    >
+                                        <rect
+                                            x='6'
+                                            y='10'
+                                            width='12'
+                                            height='10'
+                                            rx='2'
+                                            ry='2'
+                                            strokeLinecap='round'
+                                            strokeLinejoin='round'
+                                            strokeWidth={2}
+                                        />
+                                        <path
+                                            d='M16 10V7a4 4 0 10-8 0v3'
+                                            strokeLinecap='round'
+                                            strokeLinejoin='round'
+                                            strokeWidth={2}
+                                        />
+                                    </svg>
+
+                                    <Link
+                                        href={`/profile/update-password`}
+                                        className='text-left text-base font-light flex flex-col md:flex-row 
+                                        gap-1 items-left w-full hover:text-blue-600'
+                                    >
+                                        Change Password
                                     </Link>
                                 </div>
                                 <div className='flex flex-row items-left justify-left gap-2'>
