@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, CardHeader } from '@/components/ui/card';
 import Link from 'next/link';
-import Image from 'next/image';
 
 function CardListItem({ title, className, href = '/calculator', icon = '' }) {
     return (
