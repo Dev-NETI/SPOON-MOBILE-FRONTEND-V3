@@ -29,7 +29,6 @@ function VerificationCodeForm({
     mode = 'login',
     handleSubmit,
     timerState,
-    verificationCode,
     handleResendVerificationCode,
 }) {
     const form = useForm({

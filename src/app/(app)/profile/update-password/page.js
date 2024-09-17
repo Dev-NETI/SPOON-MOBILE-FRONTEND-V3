@@ -94,7 +94,6 @@ function page() {
         if (updatePasswordState.activeView === 2) {
             axios.get('/api/checking-status-otp').then(response => {
                 if (response.data.status === true) {
-                    router.push('/dashboard');
                     // console.log('Verified');
                 } else {
                     generateOtp();
