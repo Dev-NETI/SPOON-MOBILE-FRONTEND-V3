@@ -13,11 +13,13 @@ function LoginOtp() {
     const { user, logout } = useAuth({
         middleware: 'auth',
     });
-    const { showWith2Parameter: sendVerificationCode } = useEmailHook(
+    const { showWith3Parameter: sendVerificationCode } = useEmailHook(
         'send-verification-code'
     );
     const [tempt_otp, setTempt_otp] = useState();
     const [timerState, setTimerState] = useState(null);
+
+    // console.log(user);
 
     useEffect(() => {
         setTempt_otp(Math.floor(100000 + Math.random() * 900000));
@@ -87,7 +89,8 @@ function LoginOtp() {
     const handleSendVerificationCode = async () => {
         const { data: responseData } = await sendVerificationCode(
             tempt_otp,
-            user.email
+            user.email,
+            user.dialing_code?.dialing_code + user.contact_number
         );
         return responseData;
     };

@@ -5,11 +5,12 @@ import { useContext } from 'react';
 import { RegisterContext } from '@/stores/RegisterContext';
 import { toast } from '@/components/ui/use-toast';
 
-function VerificationComponent({ email }) {
+function VerificationComponent({ email, contactData = null }) {
+    //contactData is object {contactNum,dialingCodeId,dialingCode}
     const { nextForm } = useContext(RegisterContext);
     const [tempt_otp, setTempt_otp] = useState();
     const [timerState, setTimerState] = useState(null);
-    const { showWith2Parameter: sendVerificationCode } = useEmailHook(
+    const { showWith3Parameter: sendVerificationCode } = useEmailHook(
         'send-verification-code'
     );
 
@@ -40,7 +41,8 @@ function VerificationComponent({ email }) {
     const handleSendVerificationCode = async () => {
         const { data: responseData } = await sendVerificationCode(
             tempt_otp,
-            email
+            email,
+            contactData.dialingCode + contactData.contactNum
         );
         return responseData;
     };

@@ -17,6 +17,11 @@ import * as Yup from 'yup';
 const Page = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
+    const [contactState, setContactState] = useState({
+        contactNum: null,
+        dialingCodeId: null,
+        dialingCode: null,
+    });
     const [registrationState, setRegistrationState] = useState({
         activeForm: 1,
         progressBarValue: 14.2857,
@@ -29,13 +34,22 @@ const Page = () => {
         axios.get('/api/check-status-email').then(response => {
             if (response.data.isEmailValid) {
                 setEmail(response.data.authEmail);
+                setContactState({
+                    contactNum: response.data.contactNum,
+                    dialingCodeId: response.data.dialingCodeId,
+                    dialingCode: response.data.dialingCode,
+                });
+                setUserData(prevState => ({
+                    ...prevState,
+                    contactNum: response.data.contactNum,
+                    dialingCodeId: response.data.dialingCodeId,
+                    dialingCode: response.data.dialingCode,
+                }));
             } else {
                 router.push('/login');
             }
         });
     }, []);
-
-    // email && console.log(email);
 
     const nextForm = () => {
         setRegistrationState(prevState => ({
@@ -49,7 +63,12 @@ const Page = () => {
     let activeUi;
     switch (registrationState.activeForm) {
         case 1:
-            activeUi = <VerificationComponent email={email} />;
+            activeUi = (
+                <VerificationComponent
+                    email={email}
+                    contactData={contactState}
+                />
+            );
             break;
         case 2:
             activeUi = <PersonalInfoForm />;
