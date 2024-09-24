@@ -71,10 +71,16 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
             .min(1, { message: 'Recipe Origin is required' }),
         breakfast: z.number(),
         lunch: z.number(),
+        snack: z.number(),
         dinner: z.number(),
         ingredients: z.array(
             z.object({
-                ingredient: z.string().nonempty(),
+                name: z.string().nonempty(),
+                instruction: z.string().nonempty(),
+                unit_id: z.number().min(1, { message: 'Unit is required' }),
+                quantity: z
+                    .number()
+                    .min(1, { message: 'Quantity is required' }),
                 calories: z.number(),
                 carbohydrate: z.number(),
                 protein: z.number(),
@@ -100,10 +106,14 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
             number_of_serving: 0,
             breakfast: 0,
             lunch: 0,
+            snack: 0,
             dinner: 0,
             ingredients: [
                 {
                     ingredient: '',
+                    instruction: '',
+                    quantity: 0,
+                    unit_id: 0,
                     calories: 0,
                     carbohydrate: 0,
                     protein: 0,
@@ -252,21 +262,28 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
 
                     <Grid item xs={12}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={3}>
                                 <CheckFieldComponent
                                     label='Breakfast'
                                     name='breakfast'
                                     form={form}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={3}>
                                 <CheckFieldComponent
                                     label='Lunch'
                                     name='lunch'
                                     form={form}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={3}>
+                                <CheckFieldComponent
+                                    label='Snack'
+                                    name='snack'
+                                    form={form}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={3}>
                                 <CheckFieldComponent
                                     label='Dinner'
                                     name='dinner'
@@ -294,12 +311,40 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                             spacing={2}
                             className='animate-fade-up animate-once animate-duration-1000'
                         >
-                            <Grid item xs={12}>
+                            <Grid item xs={6}>
                                 <TextFieldComponent
                                     form={form}
-                                    name={`ingredients[${index}].ingredient`}
+                                    name={`ingredients[${index}].name`}
                                     label={`Ingredient ${index + 1}`}
                                     variant='outlined'
+                                />
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <TextFieldComponent
+                                    form={form}
+                                    name={`ingredients[${index}].instruction`}
+                                    label={`Instruction ${index + 1}`}
+                                    variant='outlined'
+                                />
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <TextFieldComponent
+                                    form={form}
+                                    name={`ingredients[${index}].quantity`}
+                                    label={`Quantity`}
+                                    variant='outlined'
+                                    type='number'
+                                />
+                            </Grid>
+
+                            <Grid item xs={12} md={6}>
+                                <SelectFieldComponent
+                                    form={form}
+                                    name={`ingredients[${index}].unit_id`}
+                                    DataState={DataState.unit_data}
+                                    label='Unit'
                                 />
                             </Grid>
 

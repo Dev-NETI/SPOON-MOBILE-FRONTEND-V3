@@ -14,6 +14,7 @@ import { Container, Grid } from '@mui/material';
 import { useMealType } from '@/hooks/api/meal-type';
 import RecipeFormComponent from '@/components/admin/recipe/RecipeFormComponent';
 import { useRecipeOrigin } from '@/hooks/api/recipe-origin';
+import { useUnit } from '@/hooks/api/unit';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -23,10 +24,12 @@ export default function AddRecipeModal() {
     const [DataState, setDataState] = useState({
         meal_type_data: [],
         recipe_origin_data: [],
+        unit_data: [],
     });
 
     const { index: getMealTypeData } = useMealType();
     const { index: getRecipeOriginData } = useRecipeOrigin();
+    const { index: getUnitData } = useUnit();
 
     React.useEffect(() => {
         const fetchMealData = async () => {
@@ -45,8 +48,17 @@ export default function AddRecipeModal() {
             }));
         };
 
+        const fetchUnitData = async () => {
+            const { data } = await getUnitData();
+            setDataState(prevState => ({
+                ...prevState,
+                unit_data: data,
+            }));
+        };
+
         fetchRecipeOrignData();
         fetchMealData();
+        fetchUnitData();
     }, []);
 
     const [open, setOpen] = React.useState(false);
