@@ -4,14 +4,12 @@ import { useAuth } from '@/hooks/auth';
 import Loading from '@/app/(app)/Loading';
 import BottomNavigation from '@/components/app/BottomNavigation';
 import { Toaster } from '@/components/ui/toaster';
-// import { useFirstLoginHook } from '@/hooks/firstLoginHook';
 import { useEffect, useState } from 'react';
 import SideNavigation from '@/components/app/SideNavigation';
 import TopBar from '@/components/app/TopBar';
 import Box from '@mui/material/Box';
 
 const AppLayout = ({ children }) => {
-    // useFirstLoginHook();
     const { user } = useAuth({ middleware: 'auth' });
     const [isMobileView, setIsMobileView] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -39,7 +37,7 @@ const AppLayout = ({ children }) => {
     };
     return (
         <>
-            {!isMobileView && user.is_first_login !== 1 && (
+            {!isMobileView && (
                 <Box sx={{ display: 'flex' }}>
                     <TopBar
                         isDrawerOpen={isDrawerOpen}
@@ -56,7 +54,7 @@ const AppLayout = ({ children }) => {
                     </Box>
                 </Box>
             )}
-            {isMobileView && user.is_first_login !== 1 && (
+            {isMobileView && (
                 <div className='min-h-screen bg-gray-100'>
                     <div className='flex flex-col'>
                         <TopBar

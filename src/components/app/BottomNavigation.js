@@ -9,10 +9,12 @@ import LocalDiningRoundedIcon from '@mui/icons-material/LocalDiningRounded';
 import CalculateRoundedIcon from '@mui/icons-material/CalculateRounded';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import { useAuth } from '@/hooks/auth';
 
 function Navigation() {
     const [value, setValue] = useState('dashboard');
     const router = useRouter();
+    const { user } = useAuth({ middleware: 'auth' });
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -61,11 +63,13 @@ function Navigation() {
                     mx: 'auto',
                 }}
             >
-                <BottomNavigationAction
-                    label='Home'
-                    value='dashboard'
-                    icon={<HomeRoundedIcon />}
-                />
+                {user.user_type_id !== 1 && (
+                    <BottomNavigationAction
+                        label='Home'
+                        value='dashboard'
+                        icon={<HomeRoundedIcon />}
+                    />
+                )}
                 <BottomNavigationAction
                     label='Recipe'
                     value='recipe'
