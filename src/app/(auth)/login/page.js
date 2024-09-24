@@ -52,7 +52,7 @@ const Login = () => {
                 {/* Email Address */}
                 <div className='mb-4 w-full'>
                     <p className='text-xl text-blue-800 font-bold antialiased'>
-                        Welcome back!
+                        Welcome!
                     </p>
                     <p className='text-sm text-gray-600'>
                         Sign in to continue to your account
