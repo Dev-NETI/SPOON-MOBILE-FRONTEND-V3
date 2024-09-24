@@ -5,6 +5,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Avatar, Badge, Box, Button, ButtonBase, Stack } from '@mui/material';
 import { useRecipe } from '@/hooks/api/recipe';
 import { CancelOutlined, CheckCircleOutline } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import AddRecipeModal from './AddRecipeModal';
 
 function page() {
     const [recipeListState, setRecipeListState] = useState({
@@ -103,9 +105,7 @@ function page() {
                     marginTop: '10px',
                 }}
             >
-                <Button variant='contained' color='success'>
-                    Add Recipe
-                </Button>
+                <AddRecipeModal />
                 <Button variant='contained' color='error'>
                     Delete Recipe
                 </Button>

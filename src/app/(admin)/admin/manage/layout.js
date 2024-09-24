@@ -1,7 +1,6 @@
 'use client';
 import { Box, Container, Tab, Tabs } from '@mui/material';
 import React, { useState } from 'react';
-
 function layout({ children }) {
     const [value, setValue] = useState(0);
 
