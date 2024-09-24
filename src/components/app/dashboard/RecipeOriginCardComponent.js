@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import RecipeOriginCard from '@/components/app/dashboard/RecipeOriginCard';
 import { useRecipeOrigin } from '@/hooks/api/recipe-origin';
+import OriginCardLoadingComponent from './OriginCardLoadingComponent';
 
 function RecipeOriginCardComponent() {
     const { index: getAllRecipeOrigin } = useRecipeOrigin();
     const [recipeOriginData, setRecipeOriginData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchRecipeOriginData = async () => {
             const { data } = await getAllRecipeOrigin();
             setRecipeOriginData(data);
+            setLoading(false);
         };
         fetchRecipeOriginData();
     }, []);
@@ -30,13 +33,17 @@ function RecipeOriginCardComponent() {
                 </div>
             </div>
             <div className='flex flex-row mt-2 overflow-x-auto space-x-2 py-3'>
-                {recipeOriginData.map(data => (
-                    <RecipeOriginCard
-                        key={data.id}
-                        imagePath={data.image_path}
-                        origin={data.name}
-                    />
-                ))}
+                {loading ? (
+                    <OriginCardLoadingComponent />
+                ) : (
+                    recipeOriginData.map(data => (
+                        <RecipeOriginCard
+                            key={data.id}
+                            imagePath={data.image_path}
+                            origin={data.name}
+                        />
+                    ))
+                )}
             </div>
         </>
     );

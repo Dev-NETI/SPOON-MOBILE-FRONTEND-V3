@@ -12,6 +12,7 @@ import LocalDiningRoundedIcon from '@mui/icons-material/LocalDiningRounded';
 import CalculateRoundedIcon from '@mui/icons-material/CalculateRounded';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import { useAuth } from '@/hooks/auth';
 
 const drawerWidth = 240;
 
@@ -72,6 +73,7 @@ const Drawer = styled(MuiDrawer, {
 function SideNavigation({ open, handleDrawerClose }) {
     const theme = useTheme();
     const [activeLink, setActiveLink] = useState();
+    const { user } = useAuth({ middleware: 'auth' });
 
     return (
         <Drawer variant='permanent' open={open}>
@@ -86,13 +88,15 @@ function SideNavigation({ open, handleDrawerClose }) {
             </DrawerHeader>
             <Divider />
             <List>
-                <SideNavigationItem
-                    icon={<HomeRoundedIcon />}
-                    text='Dashboard'
-                    onClick={() => setActiveLink('Dashboard')}
-                    active={activeLink === 'Dashboard'}
-                    href='/dashboard'
-                />
+                {user.user_type_id !== 1 && (
+                    <SideNavigationItem
+                        icon={<HomeRoundedIcon />}
+                        text='Dashboard'
+                        onClick={() => setActiveLink('Dashboard')}
+                        active={activeLink === 'Dashboard'}
+                        href='/dashboard'
+                    />
+                )}
                 <SideNavigationItem
                     icon={<LocalDiningRoundedIcon />}
                     text='Recipe'

@@ -9,6 +9,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useDashboard } from '@/hooks/api/dashboard';
 import { Skeleton } from '@mui/material';
+import { useAuth } from '@/hooks/auth';
 
 export default function BmiHealthMetricsCardComponent({
     title,
@@ -17,22 +18,32 @@ export default function BmiHealthMetricsCardComponent({
 }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { show: getBmiData } = useDashboard('bmi-data');
+    const { user } = useAuth({ middleware: 'auth' });
+    const { showWith3Parameter: getBmiData } = useDashboard('bmi-data');
     const itemsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(data.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentItems = data.slice(startIndex, startIndex + itemsPerPage);
+    const currentItems =
+        data && data.slice(startIndex, startIndex + itemsPerPage);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const { data } = await getBmiData(bmiCategory);
+        if (user) {
+            const fetchData = async () => {
+                const { data } = await getBmiData(
+                    bmiCategory,
+                    user?.user_type_id,
+                    user.company?.id
+                );
 
-            setData(data);
-            setLoading(false);
-        };
-        fetchData();
-    }, []);
+                setData(data);
+                setLoading(false);
+            };
+            fetchData();
+        }
+    }, [user]);
+
+    user && console.log(user);
 
     const handleChange = (event, value) => {
         setCurrentPage(value);
