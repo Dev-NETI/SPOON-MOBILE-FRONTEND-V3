@@ -34,11 +34,11 @@ const Page = () => {
         axios.get('/api/check-status-email').then(response => {
             if (response.data.isEmailValid) {
                 setEmail(response.data.authEmail);
-                setContactState(prevState => ({
+                setContactState({
                     contactNum: response.data.contactNum,
                     dialingCodeId: response.data.dialingCodeId,
                     dialingCode: response.data.dialingCode,
-                }));
+                });
                 setUserData(prevState => ({
                     ...prevState,
                     contactNum: response.data.contactNum,

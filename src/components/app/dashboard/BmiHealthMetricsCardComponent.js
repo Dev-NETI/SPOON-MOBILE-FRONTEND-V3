@@ -43,7 +43,7 @@ export default function BmiHealthMetricsCardComponent({
         }
     }, [user]);
 
-    user && console.log(user);
+    // user && console.log(user);
 
     const handleChange = (event, value) => {
         setCurrentPage(value);
