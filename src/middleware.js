@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
+import VerifiedLoginMiddleware from './middleware-rules/VerifiedLoginMiddleware';
+import UserTypeAuthorizationMiddleware from './middleware-rules/UserTypeAuthorizationMiddleware';
 
 export function middleware(request) {
     const url = request.nextUrl.clone();
     const cookies = request.cookies;
-    const protectedPaths = [
+
+    const unverifiedLoginProtectedPaths = [
         '/dashboard',
         '/profile',
         '/account-setup',
@@ -16,17 +19,23 @@ export function middleware(request) {
         '/user',
     ];
 
-    if (protectedPaths.includes(url.pathname)) {
-        if (
-            cookies.get('35de80170cda0d14e2cdd82e9e89d375')?.value !==
-            '6f7d41b92d3e4519c9f12b765a83ab4f'
-        ) {
-            url.pathname = '/login-otp';
-            return NextResponse.redirect(url);
-        } else {
-            return NextResponse.next();
-        }
-    }
+    const protectedUserTypeRoutes = [
+        '/dashboard',
+        '/admin/user',
+        '/admin/home',
+        '/admin/manage',
+    ];
+
+    // Protect routes using user type
+    const userTypeAuthResponse = UserTypeAuthorizationMiddleware(
+        url,
+        cookies,
+        protectedUserTypeRoutes
+    );
+    if (userTypeAuthResponse) return userTypeAuthResponse;
+
+    // Check if login is verified for unverified login protected paths
+    VerifiedLoginMiddleware(unverifiedLoginProtectedPaths, url, cookies);
 
     return NextResponse.next();
 }
@@ -43,5 +52,6 @@ export const config = {
         '/home/:path*',
         '/manage-recipe/:path*',
         '/user/:path*',
+        '/admin/:path*',
     ],
 };
