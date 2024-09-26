@@ -235,6 +235,16 @@ const clearCookies = () => {
     });
 };
 
+function hashUserType(userTypeId) {
+    if (userTypeId === 1) {
+        return 'a3f12d2e9c37f1b47d1f2569cbb456e1';
+    } else if (userTypeId === 2) {
+        return 'e9b8a703be9278d1f3e57e1b28cfdce5';
+    } else if (userTypeId === 3) {
+        return '4f0e3c8b27f8b0dff0e8b1d76e8b6453';
+    }
+}
+
 export {
     cn,
     computeAge,
@@ -252,4 +262,5 @@ export {
     calculateTDEE,
     generateStrongPassword,
     clearCookies,
+    hashUserType,
 };
