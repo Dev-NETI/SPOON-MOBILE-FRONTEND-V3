@@ -4,27 +4,36 @@ import { useUserHook } from '@/hooks/api/user';
 import Loading from '@/app/(app)/Loading';
 import UserListComponent from '@/components/admin/user/UserListComponent';
 import Input from '@/components/Input';
+import { useAuth } from '@/hooks/auth';
 
 function page() {
-    const { index: getAllUser } = useUserHook('users/get-all-user');
+    const { showWith2Parameter: getAllUser } =
+        useUserHook('users/get-all-user');
     const [userModuleState, setUserModuleState] = useState({
         userData: null,
         loading: true,
         filteredData: null,
     });
+    const { user } = useAuth({ middleware: 'auth' });
 
     useEffect(() => {
-        const fetchData = async () => {
-            const { data } = await getAllUser();
-            setUserModuleState(prevState => ({
-                ...prevState,
-                userData: data,
-                loading: false,
-            }));
-        };
-        fetchData();
-    }, []);
+        if (user) {
+            const fetchData = async () => {
+                const { data } = await getAllUser(
+                    user?.user_type_id,
+                    user?.company?.id
+                );
+                setUserModuleState(prevState => ({
+                    ...prevState,
+                    userData: data,
+                    loading: false,
+                }));
+            };
+            fetchData();
+        }
+    }, [user]);
 
+    // user && console.log(user?.company?.id);
     const handleSearch = searchValue => {
         const searchOutput = userModuleState.userData.filter(
             item =>
@@ -80,6 +89,9 @@ function page() {
                             : userModuleState.userData
                     }
                 />
+                <p className='text-gray-600 italic text-md'>
+                    Total: {userModuleState.userData.length}
+                </p>
             </div>
         </div>
     );
