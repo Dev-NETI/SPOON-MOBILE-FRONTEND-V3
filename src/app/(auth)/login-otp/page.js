@@ -19,7 +19,7 @@ function LoginOtp() {
     const [tempt_otp, setTempt_otp] = useState();
     const [timerState, setTimerState] = useState(null);
 
-    // console.log(user);
+    // console.log(user.user_type_id);
 
     useEffect(() => {
         setTempt_otp(Math.floor(100000 + Math.random() * 900000));
@@ -53,8 +53,9 @@ function LoginOtp() {
                 title: 'Successfully Verified',
                 description: 'You have successfully verified your account!',
             });
-            document.cookie = `35de80170cda0d14e2cdd82e9e89d375 = 6f7d41b92d3e4519c9f12b765a83ab4f; path=/; max-age=600`;
-            router.push('/dashboard');
+            document.cookie = `35de80170cda0d14e2cdd82e9e89d375 = 6f7d41b92d3e4519c9f12b765a83ab4f; path=/; max-age=1800`; //verified OTP cookie
+            document.cookie = `P0iW8sQ7xT9vF5bN1mZ6dL3eR4cV2hX8jK3qW7nC9 = ${user.user_type_id}; path=/; `; //user_type cookie
+            router.push('/recipe');
         } else {
             toast({
                 title: 'Authentication failed',
