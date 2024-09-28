@@ -41,6 +41,7 @@ function RecipeOriginCardComponent() {
                             key={data.id}
                             imagePath={data.image_path}
                             origin={data.name}
+                            originId={data.id}
                         />
                     ))
                 )}

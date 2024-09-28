@@ -7,14 +7,15 @@ import { useMeal } from '@/hooks/api/meal';
 import { useMealType } from '@/hooks/api/meal-type';
 import { useFoodGroup } from '@/hooks/api/food-group';
 import { useSeason } from '@/hooks/api/season';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 import { RecipeContext } from '@/stores/RecipeContext';
 import DrawerComponent from '@/components/app/recipe/Drawer';
 import { useRecipe } from '@/hooks/api/recipe';
 import RecipeListComponent from '@/components/app/recipe/RecipeListComponent';
 import { Chip } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
-function Page() {
+function Page({ params = null }) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const { index: getAllOrigin } = useRecipeOrigin();
     const { index: getAllMeal } = useMeal();
@@ -40,6 +41,7 @@ function Page() {
         selectedFoodGroupData: [],
         selectedSeasonData: [],
     });
+    const router = useRouter();
 
     useEffect(() => {
         const fetchFilterData = async () => {
@@ -74,16 +76,33 @@ function Page() {
         getAllRecipe,
     ]);
 
+    useEffect(() => {
+        if (params?.originId?.[0] && recipeDataState.allRecipeData.length > 0) {
+            const filteredRecipes = recipeDataState.allRecipeData.filter(
+                recipe =>
+                    recipe.recipe_origin?.id === parseInt(params.originId[0])
+            );
+
+            if (filteredRecipes.length > 0) {
+                setRecipeDataState(prevState => ({
+                    ...prevState,
+                    filteredRecipeData: filteredRecipes,
+                }));
+            }
+        }
+    }, [recipeDataState.allRecipeData, params?.originId?.[0]]);
+
     function resetFilterStates() {
-        setRecipeState(prevState => ({
-            ...prevState,
-            searchField: '',
-            selectedOriginData: [],
-            selectedMealHourData: [],
-            selectedMealTypeData: [],
-            selectedFoodGroupData: [],
-            selectedSeasonData: [],
-        }));
+        // setRecipeState(prevState => ({
+        //     ...prevState,
+        //     searchField: '',
+        //     selectedOriginData: [],
+        //     selectedMealHourData: [],
+        //     selectedMealTypeData: [],
+        //     selectedFoodGroupData: [],
+        //     selectedSeasonData: [],
+        // }));
+        router.push('/recipe');
     }
 
     function handleSearch(value) {
