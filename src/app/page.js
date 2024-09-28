@@ -55,26 +55,28 @@ const Home = () => {
                         >
                             Welcome
                         </h1>
-                        <button
-                            type='button'
+
+                        <Link
+                            href='/login'
                             className='rounded-full border-2 border-slate-50 p-2
                             font-semibold font-mono text-slate-200 
                             text-sm
                             md:text-lg lg:text-lg 
-                            hover:bg-blue-800 hover:shadow-lg hover:shadow-cyan-900'
+                            hover:bg-blue-800 hover:shadow-lg hover:shadow-cyan-900 text-center'
                         >
-                            <Link href='/login'>Login</Link>
-                        </button>
-                        <button
-                            type='button'
+                            Login
+                        </Link>
+
+                        <Link
+                            href='/verifying-account'
                             className='rounded-full border-2 border-slate-50 p-2
                             font-semibold font-mono text-slate-200 
                             text-sm
                             md:text-lg lg:text-lg 
-                            hover:bg-blue-800 hover:shadow-lg hover:shadow-cyan-900'
+                            hover:bg-blue-800 hover:shadow-lg hover:shadow-cyan-900 text-center'
                         >
-                            <Link href='/register'>Create Account</Link>
-                        </button>
+                            Create Account
+                        </Link>
                     </div>
                 </div>
             </div>
