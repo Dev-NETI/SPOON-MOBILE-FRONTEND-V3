@@ -5,7 +5,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Avatar, Badge, Button, Stack } from '@mui/material';
 import { useRecipe } from '@/hooks/api/recipe';
 import { CancelOutlined, CheckCircleOutline } from '@mui/icons-material';
-import AddIcon from '@mui/icons-material/Add';
 import AddRecipeModal from './AddRecipeModal';
 
 function page() {
