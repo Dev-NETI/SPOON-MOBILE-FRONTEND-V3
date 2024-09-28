@@ -3,14 +3,7 @@ import SelectFieldComponent from '@/components/form/MUI/SelectFieldComponent';
 import TextFieldComponent from '@/components/form/MUI/TextFieldComponent';
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Grid,
-    Button,
-    Fab,
-    Typography,
-    Divider,
-    Snackbar,
-} from '@mui/material';
+import { Grid, Button, Fab, Typography, Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -45,16 +38,15 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
         }
     }, [selectedFile]);
 
-    const onSubmit = async data => {
+    const onSubmit = () => {
         try {
-            console.log(data);
             toast({
                 title: 'Recipe submitted successfully!',
                 variant: 'success',
             });
             handleClose();
         } catch (error) {
-            console.error(error);
+            return error;
         }
     };
 
