@@ -175,7 +175,11 @@ function page({ params }) {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     <div className='relative rounded-xl hover:brightness-75 w-full shadow-md'>
                         <Image
-                            src={recipeData?.image_path}
+                            src={
+                                `${process.env.NEXT_PUBLIC_BACKEND_URL}` +
+                                '/storage/' +
+                                recipeData?.image_path
+                            }
                             alt={recipeData?.name}
                             fill
                             style={{ objectFit: 'cover' }}
