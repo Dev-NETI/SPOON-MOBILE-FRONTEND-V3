@@ -132,34 +132,38 @@ const counter = (setState, propName, targetValue, intervalDuration) => {
 };
 
 function formatDate(dateString, format) {
-    const date = new Date(dateString);
+    if (dateString) {
+        const date = new Date(dateString);
 
-    const pad = number => String(number).padStart(2, '0');
+        const pad = number => String(number).padStart(2, '0');
 
-    const formatMap = {
-        'yyyy-mm-dd': () =>
-            `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
-        'd F, Y': () =>
-            `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${date.getFullYear()}`,
-        'mm/dd/yyyy': () =>
-            `${pad(date.getMonth() + 1)}/${pad(date.getDate())}/${date.getFullYear()}`,
-        'dd-mm-yyyy': () =>
-            `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()}`,
-        'MMMM d, yyyy': () =>
-            `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`,
-        'yyyy-mm-dd hh:mm:ss': () =>
-            `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
-        'dd-mm-yyyy hh:mm:ss': () =>
-            `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
-        'd F, Y hh:mm:ss': () =>
-            `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
-    };
+        const formatMap = {
+            'yyyy-mm-dd': () =>
+                `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+            'd F, Y': () =>
+                `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${date.getFullYear()}`,
+            'mm/dd/yyyy': () =>
+                `${pad(date.getMonth() + 1)}/${pad(date.getDate())}/${date.getFullYear()}`,
+            'dd-mm-yyyy': () =>
+                `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()}`,
+            'MMMM d, yyyy': () =>
+                `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`,
+            'yyyy-mm-dd hh:mm:ss': () =>
+                `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
+            'dd-mm-yyyy hh:mm:ss': () =>
+                `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
+            'd F, Y hh:mm:ss': () =>
+                `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
+        };
 
-    if (!formatMap[format]) {
-        throw new Error('Unsupported format');
+        if (!formatMap[format]) {
+            throw new Error('Unsupported format');
+        }
+
+        return formatMap[format]();
+    } else {
+        return '';
     }
-
-    return formatMap[format]();
 }
 
 function calculateTDEE(age, gender, heightCm, weightKg, activityLevel) {
@@ -231,6 +235,16 @@ const clearCookies = () => {
     });
 };
 
+function hashUserType(userTypeId) {
+    if (userTypeId === 1) {
+        return 'a3f12d2e9c37f1b47d1f2569cbb456e1';
+    } else if (userTypeId === 2) {
+        return 'e9b8a703be9278d1f3e57e1b28cfdce5';
+    } else if (userTypeId === 3) {
+        return '4f0e3c8b27f8b0dff0e8b1d76e8b6453';
+    }
+}
+
 export {
     cn,
     computeAge,
@@ -248,4 +262,5 @@ export {
     calculateTDEE,
     generateStrongPassword,
     clearCookies,
+    hashUserType,
 };

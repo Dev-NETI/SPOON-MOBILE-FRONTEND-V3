@@ -27,7 +27,7 @@ function UserListComponent({ userData }) {
                 {currentUsers.map(data => (
                     <UserListItemComponent
                         key={data.id}
-                        name={`${data.firstname} ${data.middlename} ${data.lastname} ${data.suffix}`}
+                        name={`${data.firstname} ${data.middlename} ${data.lastname} ${data.suffix === null ? '' : data.suffix}`}
                         slug={data.slug}
                         createdAt={formatDate(
                             data.created_at,

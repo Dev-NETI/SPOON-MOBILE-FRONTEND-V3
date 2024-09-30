@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import * as Yup from 'yup';
 import Button from '@/components/Button';
@@ -6,6 +6,8 @@ import CustomizedSnackbar from '@/components/CustomSnackBar';
 import { useUserHook } from '@/hooks/api/user';
 import ConfirmationDialog from '@/components/ConfirmationDialog';
 import ResetPasswordForm from './ResetPasswordForm';
+import DefaultDropdownComponent from '@/components/form/MUI/DefaultDropdownComponent';
+import { userType } from '@/data/static-data';
 
 function UserForm({ data, editMode, userSlug = null, setEditMode }) {
     const [error, setError] = useState({
@@ -22,6 +24,7 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
     const [confirmDialogState, setConfirmDialogState] = useState(false);
     const [resetPasswordDialogState, setResetPasswordDialogState] =
         useState(false);
+    const [userTypeState, setUserTypeState] = useState();
     const { patch: updateUser } = useUserHook('user/update-basic-information');
 
     const rules = Yup.object().shape({
@@ -41,11 +44,16 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
             .required('Email is required!'),
     });
 
+    useEffect(() => {
+        setUserTypeState(data.user_type_id);
+    }, []);
+
     const handleSubmit = async event => {
         event.preventDefault();
 
         const formData = new FormData(event.target);
         const object = Object.fromEntries(formData.entries());
+        object.userTypeId = userTypeState;
 
         try {
             await rules.validate(object, { abortEarly: false });
@@ -171,8 +179,16 @@ function UserForm({ data, editMode, userSlug = null, setEditMode }) {
                     fullWidth
                     margin='normal'
                 />
+                <DefaultDropdownComponent
+                    label='User Type'
+                    data={userType}
+                    value={userTypeState}
+                    setState={setUserTypeState}
+                    disabled={!editMode}
+                />
+
                 {editMode && (
-                    <div className='flex justify-end gap-2'>
+                    <div className='flex justify-end gap-2 mt-4'>
                         <Button
                             type='button'
                             onClick={() => setResetPasswordDialogState(true)}

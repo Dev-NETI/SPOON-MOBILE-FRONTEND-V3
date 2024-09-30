@@ -43,7 +43,10 @@ function page({ params }) {
                 {editUserState.userData.lastname}
             </h1>
 
-            <div className='flex flex-col gap-4 md:px-60 lg:px-60 '>
+            <div
+                className='flex flex-col gap-4 
+            px-8 md:px-96 lg:px-96'
+            >
                 <div className='flex justify-end'>
                     <Button
                         onClick={() =>
