@@ -1,18 +1,32 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { Avatar, Badge, Button, Stack } from '@mui/material';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import {
+    Avatar,
+    Badge,
+    Button,
+    Stack,
+    Typography,
+    Box,
+    Chip,
+} from '@mui/material';
 import { useRecipe } from '@/hooks/api/recipe';
-import { CancelOutlined, CheckCircleOutline } from '@mui/icons-material';
-import AddIcon from '@mui/icons-material/Add';
+import {
+    CancelOutlined,
+    CheckCircleOutline,
+    EditOutlined,
+    BlockOutlined,
+} from '@mui/icons-material';
 import AddRecipeModal from './AddRecipeModal';
+import { RecipeContext } from '@/stores/RecipeContext';
 
-function page() {
+function RecipeManagementPage() {
     const [recipeListState, setRecipeListState] = useState({
         recipeData: [],
+        responseStore: true,
     });
-    const { index: getRecipeData } = useRecipe('all-recipe');
+    const { index: getRecipeData, store: storeRecipe } = useRecipe();
 
     useEffect(() => {
         const fetchRecipeData = async () => {
@@ -20,17 +34,20 @@ function page() {
             setRecipeListState(prevState => ({
                 ...prevState,
                 recipeData: data,
+                responseStore: false,
             }));
         };
 
-        fetchRecipeData();
-    }, []);
+        if (recipeListState.responseStore === true) {
+            fetchRecipeData();
+        }
+    }, [recipeListState.responseStore]);
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
         {
             field: 'image',
-            headerName: 'IMAGE',
+            headerName: 'Image',
             width: 100,
             renderCell: params => (
                 <Avatar
@@ -41,92 +58,156 @@ function page() {
                 />
             ),
         },
-        { field: 'recipeName', headerName: 'RECIPE NAME', width: 350 },
-        { field: 'mealType', headerName: 'MEAL TYPE', width: 130 },
-        { field: 'recipeOrigin', headerName: 'RECIPE ORIGIN', width: 130 },
-        { field: 'breakfast', headerName: 'BREAKFAST', width: 130 },
-        { field: 'lunch', headerName: 'LUNCH', width: 100 },
-        { field: 'dinner', headerName: 'DINNER', width: 100 },
-        { field: 'snack', headerName: 'SNACK', width: 100 },
-        { field: 'carbohydrate', headerName: 'CARBOHYDRATE', width: 100 },
-        { field: 'protein', headerName: 'PROTEIN', width: 100 },
-        { field: 'fat', headerName: 'FAT', width: 100 },
-        { field: 'calories', headerName: 'CALORIES', width: 100 },
-        { field: 'sodium', headerName: 'SODIUM', width: 100 },
-        { field: 'fiber', headerName: 'FIBER', width: 100 },
-        { field: 'serving', headerName: 'NO. OF SERVING', width: 100 },
+        { field: 'recipeName', headerName: 'Recipe Name', width: 700 },
+        {
+            field: 'mealType',
+            headerName: 'Meal Type',
+            width: 200,
+            renderCell: params => (
+                <Chip label={params.value} color='primary' variant='outlined' />
+            ),
+        },
+        {
+            field: 'recipeOrigin',
+            headerName: 'Origin',
+            width: 130,
+            renderCell: params => (
+                <Chip
+                    label={params.value}
+                    color='secondary'
+                    variant='outlined'
+                />
+            ),
+        },
         {
             field: 'is_active',
-            headerName: 'STATUS',
-            width: 150,
+            headerName: 'Status',
+            width: 120,
             renderCell: params => (
-                <Badge
-                    variant='dot'
+                <Chip
+                    icon={
+                        params.value === 'Yes' ? (
+                            <CheckCircleOutline />
+                        ) : (
+                            <CancelOutlined />
+                        )
+                    }
+                    label={params.value}
                     color={params.value === 'Yes' ? 'success' : 'error'}
+                    variant='outlined'
+                />
+            ),
+        },
+        {
+            field: 'action',
+            headerName: 'Actions',
+            width: 220,
+            renderCell: params => (
+                <Stack
+                    direction='row'
+                    spacing={1}
+                    alignItems='center'
+                    justifyContent='center'
+                    sx={{ mt: 0.5 }}
                 >
-                    {params.value === 'Yes' ? (
-                        <CheckCircleOutline fontSize='small' color='success' />
-                    ) : (
-                        <CancelOutlined fontSize='small' color='error' />
-                    )}
-                </Badge>
+                    <Button
+                        variant='outlined'
+                        color='primary'
+                        size='small'
+                        startIcon={<EditOutlined />}
+                        onClick={() => {
+                            console.log(params.row);
+                        }}
+                        sx={{ px: 2, py: 1 }}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        variant='outlined'
+                        color='error'
+                        size='small'
+                        startIcon={<BlockOutlined />}
+                        onClick={() => {
+                            console.log(params.row);
+                        }}
+                        sx={{ px: 2, py: 1 }}
+                    >
+                        {params.row.is_active === 'Yes'
+                            ? 'Deactivate'
+                            : 'Activate'}
+                    </Button>
+                </Stack>
             ),
         },
     ];
 
+    const baseUrl = 'http://localhost:8000/storage/';
+
     const rows = recipeListState.recipeData.map((recipe, index) => ({
-        id: index + 1, // Assuming there's no unique ID in the data, otherwise use recipe.id
-        image: recipe.image_path, // Assuming the recipe image URL is stored in the field 'image_url'
-        recipeName: recipe.name, // Adjust the field name according to your data structure
-        mealType: recipe.meal_type.name,
+        id: index + 1,
+        image: `${baseUrl}${recipe.image_path}`,
+        recipeName: recipe.name,
+        mealType: recipe.meal_type.name.toUpperCase(),
         recipeOrigin: recipe.recipe_origin.name,
-        breakfast: recipe.breakfast === 0 ? 'No' : 'Yes',
-        lunch: recipe.lunch === 0 ? 'No' : 'Yes',
-        dinner: recipe.dinner === 0 ? 'No' : 'Yes',
-        snack: recipe.snack === 0 ? 'No' : 'Yes',
-        carbohydrate: recipe.carbohydrate,
-        protein: recipe.protein,
-        fat: recipe.fat,
-        calories: recipe.calories,
-        sodium: recipe.sodium,
-        fiber: recipe.fiber,
         serving: recipe.number_of_serving,
         is_active: recipe.is_active === 0 ? 'No' : 'Yes',
     }));
 
     return (
-        <div>
-            <Stack
-                direction='row'
-                spacing={1}
-                sx={{
-                    justifyContent: 'flex-end',
-                    alignItems: 'baseline',
-                    marginTop: '10px',
-                }}
-            >
-                <AddRecipeModal />
-                <Button variant='contained' color='error'>
-                    Delete Recipe
-                </Button>
-            </Stack>
-
-            <div style={{ height: 800, width: '100%' }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: { page: 0, pageSize: 20 },
-                        },
+        <RecipeContext.Provider value={{ storeRecipe, setRecipeListState }}>
+            <Box sx={{ p: 3 }}>
+                <Typography variant='h4' gutterBottom>
+                    Recipe Management
+                </Typography>
+                <Stack
+                    direction='row'
+                    spacing={2}
+                    sx={{
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        mb: 2,
                     }}
-                    pageSizeOptions={[20, 40]}
-                    checkboxSelection
-                    sx={{ overflow: 'clip', marginTop: '10px' }}
-                />
-            </div>
-        </div>
+                >
+                    <Typography variant='body1'>
+                        Manage your recipes, add new ones, or modify existing
+                        recipes.
+                    </Typography>
+                    <AddRecipeModal />
+                </Stack>
+
+                <Box
+                    sx={{
+                        height: 700,
+                        width: '100%',
+                        bgcolor: 'background.paper',
+                        borderRadius: 2,
+                        overflow: 'hidden',
+                    }}
+                >
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: { page: 0, pageSize: 10 },
+                            },
+                        }}
+                        pageSizeOptions={[10, 20, 50]}
+                        checkboxSelection
+                        disableRowSelectionOnClick
+                        components={{
+                            Toolbar: GridToolbar,
+                        }}
+                        sx={{
+                            '& .MuiDataGrid-cell:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                    />
+                </Box>
+            </Box>
+        </RecipeContext.Provider>
     );
 }
 
-export default page;
+export default RecipeManagementPage;

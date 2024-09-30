@@ -9,21 +9,29 @@ import {
     Fab,
     Typography,
     Divider,
-    Snackbar,
+    Paper,
+    Box,
+    Card,
+    CardContent,
+    IconButton,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Image from 'next/image';
 import { toast } from '@/components/ui/use-toast';
+import { RecipeContext } from '@/stores/RecipeContext';
+import axios from '@/lib/axios'; // Make sure this import is at the top of your file
 
 function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState('');
+    const { storeRecipe, setRecipeListState } = useContext(RecipeContext);
 
-    const handleFileChange = event => {
+    const handleFileChange = async event => {
         const file = event.target.files[0];
         if (file) {
             setSelectedFile(file);
@@ -45,16 +53,68 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
         }
     }, [selectedFile]);
 
+    const uploadImage = async file => {
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const response = await axios.post('/api/upload-image', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            if (response.data && response.data.path) {
+                return response.data.path;
+            } else {
+                throw new Error('Image upload failed');
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            toast({
+                title: 'Image upload failed',
+                description: error.message,
+                variant: 'destructive',
+            });
+            return null;
+        }
+    };
+
     const onSubmit = async data => {
         try {
-            console.log(data);
-            toast({
-                title: 'Recipe submitted successfully!',
-                variant: 'success',
-            });
-            handleClose();
+            let imagePath = '';
+            if (selectedFile) {
+                imagePath = await uploadImage(selectedFile);
+                if (!imagePath) {
+                    return; // Stop submission if image upload failed
+                }
+            }
+
+            const recipeData = {
+                ...data,
+                image_path: imagePath,
+            };
+
+            const response = await storeRecipe(recipeData);
+
+            if (response.status === 200) {
+                setRecipeListState(prevState => ({
+                    ...prevState,
+                    responseStore: true,
+                }));
+                toast({
+                    title: 'Recipe submitted successfully!',
+                    variant: 'success',
+                });
+                handleClose();
+            }
         } catch (error) {
-            console.error(error);
+            console.error('Error submitting recipe:', error);
+            toast({
+                title: 'Failed to submit recipe',
+                description: error.message,
+                variant: 'destructive',
+            });
         }
     };
 
@@ -95,6 +155,7 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                 description: z.string().nonempty(),
             })
         ),
+        image_path: z.string().optional(),
     });
 
     const form = useForm({
@@ -110,7 +171,7 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
             dinner: 0,
             ingredients: [
                 {
-                    ingredient: '',
+                    name: '',
                     instruction: '',
                     quantity: 0,
                     unit_id: 0,
@@ -128,6 +189,7 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                     description: '',
                 },
             ],
+            image_path: '',
         },
     });
 
@@ -153,77 +215,80 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(mode === 1 ? onSubmit : null)}
-                className='space-y-6'
+                className='space-y-8'
             >
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Typography variant='h4' gutterBottom>
-                            Recipe Information
-                        </Typography>
-                        <Typography variant='subtitle2' color='text.secondary'>
-                            Here you can add a new recipe.
-                        </Typography>
-                        <Divider sx={{ marginY: 2 }} />
-                    </Grid>
-
-                    <Grid item xs={12} md={8}>
-                        <TextFieldComponent
-                            form={form}
-                            name='recipe_name'
-                            label='Recipe Name'
-                            variant='outlined'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                        <Button
-                            component='label'
-                            variant='contained'
-                            startIcon={<CloudUploadIcon />}
-                            fullWidth
-                        >
-                            Upload Picture
-                            <input
-                                type='file'
-                                hidden
-                                onChange={handleFileChange}
-                                accept='image/jpeg, image/png'
+                <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+                    <Typography variant='h4' gutterBottom color='primary'>
+                        Recipe Information
+                    </Typography>
+                    <Typography
+                        variant='subtitle1'
+                        color='text.secondary'
+                        paragraph
+                    >
+                        Fill in the basic details of your recipe.
+                    </Typography>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={8}>
+                            <TextFieldComponent
+                                form={form}
+                                name='recipe_name'
+                                label='Recipe Name'
+                                variant='outlined'
+                                fullWidth
                             />
-                        </Button>
-                    </Grid>
-
-                    <Grid item xs={12} md={3}>
-                        <SelectFieldComponent
-                            form={form}
-                            name='meal_type_id'
-                            DataState={DataState.meal_type_data}
-                            label='Meal Type'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} md={3}>
-                        <SelectFieldComponent
-                            form={form}
-                            name='recipe_origin_id'
-                            DataState={DataState.recipe_origin_data}
-                            label='Recipe Origin'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} md={3}>
-                        <TextFieldComponent
-                            form={form}
-                            name='number_of_serving'
-                            label='Number of Serving'
-                            variant='outlined'
-                            type='number'
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} md={3}>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Button
+                                component='label'
+                                variant='outlined'
+                                startIcon={<CloudUploadIcon />}
+                                fullWidth
+                                sx={{ height: '56px' }}
+                            >
+                                Upload Picture
+                                <input
+                                    type='file'
+                                    hidden
+                                    onChange={handleFileChange}
+                                    accept='image/jpeg, image/png'
+                                />
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <SelectFieldComponent
+                                form={form}
+                                name='meal_type_id'
+                                DataState={DataState.meal_type_data}
+                                label='Meal Type'
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <SelectFieldComponent
+                                form={form}
+                                name='recipe_origin_id'
+                                DataState={DataState.recipe_origin_data}
+                                label='Recipe Origin'
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <TextFieldComponent
+                                form={form}
+                                name='number_of_serving'
+                                label='Number of Servings'
+                                variant='outlined'
+                                type='number'
+                            />
+                        </Grid>
                         {previewUrl && (
-                            <Grid container spacing={2} alignItems='center'>
-                                <Grid item xs={12} md={3}>
+                            <Grid item xs={12}>
+                                <Box
+                                    sx={{
+                                        mt: 2,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                >
                                     <Image
                                         src={previewUrl}
                                         alt='Preview'
@@ -232,239 +297,253 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                                         style={{
                                             borderRadius: '8px',
                                             objectFit: 'cover',
+                                            marginRight: '16px',
                                         }}
                                     />
-                                </Grid>
-                                <Grid item xs={12} md={8}>
-                                    <Typography variant='body1'>
-                                        {selectedFile.name}
-                                    </Typography>
-                                    <Typography
-                                        variant='body2'
-                                        color='text.secondary'
-                                    >
-                                        {`${(selectedFile.size / 1024).toFixed(2)} KB`}
-                                    </Typography>
-                                </Grid>
+                                    <Box>
+                                        <Typography variant='body1'>
+                                            {selectedFile.name}
+                                        </Typography>
+                                        <Typography
+                                            variant='body2'
+                                            color='text.secondary'
+                                        >
+                                            {`${(selectedFile.size / 1024).toFixed(2)} KB`}
+                                        </Typography>
+                                    </Box>
+                                </Box>
                             </Grid>
                         )}
                     </Grid>
+                </Paper>
 
-                    <Grid item xs={12}>
-                        <Typography variant='h4' gutterBottom>
-                            Meal Details
-                        </Typography>
-                        <Typography variant='subtitle2' color='text.secondary'>
-                            Suitable for different meals.
-                        </Typography>
-                        <Divider sx={{ marginY: 2 }} />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} md={3}>
-                                <CheckFieldComponent
-                                    label='Breakfast'
-                                    name='breakfast'
-                                    form={form}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={3}>
-                                <CheckFieldComponent
-                                    label='Lunch'
-                                    name='lunch'
-                                    form={form}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={3}>
-                                <CheckFieldComponent
-                                    label='Snack'
-                                    name='snack'
-                                    form={form}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={3}>
-                                <CheckFieldComponent
-                                    label='Dinner'
-                                    name='dinner'
-                                    form={form}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Typography variant='h4' gutterBottom>
-                        Recipe Nutrients
+                <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+                    <Typography variant='h4' gutterBottom color='primary'>
+                        Meal Details
                     </Typography>
-                    <Typography variant='subtitle2' color='text.secondary'>
-                        Here you can add nutrients and ingredients.
-                    </Typography>
-                    <Divider sx={{ marginY: 2 }} />
-                </Grid>
-
-                {ingredientFields.map((item, index) => (
-                    <React.Fragment key={item.id}>
-                        <Grid
-                            container
-                            spacing={2}
-                            className='animate-fade-up animate-once animate-duration-1000'
-                        >
-                            <Grid item xs={6}>
-                                <TextFieldComponent
-                                    form={form}
-                                    name={`ingredients[${index}].name`}
-                                    label={`Ingredient ${index + 1}`}
-                                    variant='outlined'
-                                />
-                            </Grid>
-
-                            <Grid item xs={6}>
-                                <TextFieldComponent
-                                    form={form}
-                                    name={`ingredients[${index}].instruction`}
-                                    label={`Instruction ${index + 1}`}
-                                    variant='outlined'
-                                />
-                            </Grid>
-
-                            <Grid item xs={6}>
-                                <TextFieldComponent
-                                    form={form}
-                                    name={`ingredients[${index}].quantity`}
-                                    label={`Quantity`}
-                                    variant='outlined'
-                                    type='number'
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} md={6}>
-                                <SelectFieldComponent
-                                    form={form}
-                                    name={`ingredients[${index}].unit_id`}
-                                    DataState={DataState.unit_data}
-                                    label='Unit'
-                                />
-                            </Grid>
-
-                            {[
-                                'calories',
-                                'carbohydrate',
-                                'protein',
-                                'fat',
-                                'sodium',
-                                'fiber',
-                            ].map((nutrient, i) => (
-                                <Grid item xs={6} md={2} key={i}>
-                                    <TextFieldComponent
-                                        form={form}
-                                        name={`ingredients[${index}].${nutrient}`}
-                                        label={
-                                            nutrient.charAt(0).toUpperCase() +
-                                            nutrient.slice(1)
-                                        }
-                                        variant='outlined'
-                                        type='number'
-                                    />
-                                </Grid>
-                            ))}
-
-                            <Grid item xs={12}>
-                                <Button
-                                    variant='outlined'
-                                    color='error'
-                                    onClick={() => removeIngredient(index)}
-                                >
-                                    Remove Ingredient
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </React.Fragment>
-                ))}
-
-                <Grid item xs={12} container justifyContent='flex-end'>
-                    <Fab
-                        color='primary'
-                        aria-label='add'
-                        onClick={() =>
-                            appendIngredient({
-                                ingredient: '',
-                                calories: 0,
-                                carbohydrate: 0,
-                                protein: 0,
-                                fat: 0,
-                                sodium: 0,
-                                fiber: 0,
-                            })
-                        }
+                    <Typography
+                        variant='subtitle1'
+                        color='text.secondary'
+                        paragraph
                     >
-                        <AddIcon />
-                    </Fab>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Typography variant='h4' gutterBottom>
-                        Recipe Instructions
+                        Select which meals this recipe is suitable for.
                     </Typography>
-                    <Typography variant='subtitle2' color='text.secondary'>
-                        Here you can add instructions.
-                    </Typography>
-                    <Divider sx={{ marginY: 2 }} />
-                </Grid>
+                    <Grid container spacing={2}>
+                        {['breakfast', 'lunch', 'snack', 'dinner'].map(meal => (
+                            <Grid item xs={6} sm={3} key={meal}>
+                                <CheckFieldComponent
+                                    label={
+                                        meal.charAt(0).toUpperCase() +
+                                        meal.slice(1)
+                                    }
+                                    name={meal}
+                                    form={form}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Paper>
 
-                {instructionFields.map((item, index) => (
-                    <React.Fragment key={item.id}>
-                        <Grid
-                            container
-                            spacing={2}
-                            className='animate-fade-up animate-once animate-duration-1000'
+                <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+                    <Typography variant='h4' gutterBottom color='primary'>
+                        Ingredients and Nutrients
+                    </Typography>
+                    <Typography
+                        variant='subtitle1'
+                        color='text.secondary'
+                        paragraph
+                    >
+                        Add ingredients and their nutritional information.
+                    </Typography>
+                    {ingredientFields.map((item, index) => (
+                        <Card
+                            key={item.id}
+                            sx={{ mb: 3, position: 'relative' }}
                         >
-                            <Grid item xs={12}>
+                            <CardContent>
+                                <IconButton
+                                    aria-label='delete'
+                                    onClick={() => removeIngredient(index)}
+                                    sx={{
+                                        position: 'absolute',
+                                        top: 8,
+                                        right: 8,
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                                <Typography variant='h6' gutterBottom>
+                                    Ingredient {index + 1}
+                                </Typography>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextFieldComponent
+                                            form={form}
+                                            name={`ingredients[${index}].name`}
+                                            label='Ingredient Name'
+                                            variant='outlined'
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextFieldComponent
+                                            form={form}
+                                            name={`ingredients[${index}].instruction`}
+                                            label='Preparation Instructions'
+                                            variant='outlined'
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} sm={3}>
+                                        <TextFieldComponent
+                                            form={form}
+                                            name={`ingredients[${index}].quantity`}
+                                            label='Quantity'
+                                            variant='outlined'
+                                            type='number'
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6} sm={3}>
+                                        <SelectFieldComponent
+                                            form={form}
+                                            name={`ingredients[${index}].unit_id`}
+                                            DataState={DataState.unit_data}
+                                            label='Unit'
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                    {[
+                                        'calories',
+                                        'carbohydrate',
+                                        'protein',
+                                        'fat',
+                                        'sodium',
+                                        'fiber',
+                                    ].map(nutrient => (
+                                        <Grid item xs={6} sm={2} key={nutrient}>
+                                            <TextFieldComponent
+                                                form={form}
+                                                name={`ingredients[${index}].${nutrient}`}
+                                                label={
+                                                    nutrient
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    nutrient.slice(1)
+                                                }
+                                                variant='outlined'
+                                                type='number'
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            </CardContent>
+                        </Card>
+                    ))}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            mt: 2,
+                        }}
+                    >
+                        <Fab
+                            color='primary'
+                            aria-label='add ingredient'
+                            onClick={() =>
+                                appendIngredient({
+                                    name: '',
+                                    instruction: '',
+                                    quantity: 0,
+                                    unit_id: 0,
+                                    calories: 0,
+                                    carbohydrate: 0,
+                                    protein: 0,
+                                    fat: 0,
+                                    sodium: 0,
+                                    fiber: 0,
+                                })
+                            }
+                        >
+                            <AddIcon />
+                        </Fab>
+                    </Box>
+                </Paper>
+
+                <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+                    <Typography variant='h4' gutterBottom color='primary'>
+                        Cooking Instructions
+                    </Typography>
+                    <Typography
+                        variant='subtitle1'
+                        color='text.secondary'
+                        paragraph
+                    >
+                        Add step-by-step instructions for preparing the recipe.
+                    </Typography>
+                    {instructionFields.map((item, index) => (
+                        <Card
+                            key={item.id}
+                            sx={{ mb: 3, position: 'relative' }}
+                        >
+                            <CardContent>
+                                <IconButton
+                                    aria-label='delete'
+                                    onClick={() => removeInstruction(index)}
+                                    sx={{
+                                        position: 'absolute',
+                                        top: 8,
+                                        right: 8,
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                                <Typography variant='h6' gutterBottom>
+                                    Step {index + 1}
+                                </Typography>
                                 <TextFieldComponent
                                     form={form}
                                     name={`instructions[${index}].description`}
                                     label={`Instruction ${index + 1}`}
                                     variant='outlined'
+                                    multiline
+                                    rows={3}
+                                    fullWidth
                                 />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <Button
-                                    variant='outlined'
-                                    color='error'
-                                    onClick={() => removeInstruction(index)}
-                                >
-                                    Remove Instruction
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </React.Fragment>
-                ))}
-
-                <Grid item xs={12} container justifyContent='flex-end'>
-                    <Fab
-                        color='primary'
-                        aria-label='add'
-                        onClick={() =>
-                            appendInstruction({
-                                number: instructionFields.length + 1,
-                                description: '',
-                            })
-                        }
+                            </CardContent>
+                        </Card>
+                    ))}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            mt: 2,
+                        }}
                     >
-                        <AddIcon />
-                    </Fab>
-                </Grid>
+                        <Fab
+                            color='primary'
+                            aria-label='add instruction'
+                            onClick={() =>
+                                appendInstruction({
+                                    number: instructionFields.length + 1,
+                                    description: '',
+                                })
+                            }
+                        >
+                            <AddIcon />
+                        </Fab>
+                    </Box>
+                </Paper>
 
-                <Grid item xs={12}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
                         variant='contained'
                         color='primary'
                         type='submit'
-                        fullWidth
+                        size='large'
                         sx={{
-                            padding: '12px',
+                            padding: '12px 24px',
                             fontWeight: 'bold',
                             borderRadius: '8px',
                             '&:hover': {
@@ -472,9 +551,9 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                             },
                         }}
                     >
-                        Submit
+                        Submit Recipe
                     </Button>
-                </Grid>
+                </Box>
             </form>
         </Form>
     );
