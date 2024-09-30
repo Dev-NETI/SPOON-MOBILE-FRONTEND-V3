@@ -2,15 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import {
-    Avatar,
-    Badge,
-    Button,
-    Stack,
-    Typography,
-    Box,
-    Chip,
-} from '@mui/material';
+import { Avatar, Button, Stack, Typography, Box, Chip } from '@mui/material';
 import { useRecipe } from '@/hooks/api/recipe';
 import {
     CancelOutlined,
@@ -115,9 +107,9 @@ function RecipeManagementPage() {
                         color='primary'
                         size='small'
                         startIcon={<EditOutlined />}
-                        onClick={() => {
-                            console.log(params.row);
-                        }}
+                        // onClick={() => {
+                        //     console.log(params.row);
+                        // }}
                         sx={{ px: 2, py: 1 }}
                     >
                         Edit
@@ -127,9 +119,9 @@ function RecipeManagementPage() {
                         color='error'
                         size='small'
                         startIcon={<BlockOutlined />}
-                        onClick={() => {
-                            console.log(params.row);
-                        }}
+                        // onClick={() => {
+                        //     console.log(params.row);
+                        // }}
                         sx={{ px: 2, py: 1 }}
                     >
                         {params.row.is_active === 'Yes'
