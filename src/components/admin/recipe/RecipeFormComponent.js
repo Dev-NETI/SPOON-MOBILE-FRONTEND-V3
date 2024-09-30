@@ -8,7 +8,6 @@ import {
     Button,
     Fab,
     Typography,
-    Divider,
     Paper,
     Box,
     Card,
@@ -70,7 +69,6 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                 throw new Error('Image upload failed');
             }
         } catch (error) {
-            console.error('Error uploading image:', error);
             toast({
                 title: 'Image upload failed',
                 description: error.message,
@@ -109,7 +107,6 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                 handleClose();
             }
         } catch (error) {
-            console.error('Error submitting recipe:', error);
             toast({
                 title: 'Failed to submit recipe',
                 description: error.message,
