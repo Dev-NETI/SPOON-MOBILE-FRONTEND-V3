@@ -12,7 +12,11 @@ function RecipeCardComponent({ label, imagePath, href = '#', delay = 200 }) {
             <Link href={href}>
                 <div className='relative h-48 w-full'>
                     <Image
-                        src={imagePath}
+                        src={
+                            `${process.env.NEXT_PUBLIC_BACKEND_URL}` +
+                            '/storage/' +
+                            imagePath
+                        }
                         alt='flag'
                         fill
                         className='object-cover rounded-md hover:brightness-75'
