@@ -1,4 +1,4 @@
-package ph.spoon.beta;
+package ph.spoon.betaspoon;
 
 import com.getcapacitor.BridgeActivity;
 
