@@ -38,7 +38,7 @@ function MealTypeFormComponent({ mode = 1, handleClose, selectedMealType }) {
                 throw new Error('Invalid response from server');
             }
         } catch (error) {
-            console.error('Error submitting meal type:', error);
+            // console.error('Error submitting meal type:', error);
             toast({
                 title:
                     mode === 1

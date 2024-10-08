@@ -16,7 +16,6 @@ import { useRecipe } from '@/hooks/api/recipe';
 import {
     CancelOutlined,
     CheckCircleOutline,
-    EditOutlined,
     BlockOutlined,
 } from '@mui/icons-material';
 import AddRecipeModal from './AddRecipeModal';
@@ -55,7 +54,7 @@ function RecipeManagementPage() {
                     responseStore: false,
                 }));
             } catch (error) {
-                console.error('Error fetching recipe data:', error);
+                // console.error('Error fetching recipe data:', error);
                 // Handle the error appropriately (e.g., show an error message to the user)
             } finally {
                 setLoading(false);
@@ -176,10 +175,10 @@ function RecipeManagementPage() {
                                     responseStore: true,
                                 }));
                             } catch (error) {
-                                console.error(
-                                    'Error updating recipe status:',
-                                    error
-                                );
+                                // console.error(
+                                //     'Error updating recipe status:',
+                                //     error
+                                // );
                             }
                         }}
                         sx={{
