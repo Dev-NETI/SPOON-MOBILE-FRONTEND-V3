@@ -44,7 +44,7 @@ function MealTypePage() {
                     responseStore: false,
                 }));
             } catch (error) {
-                console.error('Error fetching meal type data:', error);
+                // console.error('Error fetching meal type data:', error);
             } finally {
                 setLoading(false);
             }
@@ -123,10 +123,10 @@ function MealTypePage() {
                                     responseStore: true,
                                 }));
                             } catch (error) {
-                                console.error(
-                                    'Error updating recipe status:',
-                                    error
-                                );
+                                // console.error(
+                                //     'Error updating recipe status:',
+                                //     error
+                                // );
                             }
                         }}
                         sx={{

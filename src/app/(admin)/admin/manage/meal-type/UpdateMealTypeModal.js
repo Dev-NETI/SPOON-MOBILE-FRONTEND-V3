@@ -19,7 +19,7 @@ function UpdateMealTypeModal({ open, onClose, slug }) {
                 const { data } = await showMealType(slug);
                 setSelectedMealType(data);
             } catch (error) {
-                console.error('Error fetching meal type details:', error);
+                // console.error('Error fetching meal type details:', error);
             }
         }
     }, [slug, showMealType]);
