@@ -14,6 +14,7 @@ import { useMealType } from '@/hooks/api/meal-type';
 import RecipeFormComponent from '@/components/admin/recipe/RecipeFormComponent';
 import { useRecipeOrigin } from '@/hooks/api/recipe-origin';
 import { useUnit } from '@/hooks/api/unit';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
@@ -70,6 +71,14 @@ export default function AddRecipeModal() {
         setOpen(false);
     };
 
+    const darkBlueTheme = createTheme({
+        palette: {
+            primary: {
+                main: '#1a237e', // Dark blue color
+            },
+        },
+    });
+
     return (
         <React.Fragment>
             <Button
@@ -79,48 +88,52 @@ export default function AddRecipeModal() {
             >
                 ADD RECIPE
             </Button>
-            <Dialog
-                fullScreen
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Transition}
-            >
-                <AppBar sx={{ position: 'relative' }}>
-                    <Toolbar>
-                        <IconButton
-                            edge='start'
-                            color='inherit'
-                            onClick={handleClose}
-                            aria-label='close'
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography
-                            sx={{ ml: 2, flex: 1 }}
-                            variant='h6'
-                            component='div'
-                        >
-                            Add Recipe
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Grid
-                    container
-                    spacing={2}
-                    justifyContent='center'
-                    alignItems='center'
+            <ThemeProvider theme={darkBlueTheme}>
+                <Dialog
+                    fullScreen
+                    open={open}
+                    onClose={handleClose}
+                    TransitionComponent={Transition}
                 >
-                    <Grid item xs={12} md={8}>
-                        <Container maxWidth={false} sx={{ mb: 4, mt: 4 }}>
-                            <RecipeFormComponent
-                                mode={1}
-                                DataState={DataState}
-                                handleClose={handleClose}
-                            />
-                        </Container>
+                    <AppBar
+                        sx={{ position: 'relative', bgcolor: 'primary.main' }}
+                    >
+                        <Toolbar>
+                            <IconButton
+                                edge='start'
+                                color='inherit'
+                                onClick={handleClose}
+                                aria-label='close'
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Typography
+                                sx={{ ml: 2, flex: 1 }}
+                                variant='h6'
+                                component='div'
+                            >
+                                Add Recipe
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <Grid
+                        container
+                        spacing={2}
+                        justifyContent='center'
+                        alignItems='center'
+                    >
+                        <Grid item xs={12} md={8}>
+                            <Container maxWidth={false} sx={{ mb: 4, mt: 4 }}>
+                                <RecipeFormComponent
+                                    mode={1}
+                                    DataState={DataState}
+                                    handleClose={handleClose}
+                                />
+                            </Container>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Dialog>
+                </Dialog>
+            </ThemeProvider>
         </React.Fragment>
     );
 }

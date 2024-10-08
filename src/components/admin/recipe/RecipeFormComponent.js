@@ -25,10 +25,16 @@ import { toast } from '@/components/ui/use-toast';
 import { RecipeContext } from '@/stores/RecipeContext';
 import axios from '@/lib/axios'; // Make sure this import is at the top of your file
 
-function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
+function RecipeFormComponent({
+    mode = 1,
+    DataState,
+    handleClose,
+    selectedRecipe,
+}) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState('');
-    const { storeRecipe, setRecipeListState } = useContext(RecipeContext);
+    const { storeRecipe, updateRecipe, setRecipeListState } =
+        useContext(RecipeContext);
 
     const handleFileChange = async event => {
         const file = event.target.files[0];
@@ -47,10 +53,15 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
             return () => {
                 URL.revokeObjectURL(url);
             };
+        } else if (selectedRecipe && selectedRecipe.image_path) {
+            // If there's an existing image, set it as the preview
+            setPreviewUrl(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${selectedRecipe.image_path}`
+            );
         } else {
             setPreviewUrl('');
         }
-    }, [selectedFile]);
+    }, [selectedFile, selectedRecipe]);
 
     const uploadImage = async file => {
         try {
@@ -90,10 +101,15 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
 
             const recipeData = {
                 ...data,
-                image_path: imagePath,
+                image_path: imagePath || data.image_path,
             };
 
-            const response = await storeRecipe(recipeData);
+            let response;
+            if (mode === 1) {
+                response = await storeRecipe(recipeData);
+            } else {
+                response = await updateRecipe(selectedRecipe.slug, recipeData);
+            }
 
             if (response.status === 200) {
                 setRecipeListState(prevState => ({
@@ -101,14 +117,20 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                     responseStore: true,
                 }));
                 toast({
-                    title: 'Recipe submitted successfully!',
+                    title:
+                        mode === 1
+                            ? 'Recipe submitted successfully!'
+                            : 'Recipe updated successfully!',
                     variant: 'success',
                 });
                 handleClose();
             }
         } catch (error) {
             toast({
-                title: 'Failed to submit recipe',
+                title:
+                    mode === 1
+                        ? 'Failed to submit recipe'
+                        : 'Failed to update recipe',
                 description: error.message,
                 variant: 'destructive',
             });
@@ -116,7 +138,7 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
     };
 
     const formSchema = z.object({
-        recipe_name: z.string().min(2, {
+        name: z.string().min(2, {
             message: 'Recipe name must be at least 2 characters.',
         }),
         meal_type_id: z.number().min(1, { message: 'Meal type is required' }),
@@ -132,8 +154,8 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
         dinner: z.number(),
         ingredients: z.array(
             z.object({
-                name: z.string().nonempty(),
-                instruction: z.string().nonempty(),
+                name: z.string(),
+                instruction: z.string().nullable().optional(),
                 unit_id: z.number().min(1, { message: 'Unit is required' }),
                 quantity: z
                     .number()
@@ -149,7 +171,7 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
         instructions: z.array(
             z.object({
                 number: z.number(),
-                description: z.string().nonempty(),
+                description: z.string(),
             })
         ),
         image_path: z.string().optional(),
@@ -158,15 +180,15 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            recipe_name: '',
-            meal_type_id: 0,
-            recipe_origin_id: 0,
-            number_of_serving: 0,
-            breakfast: 0,
-            lunch: 0,
-            snack: 0,
-            dinner: 0,
-            ingredients: [
+            name: selectedRecipe?.name || '',
+            meal_type_id: selectedRecipe?.meal_type_id || 0,
+            recipe_origin_id: selectedRecipe?.recipe_origin_id || 0,
+            number_of_serving: selectedRecipe?.number_of_serving || 0,
+            breakfast: selectedRecipe?.breakfast || 0,
+            lunch: selectedRecipe?.lunch || 0,
+            snack: selectedRecipe?.snack || 0,
+            dinner: selectedRecipe?.dinner || 0,
+            ingredients: selectedRecipe?.ingredient || [
                 {
                     name: '',
                     instruction: '',
@@ -180,13 +202,13 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                     fiber: 0,
                 },
             ],
-            instructions: [
+            instructions: selectedRecipe?.procedure || [
                 {
                     number: 1,
                     description: '',
                 },
             ],
-            image_path: '',
+            image_path: selectedRecipe?.image_path || '',
         },
     });
 
@@ -210,10 +232,7 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
 
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(mode === 1 ? onSubmit : null)}
-                className='space-y-8'
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
                 <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
                     <Typography variant='h4' gutterBottom color='primary'>
                         Recipe Information
@@ -229,7 +248,7 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                         <Grid item xs={12} md={8}>
                             <TextFieldComponent
                                 form={form}
-                                name='recipe_name'
+                                name='name'
                                 label='Recipe Name'
                                 variant='outlined'
                                 fullWidth
@@ -243,7 +262,9 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                                 fullWidth
                                 sx={{ height: '56px' }}
                             >
-                                Upload Picture
+                                {previewUrl
+                                    ? 'Change Picture'
+                                    : 'Upload Picture'}
                                 <input
                                     type='file'
                                     hidden
@@ -299,14 +320,18 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                                     />
                                     <Box>
                                         <Typography variant='body1'>
-                                            {selectedFile.name}
+                                            {selectedFile
+                                                ? selectedFile.name
+                                                : 'Current Image'}
                                         </Typography>
-                                        <Typography
-                                            variant='body2'
-                                            color='text.secondary'
-                                        >
-                                            {`${(selectedFile.size / 1024).toFixed(2)} KB`}
-                                        </Typography>
+                                        {selectedFile && (
+                                            <Typography
+                                                variant='body2'
+                                                color='text.secondary'
+                                            >
+                                                {`${(selectedFile.size / 1024).toFixed(2)} KB`}
+                                            </Typography>
+                                        )}
                                     </Box>
                                 </Box>
                             </Grid>
@@ -548,7 +573,7 @@ function RecipeFormComponent({ mode = 1, DataState, handleClose }) {
                             },
                         }}
                     >
-                        Submit Recipe
+                        {mode === 1 ? 'Submit Recipe' : 'Update Recipe'}
                     </Button>
                 </Box>
             </form>

@@ -4,6 +4,9 @@ const nextConfig = {
     swcMinify: true,
     // output: 'export',
     // distDir: './dist', // Changes the build output directory to `./dist/`.
+    images: {
+        domains: ['localhost'],
+    },
 };
 
 export default nextConfig;
