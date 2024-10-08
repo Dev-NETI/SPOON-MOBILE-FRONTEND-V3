@@ -2,9 +2,11 @@
 
 import { useResource } from '../resource';
 
-const useMealType = () => {
+const useMealType = (customRoute = null) => {
     const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
-    const route = '/api/meal-type';
+    const route = customRoute
+        ? `/api/meal-type/${customRoute}`
+        : '/api/meal-type';
 
     return {
         ...useResource({ baseURL, route }),

@@ -2,7 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Avatar, Button, Stack, Typography, Box, Chip } from '@mui/material';
+import {
+    Avatar,
+    Button,
+    Stack,
+    Typography,
+    Box,
+    Chip,
+    Paper,
+    Grid,
+} from '@mui/material';
 import { useRecipe } from '@/hooks/api/recipe';
 import {
     CancelOutlined,
@@ -13,7 +22,6 @@ import {
 import AddRecipeModal from './AddRecipeModal';
 import UpdateRecipeModal from './UpdateRecipeModal';
 import { RecipeContext } from '@/stores/RecipeContext';
-import CircularProgress from '@mui/material/CircularProgress';
 import SpoonLoading from '@/app/(app)/SpoonLoading';
 
 function RecipeManagementPage() {
@@ -74,7 +82,12 @@ function RecipeManagementPage() {
                 />
             ),
         },
-        { field: 'recipeName', headerName: 'Recipe Name', width: 700 },
+        {
+            field: 'recipeName',
+            headerName: 'Recipe Name',
+            flex: 1,
+            minWidth: 200,
+        },
         {
             field: 'mealType',
             headerName: 'Meal Type',
@@ -203,7 +216,7 @@ function RecipeManagementPage() {
         recipeOrigin: recipe.recipe_origin.name,
         serving: recipe.number_of_serving,
         is_active: recipe.is_active === 0 ? 'No' : 'Yes',
-        slug: recipe.slug, // Add slug to the row data
+        slug: recipe.slug,
     }));
 
     return (
@@ -220,33 +233,31 @@ function RecipeManagementPage() {
                 <SpoonLoading />
             ) : (
                 <Box sx={{ p: 3 }}>
-                    <Typography variant='h4' gutterBottom>
-                        Recipe Management
-                    </Typography>
-                    <Stack
-                        direction='row'
-                        spacing={2}
-                        sx={{
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            mb: 2,
-                        }}
-                    >
-                        <Typography variant='body1'>
-                            Manage your recipes, add new ones, or modify
-                            existing recipes.
-                        </Typography>
-                        <AddRecipeModal />
-                    </Stack>
+                    <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+                        <Grid container spacing={2} alignItems='center'>
+                            <Grid item xs={12} sm={8}>
+                                <Typography variant='h4' gutterBottom>
+                                    Recipe Management
+                                </Typography>
+                                <Typography variant='body1'>
+                                    Manage your recipes, add new ones, or modify
+                                    existing recipes.
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                sm={4}
+                                sx={{ textAlign: { xs: 'left', sm: 'right' } }}
+                            >
+                                <AddRecipeModal />
+                            </Grid>
+                        </Grid>
+                    </Paper>
 
-                    <Box
-                        sx={{
-                            height: 700,
-                            width: '100%',
-                            bgcolor: 'background.paper',
-                            borderRadius: 2,
-                            overflow: 'hidden',
-                        }}
+                    <Paper
+                        elevation={3}
+                        sx={{ height: 700, width: '100%', overflow: 'hidden' }}
                     >
                         <DataGrid
                             rows={rows}
@@ -268,7 +279,7 @@ function RecipeManagementPage() {
                                 },
                             }}
                         />
-                    </Box>
+                    </Paper>
 
                     <UpdateRecipeModal
                         isOpen={isUpdateModalOpen}
