@@ -2,6 +2,8 @@
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
+    // output: 'export',
+    // distDir: './dist', // Changes the build output directory to `./dist/`.
     images: {
         remotePatterns: [
             {

@@ -1,12 +1,34 @@
 'use client';
 import { Box, Container, Tab, Tabs } from '@mui/material';
-import React, { useState } from 'react';
-function layout({ children }) {
+import React, { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+
+function Layout({ children }) {
+    const router = useRouter();
+    const pathname = usePathname();
     const [value, setValue] = useState(0);
+
+    const tabPaths = [
+        '/admin/manage/recipe',
+        '/admin/manage/category',
+        '/admin/manage/rank',
+        '/admin/manage/meal-type',
+    ];
+
+    useEffect(() => {
+        const currentTabIndex = tabPaths.findIndex(path =>
+            pathname.startsWith(path)
+        );
+        if (currentTabIndex !== -1) {
+            setValue(currentTabIndex);
+        }
+    }, [pathname]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        router.push(tabPaths[newValue]);
     };
+
     return (
         <>
             <Box
@@ -37,6 +59,7 @@ function layout({ children }) {
                     <Tab label='Recipe' />
                     <Tab label='Category' />
                     <Tab label='Rank' />
+                    <Tab label='Meal Type' />
                 </Tabs>
             </Box>
 
@@ -47,4 +70,4 @@ function layout({ children }) {
     );
 }
 
-export default layout;
+export default Layout;
