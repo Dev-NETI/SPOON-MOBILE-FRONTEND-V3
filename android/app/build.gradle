@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "ph.spoon.beta"
+    namespace "ph.spoon.betaspoon"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "ph.spoon.beta"
+        applicationId "ph.spoon.betaspoon"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

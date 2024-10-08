@@ -76,6 +76,8 @@ function TopTenRecipeCardComponent({ title, subheader = '' }) {
                                                     <Avatar
                                                         alt={item.recipe?.name}
                                                         src={
+                                                            `${process.env.NEXT_PUBLIC_BACKEND_URL}` +
+                                                            '/storage/' +
                                                             item.recipe
                                                                 ?.image_path
                                                         }
