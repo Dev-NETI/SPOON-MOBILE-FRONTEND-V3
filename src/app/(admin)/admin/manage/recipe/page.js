@@ -205,11 +205,9 @@ function RecipeManagementPage() {
         },
     ];
 
-    const baseUrl = 'http://localhost:8000/storage/';
-
     const rows = recipeListState.recipeData.map((recipe, index) => ({
         id: index + 1,
-        image: `${baseUrl}${recipe.image_path}`,
+        image: `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${recipe.image_path}`,
         recipeName: recipe.name,
         mealType: recipe.meal_type.name.toUpperCase(),
         recipeOrigin: recipe.recipe_origin.name,

@@ -5,8 +5,8 @@ import Image from 'next/image';
 function RecipeViewIconCardComponent({ src, label, value }) {
     return (
         <Card className='hover:shadow-lg transition-shadow duration-300 shadow-md'>
-            <CardContent className='p-4'>
-                <div className='flex justify-center mt-4'>
+            <CardContent className='p-4 flex flex-col items-center justify-center h-full'>
+                <div className='flex justify-center'>
                     <Image
                         src={src}
                         alt={label}
