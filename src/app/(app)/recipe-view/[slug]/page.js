@@ -12,7 +12,6 @@ import InstructionTab from './InstructionTab';
 import NutritionTab from './NutritionTab';
 import { useRecipe } from '@/hooks/api/recipe';
 import RecipeViewIconCardComponent from '@/components/app/recipe-view/RecipeViewIconCardComponent';
-import Loading from '../../Loading';
 import SaveRecipeComponent from '@/components/app/recipe-view/SaveRecipeComponent';
 import { useSavedRecipe } from '@/hooks/api/saved-recipe';
 import { useAuth } from '@/hooks/auth';
