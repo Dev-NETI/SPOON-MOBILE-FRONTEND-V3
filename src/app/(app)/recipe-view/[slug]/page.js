@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import { Chip, Grid, List } from '@mui/material';
+import { Chip, Paper } from '@mui/material';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -19,6 +19,7 @@ import { useAuth } from '@/hooks/auth';
 import CustomizedSnackbar from '@/components/CustomSnackBar';
 import CommentSection from '@/components/app/recipe-view/CommentSection';
 import { useRecipeReview } from '@/hooks/api/recipe-review';
+import SpoonLoading from '../../SpoonLoading';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -146,12 +147,12 @@ function page({ params }) {
     }
 
     const ui = loading ? (
-        <Loading />
+        <SpoonLoading />
     ) : (
-        <div className='flex flex-col p-2 sm:p-3 md:p-8'>
-            <div className='grid'>
-                <div className='flex flex-row gap-4'>
-                    <h1 className='text-3xl font-semibold text-gray-900 text-left'>
+        <div className='flex flex-col space-y-8'>
+            <Paper elevation={3} className='p-6 rounded-lg shadow-lg'>
+                <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4'>
+                    <h1 className='text-3xl sm:text-4xl font-bold text-gray-800'>
                         {recipeData?.name}
                     </h1>
                     <SaveRecipeComponent
@@ -159,21 +160,22 @@ function page({ params }) {
                         onClick={handleSaveRecipe}
                     />
                 </div>
-                <div className='flex items-center space-x-2'>
-                    <Box sx={{ '& > legend': { mt: 2 } }}>
-                        <Rating
-                            name='simple-controlled'
-                            value={value}
-                            onChange={(event, newValue) => {
-                                setValue(newValue);
-                            }}
-                        />
-                    </Box>
-                    <p className='font-light mb-1'>{value}/5(163)</p>
+                <div className='flex items-center space-x-2 mb-6'>
+                    <Rating
+                        name='recipe-rating'
+                        value={value}
+                        onChange={(event, newValue) => {
+                            setValue(newValue);
+                        }}
+                        precision={0.5}
+                    />
+                    <p className='text-sm text-gray-600'>
+                        {value}/5 (163 reviews)
+                    </p>
                 </div>
 
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                    <div className='relative rounded-xl hover:brightness-75 w-full shadow-md'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                    <div className='relative w-full h-0 pb-[75%] rounded-xl overflow-hidden shadow-lg'>
                         <Image
                             src={
                                 `${process.env.NEXT_PUBLIC_BACKEND_URL}` +
@@ -181,12 +183,13 @@ function page({ params }) {
                                 recipeData?.image_path
                             }
                             alt={recipeData?.name}
-                            fill
-                            style={{ objectFit: 'cover' }}
+                            layout='fill'
+                            objectFit='cover'
+                            className='absolute top-0 left-0 w-full h-full'
                         />
                     </div>
 
-                    <div className='grid grid-cols-3 sm:grid-cols-3 md:grid-cols-1 gap-2'>
+                    <div className='grid grid-cols-3 sm:grid-cols-3 gap-4'>
                         <RecipeViewIconCardComponent
                             src='/images/cooking.png'
                             label='Category'
@@ -203,71 +206,67 @@ function page({ params }) {
                             value='2 pax'
                         />
                     </div>
-                    <h1 className='text-3xl font-semibold text-gray-600 text-left'>
-                        Best served
-                    </h1>
-                    <div className='grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-2 mt-1'>
-                        {recipeData?.food_group_list_item?.map(data => (
-                            <Chip key={data.id} label={data?.food_group.name} />
-                        )) || <p>No food group items available.</p>}
-                        {recipeData?.season_list_item?.map(data => (
-                            <Chip key={data.id} label={data?.season.name} />
-                        )) || <p>No season name available.</p>}
-                    </div>
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mt-1 py-2'>
-                    <Box>
-                        <Box
-                            sx={{
-                                borderBottom: 1,
-                                pt: 1,
-                                borderColor: 'divider',
-                            }}
-                        >
-                            <Tabs
-                                value={tab}
-                                onChange={handleChange}
-                                variant='scrollable'
-                                scrollButtons
-                                allowScrollButtonsMobile
-                                aria-label='scrollable force tabs example'
-                            >
-                                <Tab label='Ingredients' {...a11yProps(0)} />
-                                <Tab label='Instructions' {...a11yProps(1)} />
-                                <Tab label='Nutrition' {...a11yProps(2)} />
-                            </Tabs>
-                        </Box>
-                        <CustomTabPanel value={tab} index={0}>
-                            <Grid container>
-                                <Grid item xs={12} md={12}>
-                                    <List>
-                                        <IngridientsTab Item={recipeData} />
-                                    </List>
-                                </Grid>
-                            </Grid>
-                        </CustomTabPanel>
-                        <CustomTabPanel value={tab} index={1}>
-                            <Grid item xs={12} md={12}>
-                                <List>
-                                    <InstructionTab Item={recipeData} />
-                                </List>
-                            </Grid>
-                        </CustomTabPanel>
-                        <CustomTabPanel value={tab} index={2}>
-                            <NutritionTab data={recipeData} />
-                        </CustomTabPanel>
-                    </Box>
-                    <Box>
-                        <CommentSection
-                            recipeData={recipeData}
-                            setSnackBarState={setSnackBarState}
-                            reviewData={recipeReviewData}
+            </Paper>
+
+            <Paper elevation={3} className='p-6 rounded-lg shadow-lg'>
+                <h2 className='text-2xl font-semibold text-gray-800 mb-4'>
+                    Best served with
+                </h2>
+                <div className='flex flex-wrap gap-2'>
+                    {recipeData?.food_group_list_item?.map(data => (
+                        <Chip
+                            key={data.id}
+                            label={data?.food_group.name}
+                            color='primary'
+                            variant='outlined'
                         />
-                    </Box>
+                    )) || <p>No food group items available.</p>}
+                    {recipeData?.season_list_item?.map(data => (
+                        <Chip
+                            key={data.id}
+                            label={data?.season.name}
+                            color='secondary'
+                            variant='outlined'
+                        />
+                    )) || <p>No season name available.</p>}
                 </div>
+            </Paper>
+
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <Paper elevation={3} className='p-6 rounded-lg shadow-lg'>
+                    <Tabs
+                        value={tab}
+                        onChange={handleChange}
+                        variant='fullWidth'
+                        aria-label='recipe tabs'
+                        className='mb-4'
+                    >
+                        <Tab label='Ingredients' {...a11yProps(0)} />
+                        <Tab label='Instructions' {...a11yProps(1)} />
+                        <Tab label='Nutrition' {...a11yProps(2)} />
+                    </Tabs>
+                    <CustomTabPanel value={tab} index={0}>
+                        <IngridientsTab Item={recipeData} />
+                    </CustomTabPanel>
+                    <CustomTabPanel value={tab} index={1}>
+                        <InstructionTab Item={recipeData} />
+                    </CustomTabPanel>
+                    <CustomTabPanel value={tab} index={2}>
+                        <NutritionTab data={recipeData} />
+                    </CustomTabPanel>
+                </Paper>
+                <Paper elevation={3} className='p-6 rounded-lg shadow-lg'>
+                    <CommentSection
+                        recipeData={recipeData}
+                        setSnackBarState={setSnackBarState}
+                        reviewData={recipeReviewData}
+                    />
+                </Paper>
             </div>
         </div>
     );
+
     return (
         <>
             {ui}
