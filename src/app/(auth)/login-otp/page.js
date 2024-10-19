@@ -4,10 +4,10 @@ import { useAuth } from '@/hooks/auth';
 import axios from '@/lib/axios';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
-import Loading from '@/app/(app)/Loading';
 import { useEmailHook } from '@/hooks/api/email-hook';
 import VerificationCodeForm from '@/components/auth/register/VerificationCodeForm';
 import { hashUserType } from '@/lib/utils';
+import SpoonLoading from '@/app/(app)/SpoonLoading';
 
 function LoginOtp() {
     const router = useRouter();
@@ -108,7 +108,7 @@ function LoginOtp() {
         <>
             {!user ? (
                 <div className='flex min-h-full flex-1 flex-col justify-center items-center lg:px-8'>
-                    <Loading />
+                    <SpoonLoading />
                 </div>
             ) : (
                 <div className='flex min-h-full flex-1 flex-col justify-center items-center lg:px-8'>
