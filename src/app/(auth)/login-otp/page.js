@@ -72,7 +72,7 @@ function LoginOtp() {
                     description:
                         'You have successfully verified your account. You can now log in.',
                 });
-                console.log(response.data.status);
+                // console.log(response.data.status);
                 user.is_first_login === 1
                     ? router.push('/account-setup')
                     : router.push('/recipe');
