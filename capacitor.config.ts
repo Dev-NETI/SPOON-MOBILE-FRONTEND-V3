@@ -1,9 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'ph.spoon.betaspoon',
+    appId: 'ph.spoon.beta',
     appName: 'Spoon PH',
-    webDir: 'spoon-mobile/src',
+    webDir: 'beta-mobile/src',
     server: {
         url: 'https://beta-spoon.spoon.ph',
         cleartext: true,
