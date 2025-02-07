@@ -59,7 +59,11 @@ function FavoriteCardComponent({
                 </div>
                 <a href={url}>
                     <Image
-                        src={src}
+                        src={
+                            `${process.env.NEXT_PUBLIC_BACKEND_URL}` +
+                            '/storage/' +
+                            src
+                        }
                         width={1000}
                         height={100}
                         alt={alt}

@@ -3,12 +3,10 @@ import React, { useEffect, useState } from 'react';
 import FavoriteCardComponent from '@/components/app/favorite/FavoriteCardComponent';
 import { useSavedRecipe } from '@/hooks/api/saved-recipe';
 import { useAuth } from '@/hooks/auth';
-// import { miyagi } from 'ldrs';
 import CustomizedSnackbar from '@/components/CustomSnackBar';
 import Loading from '../Loading';
 
 const FavoriteRecipe = () => {
-    // miyagi.register();
     const { user } = useAuth({ middleware: 'auth' });
     const { show: showSavedRecipe } = useSavedRecipe();
 
@@ -37,13 +35,6 @@ const FavoriteRecipe = () => {
     return favoriteRecipeState.loading ? (
         // Default values shown
         <div className='container flex justify-center items-center h-screen'>
-            {/* <l-miyagi
-                className='mx-auto'
-                size='150'
-                stroke='10'
-                speed='0.9'
-                color='#00023d'
-            /> */}
             <Loading />
         </div>
     ) : (
@@ -71,7 +62,7 @@ const FavoriteRecipe = () => {
                         favoriteRecipeState.savedRecipeData.map(
                             (recipe, index) => (
                                 <FavoriteCardComponent
-                                    url={'/recipe-view/' + recipe.slug}
+                                    url={`/recipe-view/${recipe.slug}`}
                                     key={index}
                                     recipeId={recipe.id}
                                     recipe={recipe.name || 'Recipe'}
@@ -82,7 +73,7 @@ const FavoriteRecipe = () => {
                                     originname={
                                         recipe.origin_name || 'Origin Name'
                                     }
-                                    src={recipe.recipe_img} // Replace with dynamic image source if available
+                                    src={recipe.recipe_img}
                                     alt={`${recipe.name || 'Recipe'} image`}
                                     snackBarState={snackBarState}
                                     setSnackBarState={setSnackBarState}
